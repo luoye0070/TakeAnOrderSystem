@@ -1,0 +1,9 @@
+target/
+test/
+.idea/
+.classpath
+.project
+.application.properties
+TakeAnOrderSystem.iml
+TakeAnOrderSystem-grailsPlugins.iml
+workspace.xml
