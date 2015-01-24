@@ -154,6 +154,18 @@ class ValidationCode {
             g2.setBackground(backGround);
             g2.clearRect(0, 0, width, height);
             g2.setColor(Color.BLUE);
+
+            //绘制干扰线
+            g2.setColor(getRandColor(160,200));
+            Random random = new Random();
+            for (int i = 0; i < 155; i++) {
+                int x = random.nextInt(width);
+                int y = random.nextInt(height);
+                int xl = random.nextInt(12);
+                int yl = random.nextInt(12);
+                g2.drawLine(x, y, x + xl, y + yl);
+            }
+
             g2.setFont(new Font("Serif", Font.ITALIC|Font.BOLD, fontSize));
             //一个一个字符的输出到图片对象
             for(int i=0;i<authCode.length();i++){
@@ -170,5 +182,16 @@ class ValidationCode {
             println("getAuthCode error:"+ex.message)
             return [recode:[code:-2,msg:"未知错误"]];
         }
+    }
+    static Color getRandColor(int fc, int bc) {// 给定范围获得随机颜色
+        Random random = new Random();
+        if (fc > 255)
+            fc = 255;
+        if (bc > 255)
+            bc = 255;
+        int r = fc + random.nextInt(bc - fc);
+        int g = fc + random.nextInt(bc - fc);
+        int b = fc + random.nextInt(bc - fc);
+        return new Color(r, g, b);
     }
 }
