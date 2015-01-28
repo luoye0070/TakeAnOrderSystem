@@ -112,4 +112,34 @@ class WebUtilService {
     def getSessionId(){
         return session.id;
     }
+
+    //设置是否手机访问
+    def setMobileRequest(){
+        session.mobileRequest=true;
+    }
+    //设置不是手机访问
+    def setNotMobileRequest(){
+        session.mobileRequest=false;
+    }
+    //获取是否是移动设备访问
+    def isMobileRequest(){
+        if(session.mobileRequest!=null&&session.mobileRequest==true){
+            return true;
+        }
+        return false;
+    }
+    //获取session中是否设置了访问方式
+    def isHaveSetRequest(){
+        if(session.mobileRequest!=null){
+            return true;
+        }
+        return false;
+    }
+    //根据session中标志返回桌面视图或是移动设备视图
+    def getView(String viewName){
+        if(session.mobileRequest!=null&&session.mobileRequest==true){
+            return viewName+"Mobile";
+        }
+        return viewName;
+    }
 }

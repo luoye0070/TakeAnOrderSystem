@@ -4,7 +4,6 @@ import lj.common.StrCheckUtil
 
 //饭店信息
 class RestaurantInfo {
-
     //店名
     String name
     //招牌图片
