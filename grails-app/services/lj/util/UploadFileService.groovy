@@ -5,12 +5,9 @@ import lj.common.UploadFile
 
 class UploadFileService {
     WebUtilService webUtilService;
-    def serviceMethod() {
-
-    }
-
     //上传图片
     public String upload(InputStream is,String fileName){
+        fileName=fileName.replace("=","").replace(",","").replace("&","").replace("\"","");
         if(UploadFile.bootPath==""){
             UploadFile.bootPath=webUtilService.getServletContext().getRealPath("/");
         }
@@ -22,7 +19,8 @@ class UploadFileService {
         }
         BufferedInputStream bis=new BufferedInputStream(is);
         bis.mark(bis.available()+1);
-        String fileFullName= UploadFile.uploadToYuPan(bis,fileName);
+        //String fileFullName= UploadFile.uploadToYuPan(bis,fileName);
+        String fileFullName=null;//不上传到云盘了
         if(fileFullName==null){//上传到云盘失败,则上传到服务器文件系统
             bis.reset();
             fileFullName=UploadFile.uploadToFileSystem(bis,fileName);

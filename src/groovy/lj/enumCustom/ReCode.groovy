@@ -35,7 +35,7 @@ public class ReCode {
     public final static def ORDER_CANNOT_CAST_ACCOUNT=[code:-17,label:"订单当前状态或有效性下不能算账"];
     public final static def DENIED_USER=[code:-18,label:"非法用户"];
     public final static def NO_RESTAURANTINFO=[code:-19,label:"饭店不存在或不可用"];
-    public final static def NOT_REGISTER_RESTAURANT=[code:-20,label:"您还没有注册饭店"];
+    public final static def NOT_CREATE_RESTAURANT=[code:-20,label:"还没有创建饭店"];
     public final static def SHOP_NOT_ENABLED=[code:-21,label:"饭店关闭了"];
     public final static def SHOP_VERIFY_NOT_PASS=[code:-22,label:"饭店审核没有通过"];
     public final static def SHOP_WAIT_VERIFY=[code:-23,label:"饭店等待审核中"];
