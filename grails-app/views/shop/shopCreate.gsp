@@ -131,6 +131,15 @@
             <form class="form-horizontal" method="POST" id="create_form" action="shopCreate">
 
                 <div class="control-group">
+                    <label class="control-label" style="font-size: 16px;font-weight: bolder;">
+                        饭店基本信息
+                    </label>
+
+                    <div class="controls">
+                    </div>
+                </div>
+
+                <div class="control-group">
                     <label class="control-label" for="name"><g:message code="restaurantInfo.name.label"
                                                                        default="Name"/><span
                             class="required-indicator">*</span></label>
@@ -264,6 +273,16 @@
                                value="${restaurantInfoInstance?.baseUrl}"/>
                     </div>
                 </div>
+
+                <div class="control-group">
+                    <label class="control-label" style="font-size: 16px;font-weight: bolder;">
+                        店主信息
+                    </label>
+
+                    <div class="controls">
+                    </div>
+                </div>
+
 
                 <div class="control-group">
                     <label class="control-label"></label>

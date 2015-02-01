@@ -37,7 +37,7 @@
     <br/>
     类别：
     <g:each in="${imgClassList}">
-        <a href="${createLink(controller: "imageSpace", action: "selectImage", params: [classId: it.id])}"
+        <a href="${createLink(controller: "imageSpace", action: "selectImage", params: [classId: it.id,callBack:params.callBack])}"
             <g:if test="${params.classId == it.id.toString() || (!(params.classId) && it.id == 0)}">
                 class="btn btn-danger"
             </g:if>

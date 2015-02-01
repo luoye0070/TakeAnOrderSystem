@@ -1,5 +1,6 @@
 package lj.util
 
+import lj.data.StaffInfo
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsWebRequest
 import org.codehaus.groovy.grails.web.util.WebUtils
@@ -141,5 +142,25 @@ class WebUtilService {
             return viewName+"Mobile";
         }
         return viewName;
+    }
+
+    //设置工作人员
+    def setStaff(StaffInfo staffInfo){
+        session.staffId=staffInfo.id;
+    }
+    //获取工作人员ID
+    def getStaffId(){
+        long staffId=lj.Number.toLong(session.staffId);
+        return staffId;
+    }
+    //获取工作人员
+    def getStaff(){
+        long staffId=lj.Number.toLong(session.staffId);
+        StaffInfo staffInfo=StaffInfo.get(staffId);
+        return staffInfo;
+    }
+    //判定工作人员是否登录
+    Boolean isStaffLoggedIn(){
+        return (session.staffId!=null)
     }
 }

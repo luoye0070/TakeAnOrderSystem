@@ -34,6 +34,8 @@ class RestaurantInfo {
     String description;
     //店铺基础url地址
     String baseUrl;
+    //订单间隔时间，单位分钟
+    int intervalTime=60;//默认为60分钟
 
     static constraints = {
         name (nullable: false,blank:false,maxSize:256)
@@ -57,5 +59,6 @@ class RestaurantInfo {
         averageConsume(nullable: true,min: 0d);
         description (nullable:true,blank: true,maxSize:1024*128);
         baseUrl(nullable:true,blank: true,maxSize:512);
+        intervalTime(nullable:true);
     }
 }

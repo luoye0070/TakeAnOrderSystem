@@ -18,8 +18,6 @@ class FoodInfo {
     Boolean enabled=true;
     //每天限量0表示不限量
     Integer countLimit=0
-    //是否套餐
-    Boolean isSetMeal=false
     //当天销量
     int sellCount=0;
     //累计销量
@@ -37,7 +35,6 @@ class FoodInfo {
         description (nullable:true,blank: true,maxSize:1024*1024)
         enabled(nullable: false)
         countLimit (nullable: false,min:0)
-        isSetMeal(nullable: false)
         sellCount(nullable: false,min:0)
         totalSellCount(nullable: false,min:0);
         isReady(nullable:false);

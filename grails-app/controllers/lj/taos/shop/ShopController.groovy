@@ -1,5 +1,6 @@
 package lj.taos.shop
 
+import lj.data.RestaurantInfo
 import lj.enumCustom.ReCode
 
 //店铺相关控制器
@@ -14,7 +15,7 @@ class ShopController {
     def shopCreate(){
         def errors=null;
         def msgs=null;
-        def restaurantInfoInstance=null;
+        def restaurantInfoInstance=new RestaurantInfo();
         if(request.method=="POST"){//提交注册信息
             def recode=shopService.createShop(params);//创建店铺
             println(recode);
