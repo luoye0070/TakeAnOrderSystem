@@ -19,6 +19,7 @@
         background-color: #FFFFFF;
         float: left;
     }
+
     #login_name {
         font-size: 20px;
         font-weight: bold;
@@ -33,6 +34,7 @@
         margin: 0px auto;
         margin-bottom: 30px;
     }
+
     .login_btn {
         width: 172px;
         height: 37px;
@@ -52,53 +54,45 @@
         <div id="login_banner"></div>
     </div>
 
-    <g:render template="../layouts/msgs_and_errors"></g:render>
+    <div class="span10" style="margin-left: 10px;margin-top: 0px;">
+        <g:render template="../layouts/msgs_and_errors"></g:render>
 
-    <div class="span11">
-        <g:form class="form-horizontal" method="post" action="staffLogin">
-            <fieldset>
+        <div class="span11">
+            <g:form class="form-horizontal" method="post" action="staffLogin">
+                <fieldset>
 
+                    <div class="control-group">
+                        <label class="control-label"><g:message code="staffInfo.loginName.label" default="Login Name"/>
+                            <span class="required-indicator"></span></label>
 
-                <div class="control-group">
-                    <label class="control-label"><g:message code="staffInfo.restaurantId.label" default="restaurantId"/>
-                        <span class="required-indicator"></span></label>
-
-                    <div class="controls">
-                        <g:textField name="restaurantId" maxlength="32" required="" value="${params.restaurantId}"/>
+                        <div class="controls">
+                            <g:textField name="loginName" maxlength="32" required="" value="${params.loginName}"/>
+                        </div>
                     </div>
-                </div>
 
+                    <div class="control-group">
+                        <label class="control-label" for="passWord"><g:message code="staffInfo.passWord.label"
+                                                                               default="Pass Word"/>
+                            <span class="required-indicator"></span></label>
 
-                <div class="control-group">
-                    <label class="control-label"><g:message code="staffInfo.loginName.label" default="Login Name"/>
-                        <span class="required-indicator"></span></label>
-
-                    <div class="controls">
-                        <g:textField name="loginName" maxlength="32" required="" value="${params.loginName}"/>
+                        <div class="controls">
+                            <g:passwordField name="passWord" maxlength="128" required="" value=""/>
+                        </div>
                     </div>
-                </div>
 
-                <div class="control-group">
-                    <label class="control-label" for="passWord"><g:message code="staffInfo.passWord.label"
-                                                                           default="Pass Word"/>
-                        <span class="required-indicator"></span></label>
+                    <div class="control-group">
+                        <!-- Button -->
+                        <div class="controls">
 
-                    <div class="controls">
-                        <g:passwordField name="passWord" maxlength="128" required="" value=""/>
+                            <g:submitButton name="login"
+                                            value="${message(code: 'default.button.login.label', default: 'login')}"
+                                            class="login_btn" style="width: 172px;font-weight: bold;font-size: 14px;"/>
+                        </div>
                     </div>
-                </div>
+                </fieldset>
+            </g:form>
 
-                <div class="control-group">
-                    <!-- Button -->
-                    <div class="controls">
-
-                        <g:submitButton name="login"
-                                        value="${message(code: 'default.button.login.label', default: 'login')}"
-                                        class="login_btn" style="width: 172px;font-weight: bold;font-size: 14px;"/>
-                    </div>
-                </div>
-            </fieldset>
-        </g:form>
+        </div>
 
     </div>
 </div>
