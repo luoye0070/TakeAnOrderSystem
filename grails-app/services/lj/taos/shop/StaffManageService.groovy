@@ -61,9 +61,16 @@ class StaffManageService {
             if (staffInfo1) {//已经添加过相同登录名的工作人员
                 return [recode: ReCode.EXIST_THE_SAME_STAFF];
             }
+            if(params.rePassWord!=params.passWord){
+                return [recode: ReCode.PASSWORD_DIFFERENCE];
+            }
         } else {
             if (params.passWord == "") {
                 params.remove("passWord");
+            }else{
+                if(params.rePassWord!=params.passWord){
+                    return [recode: ReCode.PASSWORD_DIFFERENCE];
+                }
             }
         }
 

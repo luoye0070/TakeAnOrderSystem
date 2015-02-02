@@ -2,6 +2,9 @@ package lj.taos.shop
 
 import lj.I18nError
 import lj.data.RestaurantInfo
+import lj.data.StaffInfo
+import lj.data.StaffPositionInfo
+import lj.enumCustom.PositionType
 import lj.enumCustom.ReCode
 
 import java.text.SimpleDateFormat
@@ -40,10 +43,32 @@ class ShopService {
         //手机号正确性验证
 
         RestaurantInfo restaurantInfo = new RestaurantInfo(params);
-        if (restaurantInfo.save(flush: true)) {
-            return [recode: ReCode.OK, restaurantInfo: restaurantInfo];
-        } else
-            return [recode: ReCode.SAVE_FAILED, restaurantInfo: restaurantInfo, errors: I18nError.getMessage(g,restaurantInfo.errors.allErrors)];
+        if (!restaurantInfo.save(flush: true)) {
+            throw new RuntimeException(I18nError.getMessage(g,restaurantInfo.errors.allErrors,0));
+        }
+        //创建店主
+        //检查同店铺是否已经有相同的登录用户名
+        StaffInfo staffInfo1 = StaffInfo.findByLoginName(params.loginName);
+        if (staffInfo1) {//已经添加过相同登录名的工作人员
+            throw new RuntimeException("重复的登录名，请修改后重试！");
+        }
+        //添加店主
+        def staffInfo = new StaffInfo(params);
+        staffInfo.name=params.staffName;
+        if (!staffInfo.save(flush: true)){
+            throw new RuntimeException(I18nError.getMessage(g,staffInfo.errors.allErrors,0));
+        }
+        if(params.rePassWord!=params.passWord){
+            throw new RuntimeException("两次输入的密码不一致！");
+        }
+        //设置职位
+        StaffPositionInfo staffPositionInfo = new StaffPositionInfo();
+        staffPositionInfo.staffInfo = staffInfo;
+        staffPositionInfo.positionType = PositionType.SHOPKEEPER.code;
+        if(!staffPositionInfo.save(flush: true)){
+            throw new RuntimeException(I18nError.getMessage(g,staffInfo.errors.allErrors,0));
+        }
+        return [recode: ReCode.OK,staffInfo:staffInfo,restaurantInfo:restaurantInfo];
     }
 
     //店铺信息查询

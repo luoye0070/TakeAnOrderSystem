@@ -283,6 +283,41 @@
                     </div>
                 </div>
 
+                <div class="control-group">
+                    <label class="control-label" for="loginName"><g:message code="staffInfo.loginName.label" default="Login Name" />
+                        <span class="required-indicator">*</span>
+                    </label>
+                    <div class="controls">
+                        <g:textField name="loginName" maxlength="32" required="" value="${staffInfo?.loginName}"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="passWord"><g:message code="staffInfo.passWord.label" default="Pass Word" />
+                        <span class="required-indicator">*</span>
+                    </label>
+                    <div class="controls">
+                        <g:passwordField name="passWord" maxlength="128" required="" value="${staffInfo?.passWord}"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="rePassWord"><g:message code="staffInfo.rePassWord.label" default="Re Pass Word" />
+                        <span class="required-indicator">*</span>
+                    </label>
+                    <div class="controls">
+                        <g:passwordField name="rePassWord" maxlength="128" required="" value=""/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="staffName"><g:message code="staffInfo.name.label" default="Name" />
+                    </label>
+                    <div class="controls">
+                        <g:textField name="staffName" maxlength="32" value="${staffInfo?.name}"/>
+                    </div>
+                </div>
+
 
                 <div class="control-group">
                     <label class="control-label"></label>
