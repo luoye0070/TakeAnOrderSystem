@@ -74,9 +74,6 @@ class TableManageService {
         def session=webUtilService.getSession();
         //SimpleDateFormat sdfDate=new SimpleDateFormat("yyyy-MM-dd");
         //SimpleDateFormat sdfTime=new SimpleDateFormat("HH:mm:ss");
-        //取出用户ID
-        long userId=lj.Number.toLong(session.userId);//用户ID
-        if(userId){
             //取参数
             Long id=lj.Number.toLong(params.id);
 
@@ -85,17 +82,12 @@ class TableManageService {
             if(reInfo.recode!=ReCode.OK){
                 return reInfo;
             }
-            long restaurantId=reInfo.restaurantInfo.id;
-            TableInfo tableInfo=TableInfo.findByRestaurantIdAndId(restaurantId,id);
+            TableInfo tableInfo=TableInfo.findById(id);
             if(tableInfo)
                 return [recode: ReCode.OK,tableInfo:tableInfo];
             else
                 return [recode: ReCode.NO_RESULT];
             //return searchService.searchTable(params);
-        }
-        else{
-            return [recode:ReCode.NOT_LOGIN];
-        }
     }
 
     //查询菜单信息
@@ -103,9 +95,6 @@ class TableManageService {
         def session=webUtilService.getSession();
         //SimpleDateFormat sdfDate=new SimpleDateFormat("yyyy-MM-dd");
         //SimpleDateFormat sdfTime=new SimpleDateFormat("HH:mm:ss");
-        //取出用户ID
-        long userId=lj.Number.toLong(session.userId);//用户ID
-        if(userId){
             //取参数
             //Long id=lj.Number.toLong(params.id);
 
@@ -114,12 +103,30 @@ class TableManageService {
             if(reInfo.recode!=ReCode.OK){
                 return reInfo;
             }
-            params.restaurantId=reInfo.restaurantInfo.id;
-            return searchService.searchTable(params);
+        //查询条件
+        def condition = {
+            if (params.tableId) {
+                eq("id", lj.Number.toLong(params.tableId));
+            }
+            if (params.peopleCount) { //就餐人数
+                ge("maxPeople", lj.Number.toInteger(params.peopleCount));
+                le("minPeople", lj.Number.toInteger(params.peopleCount));
+            }
+            if (params.canMultiOrder != null) {//是否支持多人共桌
+                eq("canMultiOrder", params.canMultiOrder);
+            }
+            if (params.canReserve != null) { //是否支持预定
+                eq("canReserve", params.canReserve);
+            }
+            if (params.enabled != null) { //是否有效
+                eq("enabled", params.enabled);
+            }
         }
-        else{
-            return [recode:ReCode.NOT_LOGIN];
-        }
+
+        def tableList = TableInfo.createCriteria().list(params, condition);
+        def totalCount = TableInfo.createCriteria().count(condition);
+
+        return [recode: ReCode.OK, tableList: tableList, totalCount: totalCount, params: params];
     }
 
     /***************
@@ -141,9 +148,6 @@ class TableManageService {
         def session=webUtilService.getSession();
         //SimpleDateFormat sdfDate=new SimpleDateFormat("yyyy-MM-dd");
         //SimpleDateFormat sdfTime=new SimpleDateFormat("HH:mm:ss");
-        //取出用户ID
-        long userId=lj.Number.toLong(session.userId);//用户ID
-        if(userId){
             //检查店铺可用性
             def reInfo=shopService.getShopEnabled();
             if(reInfo.recode!=ReCode.OK){
@@ -166,11 +170,6 @@ class TableManageService {
             }
 
             return [recode: ReCode.OK];
-
-        }
-        else{
-            return [recode:ReCode.NOT_LOGIN];
-        }
     }
 
 }

@@ -18,7 +18,7 @@ class TableInfo {
     boolean enabled=true;
 
     static constraints = {
-        name(nullable:false,blank:false,maxSize:64);
+        name(nullable:false,blank:false,maxSize:64,unique: true);
         minPeople(nullable:false,min:1);
         maxPeople(nullable:false,min:1);
         canMultiOrder(nullable: false);

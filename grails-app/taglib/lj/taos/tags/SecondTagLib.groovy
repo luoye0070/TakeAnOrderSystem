@@ -7,9 +7,8 @@ class SecondTagLib {
     def tableQRCode = { attr, body ->
         String htmlTag = "";
         try {
-            long restaurantId = attr.restaurantId as long;
             long tableId = attr.tableId as long;
-            htmlTag += "<img src='" + createLink(controller: "imageShow",action: "showQRCode",params: [str:restaurantId+"|"+tableId]) + "'/>";
+            htmlTag += "<img src='" + createLink(controller: "imageShow",action: "showQRCode",params: [str:"|"+tableId]) + "'/>";
         }
         catch (Exception ex) {
             htmlTag += "<font color='RED'>" + ex.message + "</font>";
