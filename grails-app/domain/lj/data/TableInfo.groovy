@@ -2,6 +2,8 @@ package lj.data
 
 //桌位
 class TableInfo {
+    //唯一标示
+    String code;
     //桌名
     String name
     //最少人数
@@ -18,6 +20,7 @@ class TableInfo {
     boolean enabled=true;
 
     static constraints = {
+        code(nullable:true,blank:false,maxSize:16,unique: true);
         name(nullable:false,blank:false,maxSize:64,unique: true);
         minPeople(nullable:false,min:1);
         maxPeople(nullable:false,min:1);

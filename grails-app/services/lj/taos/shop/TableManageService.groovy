@@ -1,14 +1,15 @@
 package lj.taos.shop
 
 import lj.I18nError
+import lj.common.UniqueCode
 import lj.data.TableInfo
 import lj.enumCustom.ReCode
 
 class TableManageService {
     def webUtilService;
-    def searchService;
     def shopService;
     def g = new org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib();
+
     def serviceMethod() {
 
     }
@@ -36,73 +37,80 @@ class TableManageService {
      * [recode:ReCode.NOT_LOGIN];用户没有登录
      * [recode: ReCode.OK];餐桌信息保存成功
      * **********************/
-    def save(def params){
-        def session=webUtilService.getSession();
+    def save(def params) {
+        def session = webUtilService.getSession();
         //SimpleDateFormat sdfDate=new SimpleDateFormat("yyyy-MM-dd");
         //SimpleDateFormat sdfTime=new SimpleDateFormat("HH:mm:ss");
 
-            //取参数
-            Long id=lj.Number.toLong(params.id);
+        //取参数
+        Long id = lj.Number.toLong(params.id);
 
-            //检查店铺可用性
-            def reInfo=shopService.getShopEnabled();
-            if(reInfo.recode!=ReCode.OK){
-                return reInfo;
-            }
+        //检查店铺可用性
+        def reInfo = shopService.getShopEnabled();
+        if (reInfo.recode != ReCode.OK) {
+            throw new RuntimeException(reInfo.recode.label);
+        }
 
-            TableInfo tableInfo=null;
-            if(id){
-                tableInfo=TableInfo.get(id);
-            }
-            if(tableInfo){
-                tableInfo.setProperties(params);
-            }
-            else{
-                tableInfo=new TableInfo(params);
-            }
+        TableInfo tableInfo = null;
+        if (id) {
+            tableInfo = TableInfo.get(id);
+        }
+        if (tableInfo) {
+            tableInfo.setProperties(params);
+        } else {
+            tableInfo = new TableInfo(params);
+        }
 
-                if(tableInfo.save(flush: true)){
-                    return [recode: ReCode.OK,tableInfo:tableInfo];
-                }
-                else
-                    return [recode: ReCode.SAVE_FAILED,tableInfo:tableInfo,errors:I18nError.getMessage(g,tableInfo.errors.allErrors)];
+        if (!tableInfo.save(flush: true)) {
+            throw new RuntimeException(I18nError.getMessage(g,tableInfo.errors.allErrors,0));
+        }
 
+        if(id==0){//新加桌位设置一个code
+            String code=UniqueCode.getUniqueCode(tableInfo.id,16);
+            tableInfo.code=code;
+            if (!tableInfo.save(flush: true)) {
+                throw new RuntimeException(I18nError.getMessage(g,tableInfo.errors.allErrors,0));
+            }
+        }
+
+
+        return [recode: ReCode.OK, tableInfo: tableInfo];
     }
 
     //桌位查询
-    def getTableInfo(def params){
-        def session=webUtilService.getSession();
+    def getTableInfo(def params) {
+        def session = webUtilService.getSession();
         //SimpleDateFormat sdfDate=new SimpleDateFormat("yyyy-MM-dd");
         //SimpleDateFormat sdfTime=new SimpleDateFormat("HH:mm:ss");
-            //取参数
-            Long id=lj.Number.toLong(params.id);
+        //取参数
+        Long id = lj.Number.toLong(params.id);
 
-            //检查店铺可用性
-            def reInfo=shopService.getShopEnabled();
-            if(reInfo.recode!=ReCode.OK){
-                return reInfo;
-            }
-            TableInfo tableInfo=TableInfo.findById(id);
-            if(tableInfo)
-                return [recode: ReCode.OK,tableInfo:tableInfo];
-            else
-                return [recode: ReCode.NO_RESULT];
-            //return searchService.searchTable(params);
+        //检查店铺可用性
+        def reInfo = shopService.getShopEnabled();
+        if (reInfo.recode != ReCode.OK) {
+            return reInfo;
+        }
+        TableInfo tableInfo = TableInfo.findById(id);
+        if (tableInfo)
+            return [recode: ReCode.OK, tableInfo: tableInfo];
+        else
+            return [recode: ReCode.NO_RESULT];
+        //return searchService.searchTable(params);
     }
 
     //查询菜单信息
-    def tableList(def params){
-        def session=webUtilService.getSession();
+    def tableList(def params) {
+        def session = webUtilService.getSession();
         //SimpleDateFormat sdfDate=new SimpleDateFormat("yyyy-MM-dd");
         //SimpleDateFormat sdfTime=new SimpleDateFormat("HH:mm:ss");
-            //取参数
-            //Long id=lj.Number.toLong(params.id);
+        //取参数
+        //Long id=lj.Number.toLong(params.id);
 
-            //检查店铺可用性
-            def reInfo=shopService.getShopEnabled();
-            if(reInfo.recode!=ReCode.OK){
-                return reInfo;
-            }
+        //检查店铺可用性
+        def reInfo = shopService.getShopEnabled();
+        if (reInfo.recode != ReCode.OK) {
+            return reInfo;
+        }
         //查询条件
         def condition = {
             if (params.tableId) {
@@ -144,32 +152,31 @@ class TableManageService {
      * [recode:ReCode.NOT_LOGIN];用户没有登录
      * [recode: ReCode.OK];删除桌位成功
      * **********************/
-    def deleteTable(def params){
-        def session=webUtilService.getSession();
+    def deleteTable(def params) {
+        def session = webUtilService.getSession();
         //SimpleDateFormat sdfDate=new SimpleDateFormat("yyyy-MM-dd");
         //SimpleDateFormat sdfTime=new SimpleDateFormat("HH:mm:ss");
-            //检查店铺可用性
-            def reInfo=shopService.getShopEnabled();
-            if(reInfo.recode!=ReCode.OK){
-                return reInfo;
-            }
+        //检查店铺可用性
+        def reInfo = shopService.getShopEnabled();
+        if (reInfo.recode != ReCode.OK) {
+            return reInfo;
+        }
 
-            //根据ID删除记录
-            if(params.ids instanceof String){ //传入id
-                Long id=lj.Number.toLong(params.ids); //菜单id
-                TableInfo.executeUpdate("delete from TableInfo where id="+id);
+        //根据ID删除记录
+        if (params.ids instanceof String) { //传入id
+            Long id = lj.Number.toLong(params.ids); //菜单id
+            TableInfo.executeUpdate("delete from TableInfo where id=" + id);
+        } else if (params.ids instanceof String[]) {//传入id数组
+            String sql_s = "delete from TableInfo where id in (0";
+            for (int i = 0; i < params.ids.length; i++) {
+                Long id = lj.Number.toLong(params.ids[i]);
+                sql_s += "," + id;
             }
-            else if(params.ids instanceof String[]){//传入id数组
-                String sql_s= "delete from TableInfo where id in (0";
-                for(int i=0;i<params.ids.length;i++){
-                    Long id=lj.Number.toLong(params.ids[i]);
-                    sql_s+=","+id;
-                }
-                sql_s+=")";
-                TableInfo.executeUpdate(sql_s);
-            }
+            sql_s += ")";
+            TableInfo.executeUpdate(sql_s);
+        }
 
-            return [recode: ReCode.OK];
+        return [recode: ReCode.OK];
     }
 
 }

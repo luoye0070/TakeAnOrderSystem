@@ -37,7 +37,7 @@ class ValidationCode {
                     "0123456789"] as String[];
 
             if(digit<=0){
-                digit=4;
+                digit=0;
             }
             if(codeType<0||codeType>=baseCode.length){
                 codeType=UPPERCASE_LAWERCASE_NUMBER;
