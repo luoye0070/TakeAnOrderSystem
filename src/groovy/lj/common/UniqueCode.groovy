@@ -12,7 +12,7 @@ class UniqueCode {
      * @param identifyNumber 标示号
      * @param digit 位数,最小值1
      * */
-    public static String getUniqueCode(final long identifyNumber,final int digit){
+    public static String getUniqueCode(final long identifyNumber,final int digit,int codeType){
         int idlength=digit/2;
         if(digit<=1){
             idlength=1;
@@ -33,6 +33,7 @@ class UniqueCode {
             identifyNumberTemp=identifyNumber-l_divisor1*result1;
         }
 
+        //高位补零
         String s_identify="";
         for(int i=(idlength-1);i>=0;i--){
              String s_divisor="1";
@@ -45,9 +46,9 @@ class UniqueCode {
             identifyNumberTemp-= l_divisor*result;
         }
         int balanceDigit=digit-idlength;
-        String randomCode=ValidationCode.getAuthCodeStr(balanceDigit,ValidationCode.NUMBER);
+        String randomCode=ValidationCode.getAuthCodeStr(balanceDigit,codeType);
 
-        //拼接串
+        //拼接串,随机数和标示数交替拼入这个唯一标示串
         StringBuffer temp=new StringBuffer("");
         int i=0;
         for(i=0;i<balanceDigit;i++){
@@ -61,5 +62,8 @@ class UniqueCode {
         }
 
         return temp.toString();
+    }
+    public static String getUniqueCode(final long identifyNumber,final int digit){
+       return getUniqueCode(identifyNumber,digit,ValidationCode.NUMBER)
     }
 }

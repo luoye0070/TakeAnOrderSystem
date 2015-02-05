@@ -20,4 +20,13 @@ class StringUtil {
     public static int getStrByteLen(String str) {
         return str.getBytes("GBK").length;
     }
+    public static boolean isEmpty(String str){
+        if(str==null){
+            return true;
+        }
+        if("".equals(str)){
+            return true;
+        }
+        return false;
+    }
 }
