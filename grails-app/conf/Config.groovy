@@ -63,7 +63,7 @@ environments {
     development {
         grails.logging.jul.usebridge = true
         grails.baseurls = [
-                baseUrl:"http://localhost/TakeAnOrderSystem"
+                baseUrl:"http://localhost:8080/TakeAnOrderSystem"
                 //baseUrl:"http://cm.lj09.org",
                 //baseUrl1:"http://42.96.176.228"
         ]

@@ -1,4 +1,4 @@
-package lj.taos.shop
+package lj.taos.show
 
 import lj.common.UploadFile
 import lj.common.zxing.EncodingHandler
