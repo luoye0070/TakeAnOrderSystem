@@ -35,7 +35,7 @@ class ClientService {
     }
     def setClient(){
        String clientIdentification=webUtilService.readCookie("clientIdentification");
-       println("clientIdentification-pre>"+clientIdentification);
+       //println("clientIdentification-pre>"+clientIdentification);
        if(StringUtil.isEmpty(clientIdentification)){//新建
            ClientInfo clientInfo=new ClientInfo();
            clientInfo.clientType=ClientType.WEB_PAGE.code;//暂时设置只从网页来的客户请求
@@ -49,6 +49,6 @@ class ClientService {
         if(!StringUtil.isEmpty(clientIdentification)){
             webUtilService.writeCookie("clientIdentification",clientIdentification,365);//将cookie保存1年
         }
-        println("clientIdentification-final>"+clientIdentification);
+        //println("clientIdentification-final>"+clientIdentification);
     }
 }
