@@ -20,8 +20,7 @@ class SecondTagLib {
         String htmlTag = "";
         try {
             //根据饭店ID查询出评价信息
-            long restaurantId=lj.Number.toLong(attr.restaurantId);//饭店ID
-            def appraiseList=AppraiseInfo.findAllByRestaurantId(restaurantId);
+            def appraiseList=AppraiseInfo.list();
             if(appraiseList){
                 int count=0;
                 float totalWhole=0;//总体评分
