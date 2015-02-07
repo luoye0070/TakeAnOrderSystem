@@ -210,6 +210,7 @@
 
 <body>
 <div id="food_main">
+    <g:render template="../layouts/msgs_and_errors"></g:render>
     <div id="food_view">
         <!--菜单信息-->
         <!--图片-->

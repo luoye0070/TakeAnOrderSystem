@@ -135,16 +135,7 @@
 <body>
 <div class="mc_main">
     %{--<div class="span11 offset1">--}%
-        <g:if test="${err}">
-            <div class="alert alert-error">
-                ${err}
-            </div>
-        </g:if>
-        <g:if test="${msg}">
-            <div class="alert alert-info">
-                ${msg}
-            </div>
-        </g:if>
+    <g:render template="../layouts/msgs_and_errors"></g:render>
 
         <g:if test="${restaurantInfo}">
             <!--店铺信息-->
