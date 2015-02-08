@@ -12,9 +12,9 @@ class OrderInfo {
     //桌位
     TableInfo tableInfo;
     //订单状态
-    Integer status=0
+    Integer status=OrderStatus.ORIGINAL_STATUS.code;
     //有效性
-    Integer valid=0
+    Integer valid=OrderValid.EFFECTIVE_VALID.code;
     //饭店取消原因
     String cancelReason
     //跟进服务员ID

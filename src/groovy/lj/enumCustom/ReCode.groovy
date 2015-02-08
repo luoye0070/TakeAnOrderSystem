@@ -65,7 +65,7 @@ public class ReCode {
     public final static def NO_RESERVE_TABLE=[code:-48,label:"请选择预定的桌位"];
     public final static def OVER_RESERVE_DATE=[code:-49,label:"预定日期已经过了"];
     public final static def NOT_GET_PHONE_NUM=[code:-50,label:"没有获取到手机号"];
-    public final static def NO_CLIENT_OR_NOT_LOGIN=[code:-51,label:"没有客户端信息或没有登录"];
+    public final static def NO_CLIENT=[code:-51,label:"没有客户端信息"];
     public final static def NO_VALID_ADDRESS=[code:-52,label:"没有有效地址"];
     public final static def FOOD_NOT_EXIST=[code:-53,label:"食品不存在"];
     public final static def FOOD_CAN_NOT_TAKE_OUT=[code:-54,label:"食品不能外卖"];
