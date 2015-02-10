@@ -11,7 +11,7 @@ class ClientInfo {
     static constraints = {
         userInfo(nullable: true);
         nickname(nullable: true,blank: true,maxSize:64);
-        clientMark(nullable: true,blank: true,maxSize:64);
+        clientMark(nullable: true,blank: true,maxSize:32);
         otherClientMark(nullable: true,blank: true,maxSize:64);
         clientType(nullable:false,inList: ClientType.getCodeList());
     }

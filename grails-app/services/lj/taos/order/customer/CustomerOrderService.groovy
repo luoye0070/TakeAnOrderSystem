@@ -3,11 +3,11 @@ package lj.taos.order.customer
 import lj.I18nError
 import lj.Number
 import lj.common.Distance
-import lj.data.*
-import lj.data.AddressInfo
+import lj.data.ClientInfo
+import lj.data.OrderInfo
+import lj.data.TableInfo
 import lj.enumCustom.*
 import lj.mina.server.MinaServer
-import lj.order.common.MessageService
 import lj.util.WebUtilService
 
 import java.text.SimpleDateFormat
@@ -39,9 +39,17 @@ class CustomerOrderService {
         }
         OrderInfo orderInfo=OrderInfo.findByTableInfoAndValidAndStatusLessThan(tableInfo,OrderValid.EFFECTIVE_VALID.code,OrderStatus.CHECKOUTED_STATUS.code);
         if (orderInfo==null){
+            //检测桌位是否已经被预定
+
             orderInfo=new OrderInfo();
             orderInfo.clientInfo=clientInfo;
             orderInfo.tableInfo=tableInfo;
+            if(!orderInfo.save(flush: true)){
+                return [recode: ReCode.SAVE_FAILED, orderInfo: orderInfo,errors:I18nError.getMessage(g,orderInfo.errors.allErrors)];
+            }
+        }
+        if(orderInfo.clientInfo==null){
+            orderInfo.clientInfo=clientInfo;
             if(!orderInfo.save(flush: true)){
                 return [recode: ReCode.SAVE_FAILED, orderInfo: orderInfo,errors:I18nError.getMessage(g,orderInfo.errors.allErrors)];
             }
@@ -647,7 +655,7 @@ class CustomerOrderService {
 
              //如果工作人员查询的话必须有饭店ID
              if(byWaiter) {
-                 StaffInfo staffInfo=webUtilService.getStaff();
+//                 StaffInfo staffInfo=webUtilService.getStaff();
                  if(staffInfo)
                     restaurantId=staffInfo.restaurantId;
                  else

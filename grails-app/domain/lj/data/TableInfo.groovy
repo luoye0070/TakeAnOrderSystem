@@ -20,7 +20,7 @@ class TableInfo {
     boolean enabled=true;
 
     static constraints = {
-        code(nullable:true,blank:false,maxSize:16,unique: true);
+        code(nullable:true,blank:false,maxSize:32,unique: true);
         name(nullable:false,blank:false,maxSize:64,unique: true);
         minPeople(nullable:false,min:1);
         maxPeople(nullable:false,min:1);

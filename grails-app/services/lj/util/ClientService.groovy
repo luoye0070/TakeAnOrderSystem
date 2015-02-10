@@ -14,7 +14,7 @@ class ClientService {
             clientInfo=new ClientInfo();
             clientInfo.clientType=ClientType.WEB_PAGE.code;//暂时设置只从网页来的客户请求
             if(clientInfo.save(flush: true)){
-                clientIdentification=UniqueCode.getUniqueCode(clientInfo.id,24);//亿亿个客户后可能重复
+                clientIdentification=UniqueCode.getUniqueCode(clientInfo.id,32);//亿亿个客户后可能重复
                 clientInfo.clientMark=clientIdentification;
                 clientInfo.save(flush: true);
                 //写入Cookie
@@ -40,7 +40,7 @@ class ClientService {
            ClientInfo clientInfo=new ClientInfo();
            clientInfo.clientType=ClientType.WEB_PAGE.code;//暂时设置只从网页来的客户请求
            if(clientInfo.save(flush: true)){
-               clientIdentification=UniqueCode.getUniqueCode(clientInfo.id,24);//亿亿个客户后可能重复
+               clientIdentification=UniqueCode.getUniqueCode(clientInfo.id,32);//亿亿个客户后可能重复
                clientInfo.clientMark=clientIdentification;
                clientInfo.save(flush: true);
            }

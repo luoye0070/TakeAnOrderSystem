@@ -66,7 +66,7 @@ class TableManageService {
         }
 
         if(id==0){//新加桌位设置一个code
-            String code=UniqueCode.getUniqueCode(tableInfo.id,16);
+            String code=UniqueCode.getUniqueCode(tableInfo.id,32);//设置一个这么长的code是为了防止顾客随意输入
             tableInfo.code=code;
             if (!tableInfo.save(flush: true)) {
                 throw new RuntimeException(I18nError.getMessage(g,tableInfo.errors.allErrors,0));
