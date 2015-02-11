@@ -1,6 +1,7 @@
 package lj.taos.shop
 
 import lj.FormatUtil
+import lj.data.FoodClassInfo
 import lj.data.FoodInfo
 import lj.data.OrderInfo
 import lj.data.RestaurantInfo
@@ -29,6 +30,7 @@ class SearchService {
         //params.cityId
         //params.provinceId
         long foodId = lj.Number.toLong(params.foodId);
+        long foodClassId=lj.Number.toLong(params.foodClassId)
 
         if (!params.max) {
             params.max = 10
@@ -42,6 +44,9 @@ class SearchService {
         def condition = {
             if (foodId) {
                 eq("id", foodId);
+            }
+            if(foodClassId){
+                eq("foodClassInfo.id",foodClassId);
             }
             if (params.keyWord) { //关键字
                 like("name", "%" + params.keyWord + "%");
@@ -66,7 +71,17 @@ class SearchService {
         return [recode: ReCode.OK, foodList: foodList, totalCount: totalCount, params: params];
 
     }
-
+    /**
+     *查询出所有菜品类别
+     * @author 刘兆国
+     * @return
+     * @Date: 2013-12-5
+     * @Time: 上午10: 26
+     */
+    def searchFoodClass() {
+        def foodClassInfoInstanceList=FoodClassInfo.findAll();
+        return [recode: ReCode.OK,foodClassInfoInstanceList:foodClassInfoInstanceList];
+    }
     //查询桌位
     def searchTable(def params) {
 

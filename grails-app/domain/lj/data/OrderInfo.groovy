@@ -24,11 +24,11 @@ class OrderInfo {
     //备注
     String remark
     //店内编号
-    Integer numInRestaurant
+    int numInRestaurant=0;
     //流水号
     long orderNum
     //订单参与验证码
-    String partakeCode
+    String partakeCode="";
     //总金额
     Double totalAccount;
     //实收金额
@@ -45,6 +45,8 @@ class OrderInfo {
     boolean isJoinActivity=false;
     //订单类型
     int orderType=0;
+    //点菜列表
+    List<DishesInfo> dishes;
     /*******************为了方便加的冗余数据*****************/
     //饭店Name
     String restaurantName;
@@ -53,6 +55,7 @@ class OrderInfo {
     //桌位
     String tableName;
 
+    static hasMany = [dishes:DishesInfo];
     static constraints = {
         clientInfo(nullable:false)
         tableInfo(nullable:false)

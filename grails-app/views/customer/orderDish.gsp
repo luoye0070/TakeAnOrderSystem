@@ -9,9 +9,65 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-  <title></title>
+    <meta name="layout" content="main_template"/>
+    <title></title>
+    <style type="text/css">
+    .mc_main {
+        width: 1000px;
+        height: auto;
+        margin: 0px 50px;
+        background-color: #FFFFFF;
+        float: left;
+    }
+    .mcm_top {
+        margin-top: 20px;
+    }
+
+    .mcm_top_name {
+        font-size: 20px;
+        font-weight: bold;
+        padding: 10px 0px 10px 20px;
+    }
+
+    .mcm_top_banner {
+        width: 100%;
+        height: 4px;
+        background: url('${resource(dir:"images",file:"login_banner.gif")}');
+        margin: 0px auto;
+        margin-bottom: 30px;
+    }
+    </style>
 </head>
 <body>
+<div class="mc_main">
+    <div class="mcm_top">
+        <div class="mcm_top_name"><g:message code='restaurantInfo.create.label'/></div>
 
+        <div class="mcm_top_banner"></div>
+    </div>
+
+    <div class="span10" style="margin-left: 10px;margin-top: 0px;">
+        <g:render template="../layouts/msgs_and_errors"></g:render>
+    </div>
+    <!--订单简要信息-->
+
+    <!--菜品列表-->
+
+    <!--点菜列表-->
+
+    <!--完成点菜-->
+    <div class="span11">
+        <form class="form-horizontal" method="POST" id="create_form" action="dishDone">
+            <div class="control-group">
+                <label class="control-label"></label>
+
+                <div class="controls">
+                    <input type="submit" value="${message(code: 'default.button.dishConfim.label', default: 'Dish Confirm')}"
+                           class="btn send_btn"/>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 </body>
 </html>

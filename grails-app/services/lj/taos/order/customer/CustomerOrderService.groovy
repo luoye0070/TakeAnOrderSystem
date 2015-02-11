@@ -3,6 +3,7 @@ package lj.taos.order.customer
 import lj.I18nError
 import lj.Number
 import lj.common.Distance
+import lj.common.ValidationCode
 import lj.data.ClientInfo
 import lj.data.OrderInfo
 import lj.data.TableInfo
@@ -44,6 +45,10 @@ class CustomerOrderService {
             orderInfo=new OrderInfo();
             orderInfo.clientInfo=clientInfo;
             orderInfo.tableInfo=tableInfo;
+            Date now=new Date();
+            String orderNumStr=now.getTime()+ValidationCode.getAuthCodeStr(2,ValidationCode.NUMBER);
+            long orderNum=Long.parseLong(orderNumStr);
+            orderInfo.orderNum=orderNum;
             if(!orderInfo.save(flush: true)){
                 return [recode: ReCode.SAVE_FAILED, orderInfo: orderInfo,errors:I18nError.getMessage(g,orderInfo.errors.allErrors)];
             }
