@@ -33,10 +33,8 @@ class DishesInfo {
     /*******为了方便添加的冗余数据******/
     //菜名
     String foodName;
-    //用餐日期
-    Date date;
-    //到店时间/s送餐时间
-    Date time;
+    //订单时间
+    Date orderTime;
     //菜谱图片
     String foodImg;
     //桌位
@@ -58,8 +56,7 @@ class DishesInfo {
         foodPrice(nullable: false,min: 0d);
         sortId(nullable:false,min: 0l);
         foodName(nullable:true,blank: true);
-        date(nullable: false);
-        time(nullable: false);
+        orderTime(nullable: true);
         foodImg(nullable:true,blank: true, maxSize:128);
         tableName(nullable:true,blank: true,maxSize: 64);
         orderType(nullable:false,inList: OrderType.getCodeList());
