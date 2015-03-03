@@ -12,7 +12,6 @@ import lj.data.TableInfo
 import lj.enumCustom.*
 import lj.mina.server.MinaServer
 import lj.util.WebUtilService
-import org.yaml.snakeyaml.tokens.Token
 
 import java.text.SimpleDateFormat
 
@@ -400,7 +399,7 @@ class CustomerOrderService {
             if(valid>=0){
                 eq("valid",valid);
             }
-            if(date){
+            if(orderTime){
                 eq("orderTime",orderTime);
             }
             if(statusGe>=0){
@@ -800,7 +799,7 @@ class CustomerOrderService {
     }
 
     //订单详情
-    def orderInfo(def params,boolean byWaiter){
+    def orderInfo(def params){
         def session=webUtilService.getSession();
         //SimpleDateFormat sdfDate=new SimpleDateFormat("yyyy-MM-dd");
         //SimpleDateFormat sdfTime=new SimpleDateFormat("HH:mm:ss");

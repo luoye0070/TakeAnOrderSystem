@@ -79,8 +79,6 @@ class DishesInfo {
                 ", foodPrice=" + foodPrice +
                 ", sortId=" + sortId +
                 ", foodName='" + foodName + '\'' +
-                ", date=" + date +
-                ", time=" + time +
                 ", foodImg='" + foodImg + '\'' +
                 ", tableName='" + tableName + '\'' +
                 ", orderType=" + orderType +

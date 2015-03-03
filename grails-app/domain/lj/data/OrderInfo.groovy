@@ -55,7 +55,7 @@ class OrderInfo {
     //桌位
     String tableName;
 
-    static hasMany = [dishes:DishesInfo];
+    //static hasMany = [dishes:DishesInfo];
     static constraints = {
         clientInfo(nullable:false)
         tableInfo(nullable:false)
@@ -81,4 +81,34 @@ class OrderInfo {
         tableName(nullable:true,blank: true,maxSize: 64);
     }
 
+    @Override
+    public java.lang.String toString() {
+        return "OrderInfo{" +
+                "id=" + id +
+                ", clientInfo=" + clientInfo +
+                ", tableInfo=" + tableInfo +
+                ", status=" + status +
+                ", valid=" + valid +
+                ", cancelReason='" + cancelReason + '\'' +
+                ", waiter=" + waiter +
+                ", cashier=" + cashier +
+                ", remark='" + remark + '\'' +
+                ", numInRestaurant=" + numInRestaurant +
+                ", orderNum=" + orderNum +
+                ", partakeCode='" + partakeCode + '\'' +
+                ", totalAccount=" + totalAccount +
+                ", realAccount=" + realAccount +
+                ", personCount=" + personCount +
+                ", createTime=" + createTime +
+                ", customerName='" + customerName + '\'' +
+                ", isInvoiced=" + isInvoiced +
+                ", isJoinActivity=" + isJoinActivity +
+                ", orderType=" + orderType +
+                ", dishes=" + dishes +
+                ", restaurantName='" + restaurantName + '\'' +
+                ", userName='" + userName + '\'' +
+                ", tableName='" + tableName + '\'' +
+                ", version=" + version +
+                '}';
+    }
 }

@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="lj.enumCustom.DishesValid; lj.enumCustom.DishesStatus" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="main_template"/>
@@ -127,6 +127,42 @@
         overflow: hidden;
     }
     </style>
+    <script type="text/javascript">
+        function doDish(obj,foodId,orderId){
+            var doDishUrl="${createLink(controller: "customer",action: "addDishesAjax")}";
+            var selectVar="#counts"+foodId;
+            var countVal=$(obj).parent().parent().find("input[name='counts']").val();
+            selectVar="#remarks"+foodId;
+            var remarkVal= $(obj).parent().parent().find("input[name='remarks']").val();
+            var countName="counts"+foodId;
+            var remarkName= "remarks"+foodId;
+            $.ajax({
+                context:this,
+                url:doDishUrl,
+                async:false,
+                type:'post',
+                //data:{'orderId':orderId,countName:counts,remarkName:foodIds,'remarks':remarks},
+                data:"orderId="+orderId+"&"+countName+"="+countVal+"&"+remarkName+"="+remarkVal+"&foodIds="+foodId,
+                dataType: 'json',
+                success:function(data){
+                    $("div[name='info']").html("");
+                    if(data.recode.code==0){
+                        //$("div[name='info']").html("<label style='height: 50px;line-height:50px;color: green'>点菜"+data.recode.label+"</label>");
+                        location.reload();
+                    }else{
+                        if(data.recode.code==5)
+                            $("div[name='info']").html("<label style='height: 50px;line-height:50px;color: red'>点菜不成功："+data.failedList[0].msg+"</label>");
+                        else
+                            $("div[name='info']").html("<label style='height: 50px;line-height:50px;color: red'>点菜不成功："+data.recode.label+"</label>");
+                    }
+                },
+                error:function(data){
+                    $("div[name='info']").html("<label style='height: 50px;line-height:50px;color: red'>"+"未知错误"+"</label>");
+                }
+            });
+
+        }
+    </script>
 </head>
 <body>
 <div class="mc_main">
@@ -138,6 +174,7 @@
 
     <div class="span10" style="margin-left: 10px;margin-top: 0px;">
         <g:render template="../layouts/msgs_and_errors"></g:render>
+        <div name="info"></div>
     </div>
     <!--订单简要信息-->
     <div class="mcmc_ssl" style="margin-left: 10px;margin-top: 0px;">
@@ -214,14 +251,26 @@
                             </div>
 
                             <div class="ml_row_txt">
+                                <label id="counts${foodInfoInstance?.id}"
+                                       style="float: left;font-size: 14px;">数量:</label>
+                                <input id="counts${foodInfoInstance?.id}" name="counts" type="text" class="msf_input" style="width: 16px;" value="1"/>
+                            </div>
+
+                            <div class="ml_row_txt">
+                                <label id="remarks${foodInfoInstance?.id}"
+                                       style="float: left;font-size: 14px;">备注:</label>
+                                <input id="remarks${foodInfoInstance?.id}" name="remarks" type="text" class="msf_input" style="width: 16px;" value="1"/>
+                            </div>
+
+                            <div class="ml_row_txt">
                                 %{--<g:if test="${foodInfoInstance?.canTakeOut}">--}%
                                 %{--<a style="float: left;" href="#"--}%
                                 %{--restaurantId="${foodInfoInstance?.restaurantId}"--}%
                                 %{--foodId="${foodInfoInstance?.id}">--}%
                                 %{--加入外卖餐车</a>--}%
                                 %{--</g:if>--}%
-                                <a href="${createLink(controller: "customer", action: "addDishes", params: [orderId: orderInfoInstance?.id, foodIds: foodInfoInstance?.id, counts: 1, partakeCode: orderInfoInstance?.partakeCode])}"
-                                   class="">点一个</a>
+                                <button onclick="doDish(this,${foodInfoInstance?.id},${orderInfo?.id})"
+                                   class="">点一个</button>
                                 %{--<a style="float: left;" href="#"--}%
                                 %{--addToOrder="true"--}%
                                 %{--restaurantId="${foodInfoInstance?.restaurantId}"--}%
@@ -250,7 +299,7 @@
 
             <div class="mcmcdt_info">点菜信息</div>
         </div>
-        <g:if test="${dishes}">
+        <g:if test="${dishes?.dishList}">
         %{--<div>--}%
             <table class="table table-striped table-bordered table-condensed">
                 <thead>
@@ -290,7 +339,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <g:each in="${dishes}" status="i" var="dishesInfoInstance">
+                <g:each in="${dishes?.dishList}" status="i" var="dishesInfoInstance">
                     <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
                         <td>${fieldValue(bean: dishesInfoInstance, field: "orderId")}</td>
@@ -309,8 +358,8 @@
 
                         <td>${fieldValue(bean: dishesInfoInstance, field: "remark")}</td>
 
-                        <td><g:customerDishesOperation
-                                dishesId="${dishesInfoInstance?.id}"></g:customerDishesOperation></td>
+                        %{--<td><g:customerDishesOperation--}%
+                                %{--dishesId="${dishesInfoInstance?.id}"></g:customerDishesOperation></td>--}%
                     </tr>
                 </g:each>
                 </tbody>

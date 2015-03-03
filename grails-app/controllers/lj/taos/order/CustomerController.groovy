@@ -1,5 +1,7 @@
 package lj.taos.order
 
+import grails.converters.JSON
+import lj.data.OrderInfo
 import lj.enumCustom.OrderStatus
 import lj.enumCustom.ReCode
 
@@ -30,6 +32,13 @@ class CustomerController {
             //查询菜品分类
             reInfo1=searchService.searchFoodClass();
             reInfo<<reInfo1;
+
+            //查询已有点菜
+            reInfo1= customerOrderService.dishList([orderId:reInfo.orderInfo?.id,max:1000]);
+            reInfo<<[dishes:reInfo1];
+
+            println("reInfo-->"+reInfo);
+            println("orderInfo-->"+reInfo.orderInfo);
             render(view: "orderDish",model: reInfo);
             return;
         }else if(orderStatus==OrderStatus.ORDERED_STATUS.code){//点菜完成状态，加载点菜确认界面
@@ -41,5 +50,12 @@ class CustomerController {
         }
 
 
+    }
+
+    //点菜
+    def addDishesAjax(){
+        def reInfo=customerOrderService.addDishes(params);
+        println("reInfo-->"+reInfo);
+        render(reInfo as JSON);
     }
 }
