@@ -42,11 +42,25 @@ class CustomerController {
             render(view: "orderDish",model: reInfo);
             return;
         }else if(orderStatus==OrderStatus.ORDERED_STATUS.code){//点菜完成状态，加载点菜确认界面
+            //查询已有点菜
+            def reInfo1= customerOrderService.dishList([orderId:reInfo.orderInfo?.id,max:1000]);
+            reInfo<<[dishes:reInfo1];
 
+            println("reInfo-->"+reInfo);
+            println("orderInfo-->"+reInfo.orderInfo);
+            render(view: "orderConfirm",model: reInfo);
+            return;
 //        }else if(orderStatus==OrderStatus.VERIFY_ORDERED_STATUS.code){//点菜确认完成状态，加载加菜界面
 
         }else{//其他状态，显示订单信息界面
+            //查询已有点菜
+            def reInfo1= customerOrderService.dishList([orderId:reInfo.orderInfo?.id,max:1000]);
+            reInfo<<[dishes:reInfo1];
 
+            println("reInfo-->"+reInfo);
+            println("orderInfo-->"+reInfo.orderInfo);
+            render(view: "orderInfo",model: reInfo);
+            return;
         }
 
 
@@ -58,4 +72,51 @@ class CustomerController {
         println("reInfo-->"+reInfo);
         render(reInfo as JSON);
     }
+
+    //完成点菜
+    def completeDish(){
+        def reInfo=customerOrderService.completeDish(params);
+        if(reInfo.recode!=ReCode.OK){
+            flash.errors=reInfo.recode.label;
+            if(reInfo.recode==ReCode.SAVE_FAILED){
+                flash.errors=reInfo.errors;
+            }
+        }else{
+            flash.message=reInfo.recode.label;
+        }
+        redirect(action: "getOrCreateOrder",params: params);
+    }
+    //退回点菜
+    def backToDish(){
+        def reInfo=customerOrderService.backToDish(params);
+        if(reInfo.recode!=ReCode.OK){
+            flash.errors=reInfo.recode.label;
+            if(reInfo.recode==ReCode.SAVE_FAILED){
+                flash.errors=reInfo.errors;
+            }
+        }else{
+            flash.message=reInfo.recode.label;
+        }
+        redirect(action: "getOrCreateOrder",params: params);
+    }
+    //删除点菜
+    def delDishesAjax(){
+        def reInfo=customerOrderService.delDish(params);
+        println("reInfo-->"+reInfo);
+        render(reInfo as JSON);
+    }
+    //确认点菜
+    def orderConfirm(){
+        def reInfo=customerOrderService.orderConfirm(params);
+        if(reInfo.recode!=ReCode.OK){
+            flash.errors=reInfo.recode.label;
+            if(reInfo.recode==ReCode.SAVE_FAILED){
+                flash.errors=reInfo.errors;
+            }
+        }else{
+            flash.message=reInfo.recode.label;
+        }
+        redirect(action: "getOrCreateOrder",params: params);
+    }
+
 }

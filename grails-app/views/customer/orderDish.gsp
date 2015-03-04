@@ -162,6 +162,35 @@
             });
 
         }
+
+        function delDish(dishId,orderId){
+            var delDishUrl="${createLink(controller: "customer",action: "delDishesAjax")}";
+            $.ajax({
+                context:this,
+                url:delDishUrl,
+                async:false,
+                type:'post',
+                //data:{'orderId':orderId,countName:counts,remarkName:foodIds,'remarks':remarks},
+                data:"dishIds="+dishId,
+                dataType: 'json',
+                success:function(data){
+                    $("div[name='info']").html("");
+                    if(data.recode.code==0){
+                        //$("div[name='info']").html("<label style='height: 50px;line-height:50px;color: green'>点菜"+data.recode.label+"</label>");
+                        location.reload();
+                    }else{
+                        if(data.recode.code==5)
+                            $("div[name='info']").html("<label style='height: 50px;line-height:50px;color: red'>不成功："+data.failedList[0].msg+"</label>");
+                        else
+                            $("div[name='info']").html("<label style='height: 50px;line-height:50px;color: red'>不成功："+data.recode.label+"</label>");
+                    }
+                },
+                error:function(data){
+                    $("div[name='info']").html("<label style='height: 50px;line-height:50px;color: red'>"+"未知错误"+"</label>");
+                }
+            });
+
+        }
     </script>
 </head>
 <body>
@@ -360,6 +389,10 @@
 
                         %{--<td><g:customerDishesOperation--}%
                                 %{--dishesId="${dishesInfoInstance?.id}"></g:customerDishesOperation></td>--}%
+                        <td>
+                        <button onclick="delDish(${dishesInfoInstance?.id},${orderInfo?.id})"
+                                class="">删除</button>
+                        </td>
                     </tr>
                 </g:each>
                 </tbody>
@@ -377,12 +410,13 @@
     </div>
     <!--完成点菜-->
     <div class="span11">
-        <form class="form-horizontal" method="POST" id="create_form" action="dishDone">
+        <form class="form-horizontal" method="POST" id="create_form" action="completeDish">
             <div class="control-group">
                 <label class="control-label"></label>
-
+                 <input type="hidden" name="orderId" value="${orderInfo?.id}"/>
+                <input type="hidden" name="code" value="${params.code}"/>
                 <div class="controls">
-                    <input type="submit" value="${message(code: 'default.button.dishConfim.label', default: 'Dish Confirm')}"
+                    <input type="submit" value="${message(code: 'default.button.dishComplete.label', default: 'Dish Complete')}"
                            class="btn send_btn"/>
                 </div>
             </div>

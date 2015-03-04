@@ -316,10 +316,10 @@ class CustomerOrderService {
         }
         if(dishList){
             dishList.each {
-                if(it.valid==DishesValid.USER_CANCEL_VALID.code||orderId!=0)
-                {//有效性为用户取消下能删除或者对应的订单删除了能删除
+//                if(it.valid==DishesValid.USER_CANCEL_VALID.code||orderId!=0)
+//                {//有效性为用户取消下能删除或者对应的订单删除了能删除
                     it.delete(flush: true);
-                }
+//                }
             }
         }
         return [recode: ReCode.OK];//成功
@@ -484,7 +484,7 @@ class CustomerOrderService {
                 //取消订单
                 orderInfo.valid=OrderValid.USER_CANCEL_VALID.code;
                 if(!orderInfo.save(flush: true)){//保存更改失败
-                    return [recode: ReCode.SAVE_FAILED];
+                    return [recode: ReCode.SAVE_FAILED,errors:I18nError.getMessage(g,orderInfo.errors.allErrors)];
                 }
                 //取消订单中点菜
                 cancelDish(params);
@@ -554,7 +554,59 @@ class CustomerOrderService {
 //            return [recode:ReCode.NOT_LOGIN];
 //        }
     }
+    /**************点菜确认*****
+     * params是传入的参数
+     * 参数格式为：
+     * orderId=Number.toLong(params.orderId);//订单Id
+     * dishIds=12或dishIds=[112,231...] //点菜列表参数
+     * 以上参数任选一个传入，传入订单ID则按订单ID操作
+     *
+     * 返回值
+     * [recode: ReCode.ERROR_PARAMS];//参数错误
+     * [recode:ReCode.NOT_LOGIN];用户没有登录
+     * [recode: ReCode.OK];成功
+     * ********/
+    def dishConfirm(def params){
+        def session=webUtilService.getSession();
+        //SimpleDateFormat sdfDate=new SimpleDateFormat("yyyy-MM-dd");
+        //SimpleDateFormat sdfTime=new SimpleDateFormat("HH:mm:ss");
 
+            //获取参数
+            Long orderId=Number.toLong(params.orderId);//订单Id
+            def dishIds=params.dishIds;//点菜列表
+
+            def dishList=null;
+            if(orderId){//订单ID存在则按订单ID取消
+                dishList=DishesInfo.findAllByOrder(OrderInfo.get(orderId));
+            }
+            else if(dishIds){//不然如果按点菜Id列表取消
+                def dishIdList=[];
+                if(dishIds instanceof String){
+                    dishIdList.add(Number.toLong(dishIds));
+                }
+                else if(dishIds instanceof String[]){
+                    for(int i=0;i<dishIds.length;i++){
+                        dishIdList.add(Number.toLong(dishIds[i]));
+                    }
+                }
+                dishList=DishesInfo.findAllByIdInList(dishIdList);
+            }
+            else {
+                return [recode: ReCode.ERROR_PARAMS];//参数错误
+            }
+            if(dishList){
+                dishList.each {
+                    if(it.valid==DishesValid.ORIGINAL_VALID.code)
+                    {//有效性为初始状态下且状态也为初始态时更新有效性和状态分别为1有效和1确认完成
+                        it.valid=DishesValid.EFFECTIVE_VALID.code;
+                    }
+                    if(it.status==DishesStatus.ORIGINAL_STATUS.code){
+                        it.status=DishesStatus.VERIFYING_STATUS.code;
+                    }
+                }
+            }
+            return [recode: ReCode.OK];//成功
+    }
     /************************订单状态改变,这里主要是点菜完成******
      * params是传入的参数
      * 参数格式为：
@@ -572,7 +624,7 @@ class CustomerOrderService {
      * [recode:ReCode.NOT_LOGIN];用户没有登录
      * [recode: ReCode.OK];成功
      * ************************/
-    def orderStatusUpdate(def params, boolean byWaiter ){
+    def orderStatusUpdate(def params){
         def session=webUtilService.getSession();
         //SimpleDateFormat sdfDate=new SimpleDateFormat("yyyy-MM-dd");
         //SimpleDateFormat sdfTime=new SimpleDateFormat("HH:mm:ss");
@@ -586,7 +638,7 @@ class CustomerOrderService {
 //        if(clientId){
             //获取参数
             long orderId=Number.toLong(params.orderId);//订单号
-            int statusCode=params.statusCode?:OrderStatus.ORDERED_STATUS.code;// 状态代码
+            int statusCode=params.statusCode?:OrderStatus.ORIGINAL_STATUS.code;// 状态代码
 
             //如果是点菜完成的话且传入了点菜列表，则先做点菜
             if(statusCode==OrderStatus.ORDERED_STATUS.code&&params.foodIds){
@@ -596,12 +648,19 @@ class CustomerOrderService {
                 }
             }
 
+        if (statusCode == OrderStatus.VERIFY_ORDERED_STATUS.code) {// 确认点菜完成
+            //先修改订单中点菜的状态为状态为“0”有效性为“0”的菜的状态改为“1确定完成”，有效性改为“1有效”。
+            def reObj=dishConfirm(params);
+            if(reObj.recode!=ReCode.OK){
+                return reObj;
+            }
+        }
             OrderInfo orderInfo=OrderInfo.findById(orderId);
             if(orderInfo){
-                if(orderInfo.status<statusCode){
+//                if(orderInfo.status<statusCode){
                     orderInfo.status=statusCode;
                     if(!orderInfo.save(flush: true)){//保存数据库失败
-                        return [recode: ReCode.SAVE_FAILED];
+                        return [recode: ReCode.SAVE_FAILED,errors:I18nError.getMessage(g,orderInfo.errors.allErrors)];
                     }
 //                    if(!byWaiter){
 //                        //调用消息服务创建消息
@@ -617,7 +676,7 @@ class CustomerOrderService {
 //                            println("保存消息失败，但对于订单的产生没有致命影响，故忽略此错误，请系统管理员注意查证："+",reInfo="+reInfo);
 //                        }
 //                    }
-                }
+//                }
                 return [recode: ReCode.OK];
             }
             else{
@@ -755,7 +814,6 @@ class CustomerOrderService {
      * foodIds=12或foodIds=[112,231...]
      * counts=1或counts=[2,3...]
      * remarks=ddd或remarks=[dd,,dd...]
-     *byWaiter是标示是否是服务员帮忙操作
      *
      * 返回值
      * [recode: ReCode.ORDER_CANNOT_DELETE];订单不能删除
@@ -763,7 +821,7 @@ class CustomerOrderService {
      * [recode:ReCode.NOT_LOGIN];用户没有登录
      * [recode: ReCode.OK];成功
      * ****************/
-    def completeDish(def params,boolean byWaiter){
+    def completeDish(def params){
         def session=webUtilService.getSession();
         //SimpleDateFormat sdfDate=new SimpleDateFormat("yyyy-MM-dd");
         //SimpleDateFormat sdfTime=new SimpleDateFormat("HH:mm:ss");
@@ -792,6 +850,106 @@ class CustomerOrderService {
             else{
                 return [recode: ReCode.ORDER_NOT_EXIST];
             }
+//        }
+//        else{
+//            return [recode:ReCode.NOT_LOGIN];
+//        }
+    }
+
+    /********************订单完成点菜******
+     *params是传入的参数
+     * 参数格式为：
+     * orderId=Number.toLong(params.orderId);//订单号
+     * //点菜列表参数,非必须
+     * foodIds=12或foodIds=[112,231...]
+     * counts=1或counts=[2,3...]
+     * remarks=ddd或remarks=[dd,,dd...]
+     *
+     * 返回值
+     * [recode: ReCode.ORDER_CANNOT_DELETE];订单不能删除
+     * [recode: ReCode.ORDER_NOT_EXIST];订单不存在
+     * [recode:ReCode.NOT_LOGIN];用户没有登录
+     * [recode: ReCode.OK];成功
+     * ****************/
+    def backToDish(def params){
+        def session=webUtilService.getSession();
+        //SimpleDateFormat sdfDate=new SimpleDateFormat("yyyy-MM-dd");
+        //SimpleDateFormat sdfTime=new SimpleDateFormat("HH:mm:ss");
+        //取出用户ID
+        //long userId=Number.toLong(session.userId);//用户ID
+//        long clientId=webUtilService.getClientId();
+//        if (byWaiter) {//如果是服务员帮助更新订单状态为点菜完成，则取服务员ID作为用户ID
+//            clientId = Number.toLong(session.staffId);
+//        }
+//        if(clientId){
+        //获取参数
+        long orderId=Number.toLong(params.orderId);//订单号
+        OrderInfo orderInfo=null;
+        ClientInfo clientInfo=clientService.getClient();
+        orderInfo=OrderInfo.findByIdAndClientInfo(orderId,clientInfo);
+        if(orderInfo){
+            //检查订单是否可以做完成点菜操作
+            if(orderInfo.valid>OrderValid.EFFECTIVE_VALID.code||orderInfo.status!=OrderStatus.ORDERED_STATUS.code){//订单不能退回点菜
+                return [recode: ReCode.ORDER_CANNOT_COMPLETE_DISH];
+            }
+            //完成点菜
+            //statusCode=params.statusCode?:OrderStatus.ORDERED_STATUS.code;// 状态代码
+            params.statusCode= OrderStatus.ORIGINAL_STATUS.code;
+            return orderStatusUpdate(params);
+        }
+        else{
+            return [recode: ReCode.ORDER_NOT_EXIST];
+        }
+//        }
+//        else{
+//            return [recode:ReCode.NOT_LOGIN];
+//        }
+    }
+
+    /********************订单完成点菜******
+     *params是传入的参数
+     * 参数格式为：
+     * orderId=Number.toLong(params.orderId);//订单号
+     * //点菜列表参数,非必须
+     * foodIds=12或foodIds=[112,231...]
+     * counts=1或counts=[2,3...]
+     * remarks=ddd或remarks=[dd,,dd...]
+     *
+     * 返回值
+     * [recode: ReCode.ORDER_CANNOT_DELETE];订单不能删除
+     * [recode: ReCode.ORDER_NOT_EXIST];订单不存在
+     * [recode:ReCode.NOT_LOGIN];用户没有登录
+     * [recode: ReCode.OK];成功
+     * ****************/
+    def orderConfirm(def params){
+        def session=webUtilService.getSession();
+        //SimpleDateFormat sdfDate=new SimpleDateFormat("yyyy-MM-dd");
+        //SimpleDateFormat sdfTime=new SimpleDateFormat("HH:mm:ss");
+        //取出用户ID
+        //long userId=Number.toLong(session.userId);//用户ID
+//        long clientId=webUtilService.getClientId();
+//        if (byWaiter) {//如果是服务员帮助更新订单状态为点菜完成，则取服务员ID作为用户ID
+//            clientId = Number.toLong(session.staffId);
+//        }
+//        if(clientId){
+        //获取参数
+        long orderId=Number.toLong(params.orderId);//订单号
+        OrderInfo orderInfo=null;
+        ClientInfo clientInfo=clientService.getClient();
+        orderInfo=OrderInfo.findByIdAndClientInfo(orderId,clientInfo);
+        if(orderInfo){
+            //检查订单是否可以做完成点菜操作
+            if(orderInfo.valid>OrderValid.EFFECTIVE_VALID.code||orderInfo.status!=OrderStatus.ORDERED_STATUS.code){//订单不能退回点菜
+                return [recode: ReCode.ORDER_CANNOT_COMPLETE_DISH];
+            }
+            //完成点菜
+            //statusCode=params.statusCode?:OrderStatus.ORDERED_STATUS.code;// 状态代码
+            params.statusCode= OrderStatus.VERIFY_ORDERED_STATUS.code;
+            return orderStatusUpdate(params);
+        }
+        else{
+            return [recode: ReCode.ORDER_NOT_EXIST];
+        }
 //        }
 //        else{
 //            return [recode:ReCode.NOT_LOGIN];
