@@ -53,8 +53,16 @@ class CustomerController {
 //        }else if(orderStatus==OrderStatus.VERIFY_ORDERED_STATUS.code){//点菜确认完成状态，加载加菜界面
 
         }else{//其他状态，显示订单信息界面
+            //查询菜品
+            params<<[enabled:true];
+            def reInfo1=searchService.searchFood(params);
+            reInfo<<reInfo1;
+            //查询菜品分类
+            reInfo1=searchService.searchFoodClass();
+            reInfo<<reInfo1;
+
             //查询已有点菜
-            def reInfo1= customerOrderService.dishList([orderId:reInfo.orderInfo?.id,max:1000]);
+            reInfo1= customerOrderService.dishList([orderId:reInfo.orderInfo?.id,max:1000]);
             reInfo<<[dishes:reInfo1];
 
             println("reInfo-->"+reInfo);

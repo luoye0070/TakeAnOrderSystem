@@ -390,8 +390,10 @@
                         %{--<td><g:customerDishesOperation--}%
                                 %{--dishesId="${dishesInfoInstance?.id}"></g:customerDishesOperation></td>--}%
                         <td>
+                        <g:if test="${isOwner}">
                         <button onclick="delDish(${dishesInfoInstance?.id},${orderInfo?.id})"
                                 class="">删除</button>
+                        </g:if>
                         </td>
                     </tr>
                 </g:each>
@@ -409,6 +411,7 @@
         </g:else>
     </div>
     <!--完成点菜-->
+<g:if test="${isOwner}">
     <div class="span11">
         <form class="form-horizontal" method="POST" id="create_form" action="completeDish">
             <div class="control-group">
@@ -422,6 +425,7 @@
             </div>
         </form>
     </div>
+    </g:if>
 </div>
 </body>
 </html>
