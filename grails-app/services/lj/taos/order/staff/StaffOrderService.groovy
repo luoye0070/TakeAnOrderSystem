@@ -8,15 +8,12 @@ import lj.data.OrderInfo
 import lj.data.RestaurantInfo
 import lj.data.StaffInfo
 import lj.enumCustom.*
-import lj.order.common.MessageService
-import lj.order.customer.CustomerOrderService
 import lj.taos.order.customer.CustomerOrderService
 
 class StaffOrderService {
     CustomerOrderService customerOrderService;
     def webUtilService;
-    StaffDishService staffDishService;
-    MessageService messageService;
+//    MessageService messageService;
 
     def g = new org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib();
 
