@@ -4,6 +4,7 @@ class TestController {
     def webUtilService;
     def index() {
         render(view:webUtilService.getView("index"),model: []);
+        //test
         return ;
     }
 }
