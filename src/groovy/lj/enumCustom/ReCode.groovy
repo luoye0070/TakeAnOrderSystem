@@ -75,7 +75,10 @@ public class ReCode {
     public final static def SYSTEM_EXCEPTION = [code:-58, label:"系统异常"];
     public final static def NO_FOODCLASSTINFO=[code:-59,label:"没有找到相关的菜品类别"];
     public final static def PASSWORD_DIFFERENCE=[code:-60,label:"两次输入的密码不一致！"];
-    public final static def ORDER_CANNOT_BACKTODISH_DISH=[code:-36,label:"订单当前状态或有效性下不能做退回点菜操作"];
+    public final static def ORDER_CANNOT_BACKTODISH_DISH=[code:-61,label:"订单当前状态或有效性下不能做退回点菜操作"];
+    public final static def CAN_NOT_CHANGE_TABLE=[code:-62,label:"你点的菜已在做或者已上菜，当前不能换桌"];
+    public final static def WRONG_PARTAKECODE=[code:-63,label:"点菜参与码错误,请重新输入"];
+    public final static def NO_PARTAKECODE=[code:-63,label:"没有点菜参与码,请输入点菜参与码"];
 //    public Integer code
 //    public String label
 //

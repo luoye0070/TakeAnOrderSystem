@@ -163,4 +163,21 @@ class WebUtilService {
     Boolean isStaffLoggedIn(){
         return (session.staffId!=null)
     }
+
+    //设置点菜参与码到session
+    def setPartakeCode(String partakeCode){
+        session.partakeCode=partakeCode;
+    }
+    //获取点菜参与码
+    String getPartakeCode(){
+        return session.partakeCode;
+    }
+    //设置桌位Code到session
+    def setTableCode(String code){
+        session.tableCode=code;
+    }
+    //获取桌位code
+    String getTableCode(){
+        return session.tableCode;
+    }
 }

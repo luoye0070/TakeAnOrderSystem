@@ -196,7 +196,7 @@
 <body>
 <div class="mc_main">
 <div class="mcm_top">
-    <div class="mcm_top_name">订单${orderInfo?.orderNum}-点菜</div>
+    <div class="mcm_top_name">订单${orderInfo?.numInRestaurant}-点菜</div>
 
     <div class="mcm_top_banner"></div>
 </div>
@@ -209,9 +209,9 @@
 <div class="mcmc_ssl" style="margin-left: 10px;margin-top: 0px;">
     <form class="well form-inline">
         <g:if test="${orderInfo}">
-            <g:if test="${orderInfo?.orderNum}">
-                <g:message code="orderInfo.orderNum.label" default="Order Num"/> :
-                ${orderInfo?.orderNum}
+            <g:if test="${orderInfo?.numInRestaurant}">
+                <g:message code="orderInfo.numInRestaurant.label" default="Number In Restaurant"/> :
+                ${orderInfo?.numInRestaurant}
             </g:if>
 
             &nbsp;&nbsp;
@@ -226,12 +226,12 @@
                            default="Waiter"/>:
                 ${orderInfo.waiter.name}
             </g:if>
-        %{--&nbsp;&nbsp;--}%
-        %{--<g:if test="${orderInfo?.partakeCode}">--}%
-        %{--<g:message code="orderInfo.partakeCode.label"--}%
-        %{--default="Partake Code"/>：<g:fieldValue--}%
-        %{--bean="${orderInfo}" field="partakeCode"/>--}%
-        %{--</g:if>--}%
+        &nbsp;&nbsp;
+        <g:if test="${orderInfo?.partakeCode}">
+        <g:message code="orderInfo.partakeCode.label"
+        default="Partake Code"/>：<g:fieldValue
+        bean="${orderInfo}" field="partakeCode"/>
+        </g:if>
             &nbsp;&nbsp;
         </g:if>
 

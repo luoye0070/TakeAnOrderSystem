@@ -14,13 +14,16 @@ class CustomerController {
         def msgs=null;
         def reInfo=customerOrderService.getOrCreateOrder(params);
         if (reInfo.recode!=ReCode.OK){
+            boolean isNeedPartakeCode=false;
             if(reInfo.recode==ReCode.SAVE_FAILED){
                  errors=reInfo.errors;
-
             } else {
                errors=reInfo.recode.label;
+               if(reInfo.recode==ReCode.NO_PARTAKECODE||reInfo.recode==ReCode.WRONG_PARTAKECODE){
+                   isNeedPartakeCode=true;
+               }
             }
-            render(view: "originalStep",model: [errors:errors,msgs:msgs]);
+            render(view: "originalStep",model: [errors:errors,msgs:msgs,isNeedPartakeCode:isNeedPartakeCode]);
             return ;
         }
         int orderStatus=reInfo.orderInfo.status;
@@ -126,5 +129,21 @@ class CustomerController {
         }
         redirect(action: "getOrCreateOrder",params: params);
     }
-
+    //订单取消
+    def orderCancel(){
+        def errors;
+        def msgs;
+        def reInfo=customerOrderService.cancelOrder(params);
+        if(reInfo.recode!=ReCode.OK){
+            flash.errors=reInfo.recode.label;
+            if(reInfo.recode==ReCode.SAVE_FAILED){
+                flash.errors=reInfo.errors;
+            }
+            redirect(action: "getOrCreateOrder",params: params);
+            return ;
+        }else{
+            msgs=reInfo.recode.label;
+        }
+        render(view: "originalStep",model:[msgs:msgs]);
+    }
 }

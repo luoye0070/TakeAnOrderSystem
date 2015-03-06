@@ -165,7 +165,7 @@
 <body>
 <div class="mc_main">
     <div class="mcm_top">
-        <div class="mcm_top_name">订单${orderInfo?.orderNum}-点菜确认</div>
+        <div class="mcm_top_name">订单${orderInfo?.numInRestaurant}-点菜确认</div>
 
         <div class="mcm_top_banner"></div>
     </div>
@@ -178,9 +178,9 @@
     <div class="mcmc_ssl" style="margin-left: 10px;margin-top: 0px;">
         <form class="well form-inline">
             <g:if test="${orderInfo}">
-                <g:if test="${orderInfo?.orderNum}">
-                    <g:message code="orderInfo.orderNum.label" default="Order Num"/> :
-                    ${orderInfo?.orderNum}
+                <g:if test="${orderInfo?.numInRestaurant}">
+                    <g:message code="orderInfo.numInRestaurant.label" default="Number In Restaurant"/> :
+                    ${orderInfo?.numInRestaurant}
                 </g:if>
 
                 &nbsp;&nbsp;
@@ -195,12 +195,12 @@
                                default="Waiter"/>:
                     ${orderInfo.waiter.name}
                 </g:if>
-            %{--&nbsp;&nbsp;--}%
-            %{--<g:if test="${orderInfo?.partakeCode}">--}%
-            %{--<g:message code="orderInfo.partakeCode.label"--}%
-            %{--default="Partake Code"/>：<g:fieldValue--}%
-            %{--bean="${orderInfo}" field="partakeCode"/>--}%
-            %{--</g:if>--}%
+            &nbsp;&nbsp;
+            <g:if test="${orderInfo?.partakeCode}">
+            <g:message code="orderInfo.partakeCode.label"
+            default="Partake Code"/>：<g:fieldValue
+            bean="${orderInfo}" field="partakeCode"/>
+            </g:if>
                 &nbsp;&nbsp;
             </g:if>
 
@@ -304,6 +304,19 @@
         </g:else>
     </div>
 <g:if test="${isOwner}">
+    <div class="span11">
+        <form class="form-horizontal" method="POST" id="cancel_form" action="orderCancel">
+            <div class="control-group">
+                <label class="control-label"></label>
+                <input type="hidden" name="orderId" value="${orderInfo?.id}"/>
+                <input type="hidden" name="code" value="${params.code}"/>
+                <div class="controls">
+                    <input type="submit" value="${message(code: 'default.button.orderCancel.label', default: 'Order Cancel ')}"
+                           class="btn send_btn"/>
+                </div>
+            </div>
+        </form>
+    </div>
     <!--完成点菜-->
     <div class="span11">
         <form class="form-horizontal" method="POST" id="back_to_dish_form" action="backToDish">

@@ -36,23 +36,67 @@ class CustomerOrderService {
         if(clientInfo==null){
             return [recode: ReCode.NO_CLIENT];
         }
-        TableInfo tableInfo= TableInfo.findByCode(params.code);
+        if(params.code){
+            webUtilService.setTableCode(params.code);
+        }
+        String code=webUtilService.getTableCode();
+        TableInfo tableInfo= TableInfo.findByCode(code);
         if(tableInfo==null){
             return [recode: ReCode.TABLE_NOT_EXIST];
         }
         OrderInfo orderInfo=OrderInfo.findByTableInfoAndValidAndStatusLessThan(tableInfo,OrderValid.EFFECTIVE_VALID.code,OrderStatus.CHECKOUTED_STATUS.code);
         if (orderInfo==null){
+            //检测是否已经有其他桌的有效订单
+            OrderInfo orderInfo1=OrderInfo.findByValidAndStatusLessThanAndClientInfoAndTableInfoNotEqual(OrderValid.EFFECTIVE_VALID.code,OrderStatus.CHECKOUTED_STATUS.code,clientInfo,tableInfo);
+            if(orderInfo1){
+                if(orderInfo1.status<=OrderStatus.ORDERED_STATUS.code){
+                    //可以取消订单，自动取消该订单
+                    def reInfo=cancelOrder([orderId: orderInfo1.id]);
+                    if(reInfo.recode!=ReCode.OK){
+                        return reInfo;
+                    }
+                }
+                else{//返回错误
+                    return [recode: ReCode.CAN_NOT_CHANGE_TABLE];
+                }
+            }
+
             //检测桌位是否已经被预定
 
             orderInfo=new OrderInfo();
             orderInfo.clientInfo=clientInfo;
             orderInfo.tableInfo=tableInfo;
+            orderInfo.partakeCode=ValidationCode.getAuthCodeStr(4,ValidationCode.NUMBER);
             Date now=new Date();
             String orderNumStr=now.getTime()+ValidationCode.getAuthCodeStr(2,ValidationCode.NUMBER);
             long orderNum=Long.parseLong(orderNumStr);
             orderInfo.orderNum=orderNum;
+            //获取订单店内编号最大值
+            String sqlStr="select max(numInRestaurant) from OrderInfo";
+            def result=OrderInfo.executeQuery(sqlStr);
+            long numInRestaurant=1;
+            if(result!=null&&result[0]!=null){
+                numInRestaurant=result[0]+1;
+            }
+            orderInfo.numInRestaurant=numInRestaurant;
             if(!orderInfo.save(flush: true)){
                 return [recode: ReCode.SAVE_FAILED, orderInfo: orderInfo,errors:I18nError.getMessage(g,orderInfo.errors.allErrors)];
+            }
+        }else{//获取订单，需要验证订单参与码
+            if(orderInfo.clientInfo!=clientInfo){
+                String partakeCode=params.partakeCode;
+                if(partakeCode){
+                    if(partakeCode==orderInfo.partakeCode){
+                        webUtilService.setPartakeCode(partakeCode);
+                    }
+                }
+                partakeCode=webUtilService.getPartakeCode();
+                if(partakeCode==null||partakeCode==""){//返回点菜参与码错误
+                    return [recode: ReCode.NO_PARTAKECODE];
+                }
+                if(partakeCode!=orderInfo.partakeCode){
+                    return [recode: ReCode.WRONG_PARTAKECODE];
+                }
             }
         }
         if(orderInfo.clientInfo==null){
