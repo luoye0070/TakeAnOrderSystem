@@ -54,7 +54,7 @@
 
     <div class="span11">
         <form class="form-horizontal" method="POST" id="create_form" action="getOrCreateOrder">
-
+            <g:if test="${!isNeedPartakeCode}">
             <div class="control-group">
                 <label class="control-label" style="font-size: 16px;font-weight: bolder;">
 
@@ -75,6 +75,19 @@
                            value=""/>
                 </div>
             </div>
+            </g:if>
+            <g:if test="${isNeedPartakeCode}">
+                <div class="control-group">
+                    <label class="control-label" for="partakeCode"><g:message code="orderInfo.partakeCode.label"
+                                                                       default="Code"/><span
+                            class="required-indicator">*</span></label>
+
+                    <div class="controls">
+                        <input type="text" style="width: 280px;" name="partakeCode" id="partakeCode"
+                               value=""/>
+                    </div>
+                </div>
+            </g:if>
 
             <div class="control-group">
                 <label class="control-label"></label>
