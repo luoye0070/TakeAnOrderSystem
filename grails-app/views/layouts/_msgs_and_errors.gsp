@@ -18,3 +18,8 @@
         ${flash.errors}
     </div>
 </g:if>
+<g:if test="${flash.warning != null}">
+    <div class="alert">
+        ${flash.warning}
+    </div>
+</g:if>
