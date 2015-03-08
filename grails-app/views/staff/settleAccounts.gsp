@@ -132,26 +132,14 @@
     </div>
 </g:if>
 
-<g:if test="${orderInfo?.restaurantId}">
+<g:if test="${orderInfo?.tableInfo}">
     <div class="mcmcd_item">
         <div class="mcmcdi_label">
-            <g:message code="orderInfo.restaurantId.label" default="Restaurant Id"/>
+            <g:message code="orderInfo.tableInfo.label" default="Table Id"/>
         </div>
 
         <div class="mcmcdi_info" style="color: #FE4B1E;">
-            <g:fieldValue bean="${orderInfo}" field="restaurantId"/>
-        </div>
-    </div>
-</g:if>
-
-<g:if test="${orderInfo?.tableId}">
-    <div class="mcmcd_item">
-        <div class="mcmcdi_label">
-            <g:message code="orderInfo.tableId.label" default="Table Id"/>
-        </div>
-
-        <div class="mcmcdi_info" style="color: #FE4B1E;">
-            <g:fieldValue bean="${orderInfo}" field="tableId"/>
+            <g:fieldValue bean="${orderInfo}" field="tableInfo"/>
         </div>
     </div>
 </g:if>
@@ -192,53 +180,41 @@
     </div>
 </g:if>
 
-<g:if test="${orderInfo?.clientId}">
+<g:if test="${orderInfo?.clientInfo}">
     <div class="mcmcd_item">
         <div class="mcmcdi_label">
-            <g:message code="orderInfo.clientId.label" default="Client Id"/>
+            <g:message code="orderInfo.clientInfo.label" default="Client Id"/>
         </div>
 
         <div class="mcmcdi_info">
-            <g:fieldValue bean="${orderInfo}" field="clientId"/>
+            <g:fieldValue bean="${orderInfo}" field="clientInfo"/>
         </div>
     </div>
 </g:if>
 
-<g:if test="${orderInfo?.date}">
+<g:if test="${orderInfo?.createTime}">
     <div class="mcmcd_item">
         <div class="mcmcdi_label">
-            <g:message code="orderInfo.date.label" default="Date"/>
+            <g:message code="orderInfo.createTime.label" default="createTime"/>
         </div>
 
         <div class="mcmcdi_info">
-            ${FormatUtil.dateFormat(orderInfo?.date)}
+            ${FormatUtil.dateTimeFormat(orderInfo?.createTime)}
         </div>
     </div>
 </g:if>
 
-<g:if test="${orderInfo?.time}">
-    <div class="mcmcd_item">
-        <div class="mcmcdi_label">
-            <g:message code="orderInfo.time.label" default="Time"/>
-        </div>
+%{--<g:if test="${orderInfo?.reserveType}">--}%
+    %{--<div class="mcmcd_item">--}%
+        %{--<div class="mcmcdi_label">--}%
+            %{--<g:message code="orderInfo.reserveType.label" default="Reserve Type"/>--}%
+        %{--</div>--}%
 
-        <div class="mcmcdi_info">
-            ${FormatUtil.timeFormat(orderInfo?.time)}
-        </div>
-    </div>
-</g:if>
-
-<g:if test="${orderInfo?.reserveType}">
-    <div class="mcmcd_item">
-        <div class="mcmcdi_label">
-            <g:message code="orderInfo.reserveType.label" default="Reserve Type"/>
-        </div>
-
-        <div class="mcmcdi_info">
-            ${ReserveType.getLabel(orderInfo?.reserveType)}
-        </div>
-    </div>
-</g:if>
+        %{--<div class="mcmcdi_info">--}%
+            %{--${ReserveType.getLabel(orderInfo?.reserveType)}--}%
+        %{--</div>--}%
+    %{--</div>--}%
+%{--</g:if>--}%
 
 <g:if test="${orderInfo?.status}">
     <div class="mcmcd_item">
@@ -276,26 +252,14 @@
     </div>
 </g:if>
 
-<g:if test="${orderInfo?.addressId}">
+<g:if test="${orderInfo?.waiter}">
     <div class="mcmcd_item">
         <div class="mcmcdi_label">
-            <g:message code="orderInfo.addressId.label" default="Address Id"/>
+            <g:message code="orderInfo.waiter.label" default="Waiter"/>
         </div>
 
         <div class="mcmcdi_info">
-            <g:fieldValue bean="${orderInfo}" field="addressId"/>
-        </div>
-    </div>
-</g:if>
-
-<g:if test="${orderInfo?.waiterId}">
-    <div class="mcmcd_item">
-        <div class="mcmcdi_label">
-            <g:message code="orderInfo.waiterId.label" default="Waiter Id"/>
-        </div>
-
-        <div class="mcmcdi_info">
-            <g:fieldValue bean="${orderInfo}" field="waiterId"/>
+            <g:fieldValue bean="${orderInfo}" field="waiter"/>
         </div>
     </div>
 </g:if>
@@ -312,14 +276,14 @@
 %{--</div>--}%
 %{--</g:if>--}%
 
-<g:if test="${orderInfo?.cashierId}">
+<g:if test="${orderInfo?.cashier}">
     <div class="mcmcd_item">
         <div class="mcmcdi_label">
-            <g:message code="orderInfo.cashierId.label" default="Cashier Id"/>
+            <g:message code="orderInfo.cashier.label" default="Cashier"/>
         </div>
 
         <div class="mcmcdi_info">
-            <g:fieldValue bean="${orderInfo}" field="cashierId"/>
+            <g:fieldValue bean="${orderInfo}" field="cashier"/>
         </div>
     </div>
 </g:if>
@@ -368,18 +332,6 @@
 
         <div class="mcmcdi_info">
             <g:fieldValue bean="${orderInfo}" field="totalAccount"/>
-        </div>
-    </div>
-</g:if>
-
-<g:if test="${orderInfo?.postage}">
-    <div class="mcmcd_item">
-        <div class="mcmcdi_label">
-            <g:message code="orderInfo.postage.label" default="Postage"/>
-        </div>
-
-        <div class="mcmcdi_info">
-            <g:fieldValue bean="${orderInfo}" field="postage"/>
         </div>
     </div>
 </g:if>

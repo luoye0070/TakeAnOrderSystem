@@ -111,24 +111,18 @@
                     </g:if>
 
                     &nbsp;&nbsp;
-                    <g:if test="${orderInfoInstance?.restaurantId}">
-                        <g:message code="orderInfo.restaurantId.label"
-                                   default="Restaurant Id"/>:<g:fieldValue
-                            bean="${orderInfoInstance}" field="restaurantId"/>
-                    </g:if>
-                    &nbsp;&nbsp;
-                    <g:if test="${orderInfoInstance?.tableId}">
-                        <g:message code="orderInfo.tableId.label"
+                    <g:if test="${orderInfoInstance?.tableInfo}">
+                        <g:message code="orderInfo.tableInfo.label"
                                    default="Table Id"/>:<g:fieldValue
                             bean="${orderInfoInstance}"
-                            field="tableId"/>
+                            field="tableInfo"/>
                     </g:if>
                     &nbsp;&nbsp;
-                    <g:if test="${orderInfoInstance?.waiterId}">
-                        <g:message code="orderInfo.waiterId.label"
+                    <g:if test="${orderInfoInstance?.waiter}">
+                        <g:message code="orderInfo.waiter.label"
                                    default="Waiter Id"/>:<g:fieldValue
                             bean="${orderInfoInstance}"
-                            field="waiterId"/>
+                            field="waiter"/>
                     </g:if>
                     &nbsp;&nbsp;
                     <g:if test="${orderInfoInstance?.partakeCode}">
@@ -197,7 +191,7 @@
                         </li>
                     </g:each>
                 </ul>
-                <white:paginate total="${totalCount ?: 0}" prev="&larr;" next="&rarr;" params="${params}"/>
+                <taos:paginate total="${totalCount ?: 0}" prev="&larr;" next="&rarr;" params="${params}"/>
             </g:if>
             <g:else>
                 <div style="margin: 0px auto;">

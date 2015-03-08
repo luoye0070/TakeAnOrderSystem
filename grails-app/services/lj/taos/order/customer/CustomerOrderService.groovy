@@ -413,15 +413,15 @@ class CustomerOrderService {
         try{orderTime=sdfDate.parse(orderTimeStr);}catch (Exception ex){}
         //println("date-->"+date);
         //如果是用户查询的话必须传入订单ID，且订单是该用户所有 ,这里不能加用户限定，因为有可能是用户创建的订单但是服务员帮忙点菜
-        OrderInfo orderInfo=OrderInfo.get(orderId);
-        if(orderInfo){
-//            if(orderInfo.clientId!=clientId){//不属于该用户的订单
-//                return [recode: ReCode.ERROR_PARAMS] ;
-//            }
-        }
-        else{ //订单不存在
-            return [recode: ReCode.ERROR_PARAMS] ;
-        }
+//        OrderInfo orderInfo=OrderInfo.get(orderId);
+//        if(orderInfo){
+////            if(orderInfo.clientId!=clientId){//不属于该用户的订单
+////                return [recode: ReCode.ERROR_PARAMS] ;
+////            }
+//        }
+//        else{ //订单不存在
+//            return [recode: ReCode.ERROR_PARAMS] ;
+//        }
 
         if (!params.max) {
             params.max = 10

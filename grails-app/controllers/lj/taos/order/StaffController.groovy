@@ -60,19 +60,19 @@ class StaffController {
 //    }
 
     //到店吃饭创建订单输入界面
-    def orderInput(){
+    def orderInput() {
         //查询出相应的桌位
-        StaffInfo staffInfo=webUtilService.getStaff();
-        params.enabled=true;
-        params.canReserve=true;
-        def tableId=params.tableId;
+        StaffInfo staffInfo = webUtilService.getStaff();
+        params.enabled = true;
+        params.canReserve = true;
+        def tableId = params.tableId;
         params.remove("tableId");
-        println("params-->"+params);
-        def reInfo=searchService.searchTable(params);
-        println("reInfo-->"+reInfo);
-        params.tableId=tableId;
-        reInfo<<[params:params];
-        render(view:"orderInput",model: reInfo);
+        println("params-->" + params);
+        def reInfo = searchService.searchTable(params);
+        println("reInfo-->" + reInfo);
+        params.tableId = tableId;
+        reInfo << [params: params];
+        render(view: "orderInput", model: reInfo);
     }
 
 //    //预定桌位
@@ -173,326 +173,312 @@ class StaffController {
 //        }
 //    }
 
-
-
     //创建订单
-    def createOrder(){
-        def reInfo=staffOrderService.createOrder(params);
-        if(reInfo.recode==ReCode.OK){
+    def createOrder() {
+        def reInfo = staffOrderService.createOrder(params);
+        if (reInfo.recode == ReCode.OK) {
             //预定成功，跳转到订单详情页面
-            redirect(action: "orderShow",params: [orderId:reInfo.orderInfo.id]);
-        }
-        else{//返回桌位展示页
-            if(reInfo.recode==ReCode.SAVE_FAILED){
-                flash.errors=reInfo.errors;
-            }
-            else{
-                flash.errors=reInfo.recode.label;
+            redirect(action: "orderShow", params: [orderId: reInfo.orderInfo.id]);
+        } else {//返回桌位展示页
+            if (reInfo.recode == ReCode.SAVE_FAILED) {
+                flash.errors = reInfo.errors;
+            } else {
+                flash.errors = reInfo.recode.label;
             }
 
-            redirect(controller: "staff",action: "orderInput",params: params);
+            redirect(controller: "staff", action: "orderInput", params: params);
         }
     }
     //订单取消
-    def cancelOrder(){
-        def reInfo=staffOrderService.orderCancel(params);
-        println("reInfo-->"+reInfo);
+    def cancelOrder() {
+        def reInfo = staffOrderService.orderCancel(params);
+        println("reInfo-->" + reInfo);
         //render(reInfo);
-        if(reInfo.recode==ReCode.OK){
-            flash.message=reInfo.recode.label;
+        if (reInfo.recode == ReCode.OK) {
+            flash.message = reInfo.recode.label;
+        } else {
+            flash.errors = reInfo.recode.label;
         }
-        else{
-            flash.errors=reInfo.recode.label;
-        }
-        if(params.backUrl){
+        if (params.backUrl) {
             redirect(url: params.backUrl);
-            return ;
+            return;
         }
         redirect(action: "orderList");
     }
     //订单列表
-    def orderList(){
-        def reInfo=staffOrderService.orderList(params);
-        println("reInfo-->"+reInfo);
-        render(view: "orderList",model: reInfo);
+    def orderList() {
+        def reInfo = staffOrderService.orderList(params);
+        println("reInfo-->" + reInfo);
+        render(view: "orderList", model: reInfo);
     }
     //订单删除
-    def delOrder(){
-        def reInfo=staffOrderService.delOrder(params);
-        println("reInfo-->"+reInfo);
-        //render(reInfo);
-        if(reInfo.recode==ReCode.OK){
-            flash.message=reInfo.recode.label;
+    def delOrder() {
+        try {
+            def reInfo = staffOrderService.delOrder(params);
+            println("reInfo-->" + reInfo);
+            //render(reInfo);
+            if (reInfo.recode == ReCode.OK) {
+                flash.message = reInfo.recode.label;
+            } else {
+                flash.errors = reInfo.recode.label;
+            }
         }
-        else{
-            flash.errors=reInfo.recode.label;
+        catch (Exception ex) {
+            flash.errors = ex.message;
         }
-        if(params.backUrl){
+        if (params.backUrl) {
             redirect(url: params.backUrl);
-            return ;
+            return;
         }
         redirect(action: "orderList");
     }
     //订单详细信息
-    def orderShow(){
+    def orderShow() {
 
-        OrderInfo orderInfoInstance=null;
-        def reInfo=staffOrderService.orderInfo(params);
-        if(reInfo.recode==ReCode.OK){
-            orderInfoInstance=reInfo.orderInfoInstance;
+        OrderInfo orderInfoInstance = null;
+        def reInfo = staffOrderService.orderInfo(params);
+        if (reInfo.recode == ReCode.OK) {
+            orderInfoInstance = reInfo.orderInfoInstance;
             //查询点菜
-            def reInfo1=staffOrderService.dishList(params);
+            def reInfo1 = staffOrderService.dishList(params);
 //            //查询评价
 //            def reInfo2=customerAppraiseService.appraiseInfo(params,true);
 
-            reInfo1<<[orderInfoInstance:orderInfoInstance]<<[params:params];
-            reInfo=reInfo1;
+            reInfo1 << [orderInfoInstance: orderInfoInstance] << [params: params];
+            reInfo = reInfo1;
         }
         //reInfo<<[orderInfoInstance:orderInfoInstance]<<[params:params];
-        println("reInfo--->"+reInfo);
-        render(view: "orderShow",model: reInfo);
+        println("reInfo--->" + reInfo);
+        render(view: "orderShow", model: reInfo);
     }
     //进入点菜界面
-    def doDish(){
+    def doDish() {
         //查询订单信息
-        OrderInfo orderInfoInstance=null;
-        def reInfo=staffOrderService.orderInfo(params);
-        if(reInfo.recode==ReCode.OK){
-            orderInfoInstance=reInfo.orderInfoInstance;
+        OrderInfo orderInfoInstance = null;
+        def reInfo = staffOrderService.orderInfo(params);
+        if (reInfo.recode == ReCode.OK) {
+            orderInfoInstance = reInfo.orderInfoInstance;
             //查询菜谱
-            def paramsT=[enabled:true]
-            reInfo=searchService.searchFood(paramsT);
+            def paramsT = [enabled: true]
+            reInfo = searchService.searchFood(paramsT);
         }
-        reInfo<<[orderInfoInstance:orderInfoInstance]<<[params:params];
-        render(view: "doDish",model: reInfo);
+        reInfo << [orderInfoInstance: orderInfoInstance] << [params: params];
+        render(view: "doDish", model: reInfo);
     }
     //完成点菜
-    def completeDish(){
-        def reInfo=staffOrderService.completeDish(params);
-        println("reInfo-->"+reInfo);
+    def completeDish() {
+        def reInfo = staffOrderService.completeDish(params);
+        println("reInfo-->" + reInfo);
         //render(reInfo);
-        if(reInfo.recode==ReCode.OK){
-            flash.message=reInfo.recode.label;
+        if (reInfo.recode == ReCode.OK) {
+            flash.message = reInfo.recode.label;
+        } else {
+            flash.errors = reInfo.recode.label;
         }
-        else{
-            flash.errors=reInfo.recode.label;
-        }
-        if(params.backUrl){
+        if (params.backUrl) {
             redirect(url: params.backUrl);
-            return ;
+            return;
         }
-        redirect(action: "orderShow",params: [orderId:params.orderId]);
+        redirect(action: "orderShow", params: [orderId: params.orderId]);
     }
 
     //点菜
-    def addDishes(){
-        def reInfo=staffOrderService.addDishes(params);
-        println("reInfo-->"+reInfo);
-        if(reInfo.recode==ReCode.OK){
-            flash.message=reInfo.recode.label;
+    def addDishes() {
+        def reInfo = staffOrderService.addDishes(params);
+        println("reInfo-->" + reInfo);
+        if (reInfo.recode == ReCode.OK) {
+            flash.message = reInfo.recode.label;
+        } else {
+            flash.errors = reInfo.recode.label;
         }
-        else{
-            flash.errors=reInfo.recode.label;
-        }
-        redirect(action: "doDish",params: [orderId:params.orderId]);
+        redirect(action: "doDish", params: [orderId: params.orderId]);
     }
     //点菜取消
-    def cancelDish(){
-        def orderId=params.orderId;
+    def cancelDish() {
+        def orderId = params.orderId;
         params.remove("orderId");
-        def reInfo=staffOrderService.cancelDish(params);
-        println("reInfo-->"+reInfo);
-        if(reInfo.recode==ReCode.OK){
-            flash.message=reInfo.recode.label;
+        def reInfo = staffOrderService.cancelDish(params);
+        println("reInfo-->" + reInfo);
+        if (reInfo.recode == ReCode.OK) {
+            flash.message = reInfo.recode.label;
+        } else {
+            flash.errors = reInfo.recode.label;
         }
-        else{
-            flash.errors=reInfo.recode.label;
-        }
-        if(params.backUrl){
+        if (params.backUrl) {
             redirect(url: params.backUrl);
-            return ;
+            return;
         }
-        redirect(action: "orderShow",params: [orderId:orderId]);
+        redirect(action: "orderShow", params: [orderId: orderId]);
     }
     //点菜列表
-    def dishList(){ //厨师显示所有状态是1有效性是1的点菜
-        params.statusGe=1;
-        params.statusLe=2;
-        params.valid=1;
-        params.date=new SimpleDateFormat("yyyy-MM-dd").format(new Date());//加上当天日期条件
-        println("params.date-->"+params.date);
-        def reInfo=staffOrderService.dishList(params);
-        println("reInfo-->"+reInfo);
-        render(view: "dishList",model: reInfo);
+    def dishList() { //厨师显示所有状态是1有效性是1的点菜
+        params.statusGe = 1;
+        params.statusLe = 2;
+        params.valid = 1;
+//        params.date=new SimpleDateFormat("yyyy-MM-dd").format(new Date());//加上当天日期条件
+//        println("params.date-->"+params.date);
+        def reInfo = staffOrderService.dishList(params);
+        println("reInfo-->" + reInfo);
+        render(view: "dishList", model: reInfo);
     }
     //点菜删除
-    def delDish(){
-        def orderId=params.orderId;
+    def delDish() {
+        def orderId = params.orderId;
         params.remove("orderId");
-        def reInfo=staffOrderService.delDish(params);
-        println("reInfo-->"+reInfo);
-        if(reInfo.recode==ReCode.OK){
-            flash.message=reInfo.recode.label;
+        def reInfo = staffOrderService.delDish(params);
+        println("reInfo-->" + reInfo);
+        if (reInfo.recode == ReCode.OK) {
+            flash.message = reInfo.recode.label;
+        } else {
+            flash.errors = reInfo.recode.label;
         }
-        else{
-            flash.errors=reInfo.recode.label;
-        }
-        if(params.backUrl){
+        if (params.backUrl) {
             redirect(url: params.backUrl);
-            return ;
+            return;
         }
-        redirect(action: "orderShow",params: [orderId:orderId]);
+        redirect(action: "orderShow", params: [orderId: orderId]);
     }
 
-
-
     //结账
-    def settleAccounts(){
-        flash.message=null;
-        flash.errors=null;
-        def reInfo=null;
-        if(request.method=="GET"){
-            reInfo=staffOrderService.castAccounts(params);
-            if(reInfo.warning){
-                flash.warning=reInfo.warning;
+    def settleAccounts() {
+        flash.message = null;
+        flash.errors = null;
+        def reInfo = null;
+        if (request.method == "GET") {
+            reInfo = staffOrderService.castAccounts(params);
+            if (reInfo.warning) {
+                flash.warning = reInfo.warning;
             }
-            println("reInfo-->"+reInfo);
-            render(view: "settleAccounts",model: reInfo);
+            println("reInfo-->" + reInfo);
+            render(view: "settleAccounts", model: reInfo);
         }
-        if(request.method=="POST"){//提交算账
-            reInfo=staffOrderService.submitCastAccounts(params);
-            println("reInfo-->"+reInfo);
-            if(reInfo.recode==ReCode.OK){ //结账成功
-                flash.message=reInfo.recode.label;
-                if(params.backUrl){
+        if (request.method == "POST") {//提交算账
+            reInfo = staffOrderService.submitCastAccounts(params);
+            println("reInfo-->" + reInfo);
+            if (reInfo.recode == ReCode.OK) { //结账成功
+                flash.message = reInfo.recode.label;
+                if (params.backUrl) {
                     redirect(url: params.backUrl);
-                    return ;
+                    return;
                 }
-                redirect(action: "orderShow",params: [orderId:params.orderId]);
-                return ;
+                redirect(action: "orderShow", params: [orderId: params.orderId]);
+                return;
+            } else {
+                flash.errors = reInfo.recode.label;
             }
-            else{
-                flash.errors=reInfo.recode.label;
-            }
-            render(view: "settleAccounts",model: reInfo);
-            return ;
+            render(view: "settleAccounts", model: reInfo);
+            return;
         }
 
 
     }
     //确认点菜完成
-    def completeAffirmDish(){
-        params.statusCode=OrderStatus.VERIFY_ORDERED_STATUS.code;//更新订单的状态为确认点菜完成
-        def orderId=params.orderId;
-        def reInfo=staffOrderService.orderStatusUpdate(params);
-        println("reInfo-->"+reInfo);
-        if(reInfo.recode==ReCode.OK){
-            flash.message=reInfo.recode.label;
+    def completeAffirmDish() {
+        params.statusCode = OrderStatus.VERIFY_ORDERED_STATUS.code;//更新订单的状态为确认点菜完成
+        def orderId = params.orderId;
+        def reInfo = staffOrderService.orderStatusUpdate(params);
+        println("reInfo-->" + reInfo);
+        if (reInfo.recode == ReCode.OK) {
+            flash.message = reInfo.recode.label;
+        } else {
+            flash.errors = reInfo.recode.label;
         }
-        else{
-            flash.errors=reInfo.recode.label;
-        }
-        if(params.backUrl){
+        if (params.backUrl) {
             redirect(url: params.backUrl);
-            return ;
+            return;
         }
-        if(params.backUrl){
+        if (params.backUrl) {
             redirect(url: params.backUrl);
-            return ;
+            return;
         }
-        redirect(action: "orderShow",params: [orderId:orderId]);
+        redirect(action: "orderShow", params: [orderId: orderId]);
     }
     //确认订单有效性
-    def affirmValid(){
-        def reInfo=staffOrderService.orderValidAffirm(params);
-        println("reInfo-->"+reInfo);
+    def affirmValid() {
+        def reInfo = staffOrderService.orderValidAffirm(params);
+        println("reInfo-->" + reInfo);
         //render(reInfo);
-        if(reInfo.recode==ReCode.OK){
-            flash.message=reInfo.recode.label;
+        if (reInfo.recode == ReCode.OK) {
+            flash.message = reInfo.recode.label;
+        } else {
+            flash.errors = reInfo.recode.label;
         }
-        else{
-            flash.errors=reInfo.recode.label;
-        }
-        if(params.backUrl){
+        if (params.backUrl) {
             redirect(url: params.backUrl);
-            return ;
+            return;
         }
         redirect(action: "orderList");
     }
     //确认点菜
-    def affirmDish(){
-        def orderId=params.orderId;
+    def affirmDish() {
+        def orderId = params.orderId;
         params.remove("orderId");
-        def reInfo=staffOrderService.dishConfirm(params);
-        println("reInfo-->"+reInfo);
-        if(reInfo.recode==ReCode.OK){
-            flash.message=reInfo.recode.label;
+        def reInfo = staffOrderService.dishConfirm(params);
+        println("reInfo-->" + reInfo);
+        if (reInfo.recode == ReCode.OK) {
+            flash.message = reInfo.recode.label;
+        } else {
+            flash.errors = reInfo.recode.label;
         }
-        else{
-            flash.errors=reInfo.recode.label;
-        }
-        if(params.backUrl){
+        if (params.backUrl) {
             redirect(url: params.backUrl);
-            return ;
+            return;
         }
-        redirect(action: "orderShow",params: [orderId:orderId]);
+        redirect(action: "orderShow", params: [orderId: orderId]);
     }
     //开始做菜
-    def beginCook(){
-        params.statusCode=DishesStatus.COOKING_ORDERED_STATUS.code;//更新点菜的状态为做菜中
-        def orderId=params.orderId;
+    def beginCook() {
+        params.statusCode = DishesStatus.COOKING_ORDERED_STATUS.code;//更新点菜的状态为做菜中
+        def orderId = params.orderId;
         params.remove("orderId");
-        def reInfo=staffOrderService.dishStatusUpdate(params);
-        println("reInfo-->"+reInfo);
-        if(reInfo.recode==ReCode.OK){
-            flash.message=reInfo.recode.label;
+        def reInfo = staffOrderService.dishStatusUpdate(params);
+        println("reInfo-->" + reInfo);
+        if (reInfo.recode == ReCode.OK) {
+            flash.message = reInfo.recode.label;
+        } else {
+            flash.errors = reInfo.recode.label;
         }
-        else{
-            flash.errors=reInfo.recode.label;
-        }
-        if(params.backUrl){
+        if (params.backUrl) {
             redirect(url: params.backUrl);
-            return ;
+            return;
         }
-        redirect(action: "orderShow",params: [orderId:orderId]);
+        redirect(action: "orderShow", params: [orderId: orderId]);
     }
     //完成做菜
-    def completeCook(){
-        params.statusCode=DishesStatus.COOKED_STATUS.code;//更新点菜的状态为做菜完成
-        def orderId=params.orderId;
+    def completeCook() {
+        params.statusCode = DishesStatus.COOKED_STATUS.code;//更新点菜的状态为做菜完成
+        def orderId = params.orderId;
         params.remove("orderId");
-        def reInfo=staffOrderService.dishStatusUpdate(params);
-        println("reInfo-->"+reInfo);
-        if(reInfo.recode==ReCode.OK){
-            flash.message=reInfo.recode.label;
+        def reInfo = staffOrderService.dishStatusUpdate(params);
+        println("reInfo-->" + reInfo);
+        if (reInfo.recode == ReCode.OK) {
+            flash.message = reInfo.recode.label;
+        } else {
+            flash.errors = reInfo.recode.label;
         }
-        else{
-            flash.errors=reInfo.recode.label;
-        }
-        if(params.backUrl){
+        if (params.backUrl) {
             redirect(url: params.backUrl);
-            return ;
+            return;
         }
-        redirect(action: "orderShow",params: [orderId:orderId]);
+        redirect(action: "orderShow", params: [orderId: orderId]);
     }
     //完成上菜,对于每个点菜的完成上菜
-    def completeServe(){
-        params.statusCode=DishesStatus.SERVED_STATUS.code;//更新点菜的状态为上菜完成
-        def orderId=params.orderId;
+    def completeServe() {
+        params.statusCode = DishesStatus.SERVED_STATUS.code;//更新点菜的状态为上菜完成
+        def orderId = params.orderId;
         params.remove("orderId");
-        def reInfo=staffOrderService.dishStatusUpdate(params);
-        println("reInfo-->"+reInfo);
-        if(reInfo.recode==ReCode.OK){
-            flash.message=reInfo.recode.label;
+        def reInfo = staffOrderService.dishStatusUpdate(params);
+        println("reInfo-->" + reInfo);
+        if (reInfo.recode == ReCode.OK) {
+            flash.message = reInfo.recode.label;
+        } else {
+            flash.errors = reInfo.recode.label;
         }
-        else{
-            flash.errors=reInfo.recode.label;
-        }
-        if(params.backUrl){
+        if (params.backUrl) {
             redirect(url: params.backUrl);
-            return ;
+            return;
         }
-        redirect(action: "orderShow",params: [orderId:orderId]);
+        redirect(action: "orderShow", params: [orderId: orderId]);
     }
 //    //顾客到店
 //    def customerReach(){
@@ -514,68 +500,65 @@ class StaffController {
 //    }
 
     //完成上菜,对于每个点菜的完成上菜
-    def completePackage(){
-        params.statusCode=DishesStatus.SERVED_STATUS.code;//更新点菜的状态为上菜完成
-        def orderId=params.orderId;
+    def completePackage() {
+        params.statusCode = DishesStatus.SERVED_STATUS.code;//更新点菜的状态为上菜完成
+        def orderId = params.orderId;
         //params.remove("orderId");
-        def reInfo=staffOrderService.dishStatusUpdate(params);
-        println("reInfo-->"+reInfo);
-        if(reInfo.recode==ReCode.OK){
-            params.statusCode=OrderStatus.SERVED_STATUS.code;//更新订单的状态为上菜完成/打包完成
-            reInfo=staffOrderService.orderStatusUpdate(params);
-            println("reInfo-->"+reInfo);
-            if(reInfo.recode==ReCode.OK){
-                flash.message=reInfo.recode.label;
+        def reInfo = staffOrderService.dishStatusUpdate(params);
+        println("reInfo-->" + reInfo);
+        if (reInfo.recode == ReCode.OK) {
+            params.statusCode = OrderStatus.SERVED_STATUS.code;//更新订单的状态为上菜完成/打包完成
+            reInfo = staffOrderService.orderStatusUpdate(params);
+            println("reInfo-->" + reInfo);
+            if (reInfo.recode == ReCode.OK) {
+                flash.message = reInfo.recode.label;
+            } else {
+                flash.errors = reInfo.recode.label;
             }
-            else{
-                flash.errors=reInfo.recode.label;
-            }
+        } else {
+            flash.errors = reInfo.recode.label;
         }
-        else{
-            flash.errors=reInfo.recode.label;
-        }
-        if(params.backUrl){
+        if (params.backUrl) {
             redirect(url: params.backUrl);
-            return ;
+            return;
         }
-        redirect(action: "orderShow",params: [orderId:orderId]);
+        redirect(action: "orderShow", params: [orderId: orderId]);
     }
 
     //完成上菜,对于每个点菜的完成上菜
-    def beginShip(){
-        params.statusCode=OrderStatus.SHIPPING_STATUS.code;//更新订单的状态为运送中
-        def reInfo=staffOrderService.orderStatusUpdate(params);
-        println("reInfo-->"+reInfo);
-        if(reInfo.recode==ReCode.OK){
-            flash.message=reInfo.recode.label;
+    def beginShip() {
+        params.statusCode = OrderStatus.SHIPPING_STATUS.code;//更新订单的状态为运送中
+        def reInfo = staffOrderService.orderStatusUpdate(params);
+        println("reInfo-->" + reInfo);
+        if (reInfo.recode == ReCode.OK) {
+            flash.message = reInfo.recode.label;
+        } else {
+            flash.errors = reInfo.recode.label;
         }
-        else{
-            flash.errors=reInfo.recode.label;
-        }
-        if(params.backUrl){
+        if (params.backUrl) {
             redirect(url: params.backUrl);
-            return ;
+            return;
         }
-        redirect(action: "orderShow",params: [orderId:params.orderId]);
+        redirect(action: "orderShow", params: [orderId: params.orderId]);
     }
 
 
     def exportOrderList() {
 
-        params.locale=request.locale
-        params.reportName="orderList"
-        generateResponse(jasperReportService.exportOrderList(params),"订单列表")
+        params.locale = request.locale
+        params.reportName = "orderList"
+        generateResponse(jasperReportService.exportOrderList(params), "订单列表")
     }
 
     //输出流
-    def generateResponse = {reportDef,expName->
-        def name=URLEncoder.encode(expName, "UTF-8")
-        if(name.length()>150){
-            name=new String(expName.getBytes("UTF-8"), "GB2312");
+    def generateResponse = { reportDef, expName ->
+        def name = URLEncoder.encode(expName, "UTF-8")
+        if (name.length() > 150) {
+            name = new String(expName.getBytes("UTF-8"), "GB2312");
         }
 
-        if (!reportDef.fileFormat.inline &&!reportDef.parameters._inline) {
-            response.setHeader("Content-disposition", "attachment; filename=" + (name?:(reportDef.name)) + "." + reportDef.fileFormat.extension);
+        if (!reportDef.fileFormat.inline && !reportDef.parameters._inline) {
+            response.setHeader("Content-disposition", "attachment; filename=" + (name ?: (reportDef.name)) + "." + reportDef.fileFormat.extension);
             response.contentType = reportDef.fileFormat.mimeTyp
             response.characterEncoding = "UTF-8"
             response.outputStream << reportDef.contentStream.toByteArray()
