@@ -2,11 +2,13 @@ package lj.taos.order.staff
 
 import lj.I18nError
 import lj.Number
+import lj.common.ValidationCode
 import lj.data.DishesInfo
 import lj.data.FoodInfo
 import lj.data.OrderInfo
 import lj.data.RestaurantInfo
 import lj.data.StaffInfo
+import lj.data.TableInfo
 import lj.enumCustom.*
 import lj.taos.order.customer.CustomerOrderService
 
@@ -30,7 +32,38 @@ class StaffOrderService {
         def session=webUtilService.getSession();
         StaffInfo staffInfo=webUtilService.getStaff();
         if(staffInfo){
-//            return customerOrderService.createOrder(params, true);
+            TableInfo tableInfo= TableInfo.findByCode(params.code);
+            if(tableInfo==null){
+                return [recode: ReCode.TABLE_NOT_EXIST];
+            }
+            OrderInfo orderInfo=OrderInfo.findByTableInfoAndValidAndStatusLessThan(tableInfo,OrderValid.EFFECTIVE_VALID.code,OrderStatus.CHECKOUTED_STATUS.code);
+            if (orderInfo==null){//该桌上现在没有有效订单
+
+                //检测桌位是否已经被预定
+
+                orderInfo=new OrderInfo();
+                orderInfo.tableInfo=tableInfo;
+                orderInfo.waiter=staffInfo;
+                orderInfo.partakeCode=ValidationCode.getAuthCodeStr(4,ValidationCode.NUMBER);
+                Date now=new Date();
+                String orderNumStr=now.getTime()+ValidationCode.getAuthCodeStr(2,ValidationCode.NUMBER);
+                long orderNum=Long.parseLong(orderNumStr);
+                orderInfo.orderNum=orderNum;
+                //获取订单店内编号最大值
+                String sqlStr="select max(numInRestaurant) from OrderInfo";
+                def result=OrderInfo.executeQuery(sqlStr);
+                long numInRestaurant=1;
+                if(result!=null&&result[0]!=null){
+                    numInRestaurant=result[0]+1;
+                }
+                orderInfo.numInRestaurant=numInRestaurant;
+                if(!orderInfo.save(flush: true)){
+                    return [recode: ReCode.SAVE_FAILED, orderInfo: orderInfo,errors:I18nError.getMessage(g,orderInfo.errors.allErrors)];
+                }
+            }else{
+                return [recode: ReCode.HAVE_ORDER_ALREADY];
+            }
+                return [recode: ReCode.OK,orderInfo:orderInfo];
         }
         else{
             return [recode: ReCode.NOT_LOGIN];
@@ -414,9 +447,9 @@ class StaffOrderService {
             if(endTime){
                 le("createTime",endTime);//日期条件
             }
-            if(reserveType>=0){
-                eq("reserveType",reserveType);//用餐类别（早餐、午餐、晚餐）条件
-            }
+//            if(reserveType>=0){
+//                eq("reserveType",reserveType);//用餐类别（早餐、午餐、晚餐）条件
+//            }
             if(status>=0){
                 eq("status",status);//订单状态条件
             }
@@ -990,6 +1023,9 @@ class StaffOrderService {
                             FoodInfo.executeUpdate("update FoodInfo set sellCount=sellCount-"+it.num+" where id="+it.foodId);//更新菜的销量
                         }
                     }
+//                    else{
+//                        throw new RuntimeException("当前状态下点菜不能取消!");
+//                    }
                 }
             }
             return [recode: ReCode.OK];//成功

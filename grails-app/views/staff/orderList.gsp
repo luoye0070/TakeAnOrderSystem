@@ -71,14 +71,68 @@
         width: 40px;
     }
     </style>
-    <link rel="stylesheet" href="${resource(dir: "js/Datepicker", file: "datepicker.css")}" type="text/css"
-          media="screen"/>
-    <script type="text/javascript" src="${resource(dir: "js/Datepicker", file: "bootstrap-datepicker.js")}"></script>
+    %{--<link rel="stylesheet" href="${resource(dir: "js/Datepicker", file: "datepicker.css")}" type="text/css"--}%
+          %{--media="screen"/>--}%
+    %{--<script type="text/javascript" src="${resource(dir: "js/Datepicker", file: "bootstrap-datepicker.js")}"></script>--}%
+    <link type="text/css" href="${resource(dir: "js/dateTimePicker/css", file: "jquery-ui-1.8.17.custom.css")}" rel="stylesheet" />
+
+    <link type="text/css" href="${resource(dir: "js/dateTimePicker/css", file: "jquery-ui-timepicker-addon.css")}" rel="stylesheet" />
+
+    <script type="text/javascript" src="${resource(dir: "js/dateTimePicker/js", file: "jquery-1.7.1.min.js")}"></script>
+
+    <script type="text/javascript" src="${resource(dir: "js/dateTimePicker/js", file: "jquery-ui-1.8.17.custom.min.js")}"></script>
+
+    <script type="text/javascript" src="${resource(dir: "js/dateTimePicker/js", file: "jquery-ui-timepicker-addon.js")}"></script>
+
+    <script type="text/javascript" src="${resource(dir: "js/dateTimePicker/js", file: "jquery-ui-timepicker-zh-CN.js")}"></script>
+
     <script type="text/javascript">
         $(function () {
             //日期选择器
-            $("#beginDate").datepicker({format: "yyyy-mm-dd"});
-            $("#endDate").datepicker({format: "yyyy-mm-dd"});
+//            $("#beginDate").datepicker({format: "yyyy-mm-dd"});
+//            $("#endDate").datepicker({format: "yyyy-mm-dd"});
+
+            $("#beginDate").datetimepicker({
+
+                //showOn: "button",
+
+                //buttonImage: "./css/images/icon_calendar.gif",
+
+                //buttonImageOnly: true,
+
+                showSecond: true,
+
+                timeFormat: 'hh:mm:ss',
+
+                stepHour: 1,
+
+                stepMinute: 1,
+
+                stepSecond: 1
+
+            });
+
+            $("#endDate").datetimepicker({
+
+                //showOn: "button",
+
+                //buttonImage: "./css/images/icon_calendar.gif",
+
+                //buttonImageOnly: true,
+
+                showSecond: true,
+
+                timeFormat: 'hh:mm:ss',
+
+                stepHour: 1,
+
+                stepMinute: 1,
+
+                stepSecond: 1
+
+            });
+
+
             $("#beginDateDel").click(function () {
                 $("#beginDate").val("");
             });
@@ -103,35 +157,35 @@
         <div class="mcmc_ssl">
             <form class="well form-inline" action="${createLink(controller: "staff", action: "orderList")}">
 
-                <div class="mcmcs_field">
+                <div class="mcmcs_field" style="width: 420px;">
                     <label>
-                        日期：
+                        时间：
                     </label>
                     <div class="input-append">
-                        <input style="float: left;" id="beginDate" name="beginDate" type="text"
+                        <input style="float: left;width: 120px;" id="beginDate" name="beginTime" type="text"
                                value="${params.beginDate}" class="mcmcsf_input_middle"/>
                         <span class="add-on"><a id="beginDateDel" class="close" href="#" style="float: left;">&times;</a></span>
                     </div>
                         <label style="">&nbsp;-&nbsp;</label>
                     <div class="input-append">
-                        <input style="float: left;" id="endDate" name="endDate" type="text"
+                        <input style="float: left;width: 120px;" id="endDate" name="endTime" type="text"
                                value="${params.endDate}" class="mcmcsf_input_middle"/>
                         <span class="add-on"><a id="endDateDel" class="close" href="#" style="float: left;">&times;</a></span>
                     </div>
                 </div>
 
-                <div class="mcmcs_field_middle" style="width: 180px">
-                    <label>
-                        预定类型：
-                    </label>
-                    <select name="reserveType" class="mcmcsf_input_middle">
-                        <option value="-1" ${params.reserveType == "-1" ? "selected='selected'" : ""}>全部</option>
-                        <option value="0" ${params.reserveType == "0" ? "selected='selected'" : ""}>非预定</option>
-                        <g:each in="${lj.enumCustom.ReserveType.reserveTypes}">
-                            <option value="${it.code}" ${(lj.Number.toInteger(params.reserveType) == it.code) ? "selected='selected'" : ""}>${it.label}</option>
-                        </g:each>
-                    </select>
-                </div>
+                %{--<div class="mcmcs_field_middle" style="width: 180px">--}%
+                    %{--<label>--}%
+                        %{--预定类型：--}%
+                    %{--</label>--}%
+                    %{--<select name="reserveType" class="mcmcsf_input_middle">--}%
+                        %{--<option value="-1" ${params.reserveType == "-1" ? "selected='selected'" : ""}>全部</option>--}%
+                        %{--<option value="0" ${params.reserveType == "0" ? "selected='selected'" : ""}>非预定</option>--}%
+                        %{--<g:each in="${lj.enumCustom.ReserveType.reserveTypes}">--}%
+                            %{--<option value="${it.code}" ${(lj.Number.toInteger(params.reserveType) == it.code) ? "selected='selected'" : ""}>${it.label}</option>--}%
+                        %{--</g:each>--}%
+                    %{--</select>--}%
+                %{--</div>--}%
 
                 <div class="mcmcs_field_middle">
                     <label>

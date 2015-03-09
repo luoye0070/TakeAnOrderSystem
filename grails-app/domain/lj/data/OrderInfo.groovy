@@ -57,7 +57,7 @@ class OrderInfo {
 
     //static hasMany = [dishes:DishesInfo];
     static constraints = {
-        clientInfo(nullable:false)
+        clientInfo(nullable:true)
         tableInfo(nullable:false)
         status inList: OrderStatus.getCodeList()
         valid  inList: OrderValid.getCodeList()

@@ -79,6 +79,7 @@ public class ReCode {
     public final static def CAN_NOT_CHANGE_TABLE=[code:-62,label:"你点的菜已在做或者已上菜，当前不能换桌"];
     public final static def WRONG_PARTAKECODE=[code:-63,label:"点菜参与码错误,请重新输入"];
     public final static def NO_PARTAKECODE=[code:-63,label:"没有点菜参与码,请输入点菜参与码"];
+    public final static def HAVE_ORDER_ALREADY=[code:-64,label:"有顾客正在该桌位上用餐"];
 //    public Integer code
 //    public String label
 //

@@ -90,10 +90,10 @@
                     <label>
                         桌位：
                     </label>
-                    <select name="tableId" class="mcmcsf_input">
+                    <select name="code" class="mcmcsf_input">
                         <g:each in="${tableList}" var="tableInfo">
                             <g:if test="${tableInfo?.canUse}">
-                            <option value="${tableInfo?.tableInfo.id}" ${params.tableId == tableInfo?.tableInfo.id.toString() ? "selected='selected'" : ""}>${tableInfo?.tableInfo.name}</option>
+                            <option value="${tableInfo?.tableInfo.code}" ${params.code == tableInfo?.tableInfo.code.toString() ? "selected='selected'" : ""}>${tableInfo?.tableInfo.name}</option>
                             </g:if>
                         </g:each>
                     </select>

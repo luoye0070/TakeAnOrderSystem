@@ -28,12 +28,12 @@
         <li><g:link controller="staff" action="orderInput">订单创建</g:link></li>
     </g:else>
     <li class="divider-vertical"></li>
-    <g:if test="${controllerName=="staff" && actionName in ["makeTakeOutOrder"]}">
-        <li class="active"><a href="#">外卖订单创建</a></li>
-    </g:if>
-    <g:else>
-        <li><g:link controller="staff" action="makeTakeOutOrder">外卖订单创建</g:link></li>
-    </g:else>
-    <li class="divider-vertical"></li>
+    %{--<g:if test="${controllerName=="staff" && actionName in ["makeTakeOutOrder"]}">--}%
+        %{--<li class="active"><a href="#">外卖订单创建</a></li>--}%
+    %{--</g:if>--}%
+    %{--<g:else>--}%
+        %{--<li><g:link controller="staff" action="makeTakeOutOrder">外卖订单创建</g:link></li>--}%
+    %{--</g:else>--}%
+    %{--<li class="divider-vertical"></li>--}%
 </ul>
 </div>

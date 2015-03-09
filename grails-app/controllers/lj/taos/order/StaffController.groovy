@@ -254,15 +254,21 @@ class StaffController {
     //进入点菜界面
     def doDish() {
         //查询订单信息
-        OrderInfo orderInfoInstance = null;
         def reInfo = staffOrderService.orderInfo(params);
         if (reInfo.recode == ReCode.OK) {
-            orderInfoInstance = reInfo.orderInfoInstance;
-            //查询菜谱
-            def paramsT = [enabled: true]
-            reInfo = searchService.searchFood(paramsT);
+            //查询菜品
+            params<<[enabled:true];
+            def reInfo1=searchService.searchFood(params);
+            reInfo<<reInfo1;
+            //查询菜品分类
+            reInfo1=searchService.searchFoodClass();
+            reInfo<<reInfo1;
+
+            //查询已有点菜
+            reInfo1= staffOrderService.dishList([orderId:reInfo.orderInfoInstance?.id,max:1000]);
+            reInfo<<[dishes:reInfo1];
         }
-        reInfo << [orderInfoInstance: orderInfoInstance] << [params: params];
+        reInfo<< [params: params];
         render(view: "doDish", model: reInfo);
     }
     //完成点菜

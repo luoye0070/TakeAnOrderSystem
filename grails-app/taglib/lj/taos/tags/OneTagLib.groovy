@@ -291,6 +291,9 @@ class OneTagLib {
                             if (dishesInfo.valid == DishesValid.ORIGINAL_VALID.code && dishesInfo.status == DishesStatus.ORIGINAL_STATUS.code) {//初始态可以取消和确认点菜
                                 htmlTag += "<a href='" + createLink(controller: "staff", action: "affirmDish", params: [dishIds: dishesInfo.id, orderId: dishesInfo.orderId, backUrl: backUrl]) + "'>确认点菜</a>&nbsp;&nbsp;";
                             }
+                            if (dishesInfo.valid > DishesValid.EFFECTIVE_VALID.code) {//取消点菜可以删除
+                                htmlTag += "<a href='" + createLink(controller: "staff", action: "delDish", params: [dishIds: dishesInfo.id, orderId: dishesInfo.orderId, backUrl: backUrl]) + "'>删除</a>&nbsp;&nbsp;";
+                            }
                         }
                         if (dishesInfo.valid == DishesValid.EFFECTIVE_VALID.code && dishesInfo.status == DishesStatus.COOKED_STATUS.code) {//做菜完成可以上菜
                             htmlTag += "<a href='" + createLink(controller: "staff", action: "completeServe", params: [dishIds: dishesInfo.id, orderId: dishesInfo.orderId, backUrl: backUrl]) + "'>上菜完成</a>&nbsp;&nbsp;";
