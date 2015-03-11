@@ -240,67 +240,67 @@
     </form>
 </div>
 <g:if test="${isOwner}">
-<!--菜品类别列表-->
-<div>
-    <ul class="breadcrumb">
-        <li class="active"><a href="${createLink(controller: "customer",action: "getOrCreateOrder",params: [foodClassId:0]<<params)}">全部</a></li>
-        <g:each in="${foodClassInfoInstanceList}" status="i" var="foodClassInfoInstance">
-            <li><a href="${createLink(controller: "customer",action: "getOrCreateOrder",params: [foodClassId:foodClassInfoInstance.id]<<params)}">${foodClassInfoInstance.name}</a></li>
-        </g:each>
-    </ul>
-</div>
+%{--<!--菜品类别列表-->--}%
+%{--<div>--}%
+    %{--<ul class="breadcrumb">--}%
+        %{--<li class="active"><a href="${createLink(controller: "customer",action: "getOrCreateOrder",params: [foodClassId:0]<<params)}">全部</a></li>--}%
+        %{--<g:each in="${foodClassInfoInstanceList}" status="i" var="foodClassInfoInstance">--}%
+            %{--<li><a href="${createLink(controller: "customer",action: "getOrCreateOrder",params: [foodClassId:foodClassInfoInstance.id]<<params)}">${foodClassInfoInstance.name}</a></li>--}%
+        %{--</g:each>--}%
+    %{--</ul>--}%
+%{--</div>--}%
 
-<!--菜品列表-->
-<div class="m_list" style="margin-left: 10px;margin-top: 0px;">
-    <g:if test="${foodList}">
-        <ul class="thumbnails" style="margin: 0px auto;">
-            <g:each in="${foodList}" status="i" var="foodInfoInstance">
-                <li>
-                    <div class="thumbnail" style="background-color: #ffffff">
-                        <!--图片-->
-                        <div class="ml_row_img">
-                            <img id="imageLabel" width="120"
-                                 src="${createLink(controller: "imageShow", action: "downloadThumbnail", params: [imgUrl: foodInfoInstance?.image, width: 140, height: 120])}"/>
-                        </div>
+%{--<!--菜品列表-->--}%
+%{--<div class="m_list" style="margin-left: 10px;margin-top: 0px;">--}%
+    %{--<g:if test="${foodList}">--}%
+        %{--<ul class="thumbnails" style="margin: 0px auto;">--}%
+            %{--<g:each in="${foodList}" status="i" var="foodInfoInstance">--}%
+                %{--<li>--}%
+                    %{--<div class="thumbnail" style="background-color: #ffffff">--}%
+                        %{--<!--图片-->--}%
+                        %{--<div class="ml_row_img">--}%
+                            %{--<img id="imageLabel" width="120"--}%
+                                 %{--src="${createLink(controller: "imageShow", action: "downloadThumbnail", params: [imgUrl: foodInfoInstance?.image, width: 140, height: 120])}"/>--}%
+                        %{--</div>--}%
 
-                        <div class="ml_row_txt">
-                            <label id="nameLabel"
-                                   style="float: left;font-size: 14px;overflow: hidden;height: 30px;line-height: 30px;">
-                                <a target="_parent" title="${foodInfoInstance?.name}"
-                                   href="${createLink(controller: "infoShow", action: "foodShow", params: [id: foodInfoInstance.id])}">${foodInfoInstance?.name}</a>
-                            </label>
-                        </div>
+                        %{--<div class="ml_row_txt">--}%
+                            %{--<label id="nameLabel"--}%
+                                   %{--style="float: left;font-size: 14px;overflow: hidden;height: 30px;line-height: 30px;">--}%
+                                %{--<a target="_parent" title="${foodInfoInstance?.name}"--}%
+                                   %{--href="${createLink(controller: "infoShow", action: "foodShow", params: [id: foodInfoInstance.id])}">${foodInfoInstance?.name}</a>--}%
+                            %{--</label>--}%
+                        %{--</div>--}%
 
-                        <div class="ml_row_txt">
-                            <label id="priceLabel"
-                                   style="float: left;font-size: 14px;">￥${fieldValue(bean: foodInfoInstance, field: 'price')}</label>
-                            <g:if test="${foodInfoInstance?.originalPrice}">
-                                <label id="originalPriceLabel"
-                                       style="float: right;font-size:12px;text-decoration:line-through">￥${fieldValue(bean: foodInfoInstance, field: 'originalPrice')}</label>
-                            </g:if>
-                        </div>
+                        %{--<div class="ml_row_txt">--}%
+                            %{--<label id="priceLabel"--}%
+                                   %{--style="float: left;font-size: 14px;">￥${fieldValue(bean: foodInfoInstance, field: 'price')}</label>--}%
+                            %{--<g:if test="${foodInfoInstance?.originalPrice}">--}%
+                                %{--<label id="originalPriceLabel"--}%
+                                       %{--style="float: right;font-size:12px;text-decoration:line-through">￥${fieldValue(bean: foodInfoInstance, field: 'originalPrice')}</label>--}%
+                            %{--</g:if>--}%
+                        %{--</div>--}%
 
-                        <div class="ml_row_txt">
-                            <label id="counts${foodInfoInstance?.id}"
-                                   style="float: left;font-size: 14px;">数量:</label>
-                            <input id="counts${foodInfoInstance?.id}" name="counts" type="text" class="msf_input" style="width: 16px;" value="1"/>
-                        </div>
+                        %{--<div class="ml_row_txt">--}%
+                            %{--<label id="counts${foodInfoInstance?.id}"--}%
+                                   %{--style="float: left;font-size: 14px;">数量:</label>--}%
+                            %{--<input id="counts${foodInfoInstance?.id}" name="counts" type="text" class="msf_input" style="width: 16px;" value="1"/>--}%
+                        %{--</div>--}%
 
-                        <div class="ml_row_txt">
-                            <label id="remarks${foodInfoInstance?.id}"
-                                   style="float: left;font-size: 14px;">备注:</label>
-                            <input id="remarks${foodInfoInstance?.id}" name="remarks" type="text" class="msf_input" style="width: 16px;" value="1"/>
-                        </div>
+                        %{--<div class="ml_row_txt">--}%
+                            %{--<label id="remarks${foodInfoInstance?.id}"--}%
+                                   %{--style="float: left;font-size: 14px;">备注:</label>--}%
+                            %{--<input id="remarks${foodInfoInstance?.id}" name="remarks" type="text" class="msf_input" style="width: 16px;" value="1"/>--}%
+                        %{--</div>--}%
 
-                        <div class="ml_row_txt">
+                        %{--<div class="ml_row_txt">--}%
                             %{--<g:if test="${foodInfoInstance?.canTakeOut}">--}%
                             %{--<a style="float: left;" href="#"--}%
                             %{--restaurantId="${foodInfoInstance?.restaurantId}"--}%
                             %{--foodId="${foodInfoInstance?.id}">--}%
                             %{--加入外卖餐车</a>--}%
                             %{--</g:if>--}%
-                            <button onclick="doDish(this,${foodInfoInstance?.id},${orderInfo?.id})"
-                                    class="">点一个</button>
+                            %{--<button onclick="doDish(this,${foodInfoInstance?.id},${orderInfo?.id})"--}%
+                                    %{--class="">点一个</button>--}%
                             %{--<a style="float: left;" href="#"--}%
                             %{--addToOrder="true"--}%
                             %{--restaurantId="${foodInfoInstance?.restaurantId}"--}%
@@ -308,19 +308,20 @@
                             %{--加入订单</a>--}%
                             %{--<a style="float: right" href="#"--}%
                             %{--onclick="foodAddToFavorite('${createLink(controller: "user",action: "addFavorite",params: [type:"food",foodId:foodInfoInstance?.id])}')">收藏</a>--}%
-                        </div>
-                    </div>
-                </li>
-            </g:each>
-        </ul>
-        <taos:paginate total="${totalCount ?: 0}" prev="&larr;" next="&rarr;" params="${params}" action="getOrCreateOrder"/>
-    </g:if>
-    <g:else>
-        <div style="margin: 0px auto;">
-            <label style="text-align: center">没有搜索到记录</label>
-        </div>
-    </g:else>
-</div>
+                        %{--</div>--}%
+                    %{--</div>--}%
+                %{--</li>--}%
+            %{--</g:each>--}%
+        %{--</ul>--}%
+        %{--<taos:paginate total="${totalCount ?: 0}" prev="&larr;" next="&rarr;" params="${params}" action="getOrCreateOrder"/>--}%
+    %{--</g:if>--}%
+    %{--<g:else>--}%
+        %{--<div style="margin: 0px auto;">--}%
+            %{--<label style="text-align: center">没有搜索到记录</label>--}%
+        %{--</div>--}%
+    %{--</g:else>--}%
+%{--</div>--}%
+    <a href="#">加菜</a>
 </g:if>
 </div>
 <!--点菜列表-->
