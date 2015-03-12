@@ -81,6 +81,7 @@ public class ReCode {
     public final static def NO_PARTAKECODE=[code:-63,label:"没有点菜参与码,请输入点菜参与码"];
     public final static def HAVE_ORDER_ALREADY=[code:-64,label:"有顾客正在该桌位上用餐"];
     public final static def NOT_ORDER_OWNER=[code:-65,label:"非该桌订单拥有者，不能做加菜操作"];
+    public final static def NO_ADDITION_DISH=[code:-66,label:"没有加菜"];
 //    public Integer code
 //    public String label
 //

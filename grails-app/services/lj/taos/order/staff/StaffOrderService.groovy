@@ -1258,6 +1258,9 @@ class StaffOrderService {
                 if(it.valid==DishesValid.RESTAURANT_AFTER_VERIFYED_CANCEL_VALID.code||it.valid==DishesValid.RESTAURANT_BEFORE_VERIFYED_CANCEL_VALID.code||it.valid==DishesValid.USER_CANCEL_VALID.code)
                 {//有效性为饭店取消下能删除
                     it.delete(flush: true);
+                }else if (it.valid == DishesValid.ORIGINAL_VALID.code) { //点菜时直接删除,需要恢复菜品销量
+                    FoodInfo.executeUpdate("update FoodInfo set sellCount=sellCount-" + it.num + " where id=" + it.foodId);//更新菜的销量
+                    it.delete(flush: true);
                 }
             }
         }

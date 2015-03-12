@@ -351,10 +351,12 @@ class CustomerOrderService {
         }
         if (dishList) {
             dishList.each {
-//                if(it.valid==DishesValid.USER_CANCEL_VALID.code||orderId!=0)
-//                {//有效性为用户取消下能删除或者对应的订单删除了能删除
-                it.delete(flush: true);
-//                }
+                if (it.valid == DishesValid.USER_CANCEL_VALID.code || orderId != 0) {//有效性为用户取消下能删除或者对应的订单删除了能删除
+                    it.delete(flush: true);
+                } else if (it.valid == DishesValid.ORIGINAL_VALID.code) { //点菜时直接删除,需要恢复菜品销量
+                    FoodInfo.executeUpdate("update FoodInfo set sellCount=sellCount-" + it.num + " where id=" + it.foodId);//更新菜的销量
+                    it.delete(flush: true);
+                }
             }
         }
         return [recode: ReCode.OK];//成功
@@ -1050,17 +1052,17 @@ class CustomerOrderService {
         if (tableInfo == null) {
             return [recode: ReCode.TABLE_NOT_EXIST];
         }
-        if(orderInfo.clientInfo!=clientInfo){ //非订单拥有者不能做加菜
+        if (orderInfo.clientInfo != clientInfo) { //非订单拥有者不能做加菜
             return [recode: ReCode.NOT_ORDER_OWNER];
         }
         //先查询是否存在初始态的点菜集合
-        DishesCollection dishesCollection=DishesCollection.findByOrderInfoAndStatus(orderInfo,DishesCollectionStatus.ORIGINAL_STATUS.code);
-        if(dishesCollection==null){
-            dishesCollection=new DishesCollection();
-            dishesCollection.orderInfo=orderInfo;
+        DishesCollection dishesCollection = DishesCollection.findByOrderInfoAndStatus(orderInfo, DishesCollectionStatus.ORIGINAL_STATUS.code);
+        if (dishesCollection == null) {
+            dishesCollection = new DishesCollection();
+            dishesCollection.orderInfo = orderInfo;
         }
-        if(dishesCollection.dishesInfos==null){
-            dishesCollection.dishesInfos= new ArrayList<DishesInfo>();
+        if (dishesCollection.dishesInfos == null) {
+            dishesCollection.dishesInfos = new ArrayList<DishesInfo>();
         }
         //点菜
         if (orderInfo) {
@@ -1084,7 +1086,7 @@ class CustomerOrderService {
         FoodInfo foodInfo = FoodInfo.get(foodId);
         if (foodInfo) {
             if (foodInfo.enabled) {//在售
-                if (foodInfo.countLimit != 0 && (foodInfo.countLimit >=foodCount + foodInfo.sellCount)) {//数量足够
+                if (foodInfo.countLimit != 0 && (foodInfo.countLimit >= foodCount + foodInfo.sellCount)) {//数量足够
                     foodInfo.sellCount += foodCount;//当日销售量加上点菜数量
                     if (!foodInfo.save(flush: true)) {//保存数据失败
                         throw new RuntimeException(I18nError.getMessage(g, foodInfo.errors.allErrors));
@@ -1123,10 +1125,10 @@ class CustomerOrderService {
 
         //添加到点菜集合
         dishesCollection.dishesInfos.add(dishesInfo);
-        if(!dishesCollection.save(flush: true)){
-           throw new RuntimeException(I18nError.getMessage(g, dishesCollection.errors.allErrors));
+        if (!dishesCollection.save(flush: true)) {
+            throw new RuntimeException(I18nError.getMessage(g, dishesCollection.errors.allErrors));
         }
-        return [recode: ReCode.OK,orderInfo: orderInfo,dishesCollection:dishesCollection,dishesInfo: dishesInfo];
+        return [recode: ReCode.OK, orderInfo: orderInfo, dishesCollection: dishesCollection, dishesInfo: dishesInfo];
     }
     //删除加菜
     def delDishAfterOrderConfirm(def params) {
@@ -1134,36 +1136,142 @@ class CustomerOrderService {
         long orderId = Number.toLong(params.orderId);//订单ID
         def dishIds = params.dishIds;//点菜Id列表
 
-        def dishList = null;
-        if (orderId) {//订单ID存在则按订单ID取消
-            dishList = DishesInfo.findAllByOrder(OrderInfo.get(orderId));
-        } else if (dishIds) {//不然如果按点菜Id列表删除
-            def dishIdList = [];
-            if (dishIds instanceof String) {
-                dishIdList.add(Number.toLong(dishIds));
-            } else if (dishIds instanceof String[]) {
-                for (int i = 0; i < dishIds.length; i++) {
-                    dishIdList.add(Number.toLong(dishIds[i]));
-                }
+        ClientInfo clientInfo = clientService.getClient();
+        if (clientInfo == null) {
+            return [recode: ReCode.NO_CLIENT];
+        }
+        if (params.code) {
+            webUtilService.setTableCode(params.code);
+        }
+        String code = webUtilService.getTableCode();
+        TableInfo tableInfo = TableInfo.findByCode(code);
+
+        OrderInfo orderInfo = OrderInfo.get(orderId);
+        if (orderInfo == null) {
+            orderInfo = OrderInfo.findByTableInfo(tableInfo);
+            if (orderInfo == null) {
+                return [recode: ReCode.NO_ORDER];
             }
-            dishList = DishesInfo.findAllByIdInList(dishIdList);
+        } else {
+            if (orderInfo.tableInfo != null) {
+                tableInfo = orderInfo.tableInfo;
+                webUtilService.setTableCode(orderInfo.tableInfo.code);
+            }
+        }
+        if (tableInfo == null) {
+            return [recode: ReCode.TABLE_NOT_EXIST];
+        }
+        if (orderInfo.clientInfo != clientInfo) { //非订单拥有者不能做加菜
+            return [recode: ReCode.NOT_ORDER_OWNER];
+        }
+        //先查询是否存在初始态的点菜集合
+        DishesCollection dishesCollection = DishesCollection.findByOrderInfoAndStatus(orderInfo, DishesCollectionStatus.ORIGINAL_STATUS.code);
+        if (dishesCollection == null) {
+            return [recode: ReCode.NO_ADDITION_DISH];
+        }
+
+        DishesInfo dishesInfo = null;
+        if (dishIds&&dishIds instanceof String) {//不然如果按点菜Id列表删除
+            dishesInfo = DishesInfo.get(Number.toLong(dishIds));
         } else {
             return [recode: ReCode.ERROR_PARAMS];//参数错误
         }
-        if (dishList) {
-            dishList.each {
-                FoodInfo.executeUpdate("update FoodInfo set sellCount=sellCount-" + it.num + " where id=" + it.foodId);//更新菜的销量
-//                if(it.valid==DishesValid.USER_CANCEL_VALID.code||orderId!=0)
-//                {//有效性为用户取消下能删除或者对应的订单删除了能删除
-                it.delete(flush: true);
-//                }
-            }
+        if (dishesInfo) {
+            FoodInfo.executeUpdate("update FoodInfo set sellCount=sellCount-" + dishesInfo.num + " where id=" + dishesInfo.foodId);//更新菜的销量
+            dishesCollection.dishesInfos.remove(dishesInfo);
+            dishesCollection.save(flush: true);
+            dishesInfo.delete(flush: true);
         }
         return [recode: ReCode.OK];//成功
     }
     //加菜确认
     def orderConfirmAfterOrderConfirm(def params) {
+        //获取参数
+        long orderId = Number.toLong(params.orderId);//订单ID
 
+        ClientInfo clientInfo = clientService.getClient();
+        if (clientInfo == null) {
+            return [recode: ReCode.NO_CLIENT];
+        }
+        if (params.code) {
+            webUtilService.setTableCode(params.code);
+        }
+        String code = webUtilService.getTableCode();
+        TableInfo tableInfo = TableInfo.findByCode(code);
+
+        OrderInfo orderInfo = OrderInfo.get(orderId);
+        if (orderInfo == null) {
+            orderInfo = OrderInfo.findByTableInfo(tableInfo);
+            if (orderInfo == null) {
+                return [recode: ReCode.NO_ORDER];
+            }
+        } else {
+            if (orderInfo.tableInfo != null) {
+                tableInfo = orderInfo.tableInfo;
+                webUtilService.setTableCode(orderInfo.tableInfo.code);
+            }
+        }
+        if (tableInfo == null) {
+            return [recode: ReCode.TABLE_NOT_EXIST];
+        }
+        if (orderInfo.clientInfo != clientInfo) { //非订单拥有者不能做加菜
+            return [recode: ReCode.NOT_ORDER_OWNER];
+        }
+        //先查询是否存在初始态的点菜集合
+        DishesCollection dishesCollection = DishesCollection.findByOrderInfoAndStatus(orderInfo, DishesCollectionStatus.ORIGINAL_STATUS.code);
+        if (dishesCollection == null) {
+            return [recode: ReCode.NO_ADDITION_DISH];
+        }
+        //确认点菜
+        dishConfirm(params);
+        //更新点菜集合状态
+        dishesCollection.status=DishesCollectionStatus.VERIFYING_STATUS.code;
+        if(!dishesCollection.save(flush: true)){
+            return [recode: ReCode.SAVE_FAILED, errors: I18nError.getMessage(g, dishesCollection.errors.allErrors)];
+        }
+        //打印加菜信息
+
+        return [recode: ReCode.OK];
+    }
+    //加菜列表
+    def dishListAfterOrderConfirm(def params) {
+        //获取参数
+        long orderId = Number.toLong(params.orderId);//订单ID
+
+        ClientInfo clientInfo = clientService.getClient();
+        if (clientInfo == null) {
+            return [recode: ReCode.NO_CLIENT];
+        }
+        if (params.code) {
+            webUtilService.setTableCode(params.code);
+        }
+        String code = webUtilService.getTableCode();
+        TableInfo tableInfo = TableInfo.findByCode(code);
+
+        OrderInfo orderInfo = OrderInfo.get(orderId);
+        if (orderInfo == null) {
+            orderInfo = OrderInfo.findByTableInfo(tableInfo);
+            if (orderInfo == null) {
+                return [recode: ReCode.NO_ORDER];
+            }
+        } else {
+            if (orderInfo.tableInfo != null) {
+                tableInfo = orderInfo.tableInfo;
+                webUtilService.setTableCode(orderInfo.tableInfo.code);
+            }
+        }
+        if (tableInfo == null) {
+            return [recode: ReCode.TABLE_NOT_EXIST];
+        }
+        if (orderInfo.clientInfo != clientInfo) { //非订单拥有者不能做加菜
+            return [recode: ReCode.NOT_ORDER_OWNER];
+        }
+        //先查询是否存在初始态的点菜集合
+        DishesCollection dishesCollection = DishesCollection.findByOrderInfoAndStatus(orderInfo, DishesCollectionStatus.ORIGINAL_STATUS.code);
+//        if (dishesCollection == null) {
+//            return [recode: ReCode.NO_ADDITION_DISH];
+//        }
+        return [recode: ReCode.OK,orderInfo:orderInfo, dishList: dishesCollection?.dishesInfos];
     }
 
 }
