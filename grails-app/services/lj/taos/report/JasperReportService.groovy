@@ -23,10 +23,10 @@ class JasperReportService {
         parameters.beginDate=params.beginDate
         parameters.endDate=params.endDate
 
-        if(params.reserveType=="-1")
-            parameters.reserveType="全部"
-        else
-            parameters.reserveType= ReserveType.getLabel(params.reserveType)
+//        if(params.reserveType=="-1")
+//            parameters.reserveType="全部"
+//        else
+//            parameters.reserveType= ReserveType.getLabel(params.reserveType)
 
         if(params.status=="-1")
             parameters.status="全部"
@@ -48,10 +48,10 @@ class JasperReportService {
 
         def session=webUtilService.getSession();
 
-        def restaurantId=webUtilService.getStaff()?.restaurantId
-        if(!restaurantId){
-            return []
-        }
+//        def restaurantId=webUtilService.getStaff()?.restaurantId
+//        if(!restaurantId){
+//            return []
+//        }
 
         long userId=session.userId as Long
         if(!userId){

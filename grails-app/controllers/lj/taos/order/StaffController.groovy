@@ -1,5 +1,6 @@
 package lj.taos.order
 
+import grails.converters.JSON
 import lj.common.StrCheckUtil
 import lj.data.OrderInfo
 import lj.data.StaffInfo
@@ -609,4 +610,54 @@ class StaffController {
 //             render("staff not login");
 //        }
 //    }
+
+
+
+    //加菜
+    def addDishAfterOrderConfirmView() {
+        def errors = null;
+        def msgs = null;
+        def reInfo = staffOrderService.dishListAfterOrderConfirm(params);
+        if (reInfo.recode != ReCode.OK) {
+            if (reInfo.recode == ReCode.SAVE_FAILED) {
+                errors = reInfo.errors;
+            } else {
+                errors = reInfo.recode.label;
+            }
+            render(view: "addDishAfterOrderConfirm", model: [errors: errors, msgs: msgs]);
+            return;
+        }
+        //查询菜品
+        params << [enabled: true];
+        def reInfo1 = searchService.searchFood(params);
+        reInfo << reInfo1;
+        //查询菜品分类
+        reInfo1 = searchService.searchFoodClass();
+        reInfo << reInfo1;
+        println("reInfo-->" + reInfo);
+        println("orderInfo-->" + reInfo.orderInfo);
+        render(view: "addDishAfterOrderConfirm", model: reInfo);
+    }
+
+    //加菜确认
+    def orderConfirmAfterOrderConfirm() {
+        def errors = null;
+        def msgs = null;
+        def reInfo = staffOrderService.orderConfirmAfterOrderConfirm(params);
+        println("reInfo-->" + reInfo);
+        if (reInfo.recode != ReCode.OK) {
+            if (reInfo.recode == ReCode.SAVE_FAILED) {
+                flash.errors = reInfo.errors;
+            } else {
+                flash.errors = reInfo.recode.label;
+            }
+            //render(view: "addDishAfterOrderConfirm", model: [errors: errors, msgs: msgs]);
+            redirect(action: "addDishAfterOrderConfirmView",params: [orderId: params.orderId]);
+            return;
+        }else{
+            flash.message=reInfo.recode.label;
+            redirect(action: "orderShow",params: [orderId: params.orderId]);
+            return;
+        }
+    }
 }

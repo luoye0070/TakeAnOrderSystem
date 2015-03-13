@@ -347,4 +347,23 @@ class StaffAjaxController {
 //        println("reInfo-->"+reInfo);
 //        render(reInfo as JSON);
 //    }
+
+
+    //加菜
+    def addDishAfterOrderConfirmAjax() {
+        def reInfo =null;
+        try {
+            reInfo = staffOrderService.addDishAfterOrderConfirm(params);
+        } catch (Exception ex){
+            reInfo=[recode: [code:-1,label:ex.message]];
+        }
+        println("reInfo-->" + reInfo);
+        render(reInfo as JSON);
+    }
+    //删除加菜
+    def delDishAfterOrderConfirmAjax() {
+        def reInfo = staffOrderService.delDishAfterOrderConfirm(params);
+        println("reInfo-->" + reInfo);
+        render(reInfo as JSON);
+    }
 }

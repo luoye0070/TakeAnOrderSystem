@@ -262,8 +262,8 @@
                             ${fieldValue(bean: orderInfoInstance, field: "userName")}
                         </g:if>
                         <g:else>
-                            <g:if test="${orderInfoInstance.clientInfo.nickname}">
-                                用户&nbsp;${orderInfoInstance.clientInfo.nickname}
+                            <g:if test="${orderInfoInstance.clientInfo?.nickname}">
+                                用户&nbsp;${orderInfoInstance.clientInfo?.nickname}
                             </g:if>
                             <g:else>
                                 服务员

@@ -208,7 +208,11 @@ class OneTagLib {
                             if (orderInfo.valid < OrderValid.USER_CANCEL_VALID.code) { // 未取消的订单
                                 if (orderInfo.status <= OrderStatus.SERVED_STATUS.code) {
                                     htmlTag += "<a href='" + createLink(controller: "staff", action: "cancelOrder", params: [orderId: orderId, backUrl: backUrl]) + "'>取消</a>&nbsp;&nbsp;";
-                                    htmlTag += "<a href='" + createLink(controller: "staff", action: "doDish", params: [orderId: orderId], backUrl: backUrl) + "'>点菜</a>&nbsp;&nbsp;";
+                                    if(orderInfo.status>=OrderStatus.VERIFY_ORDERED_STATUS.code){
+                                        htmlTag += "<a href='" + createLink(controller: "staff", action: "addDishAfterOrderConfirmView", params: [orderId: orderId], backUrl: backUrl) + "'>加菜</a>&nbsp;&nbsp;";
+                                    }else{
+                                        htmlTag += "<a href='" + createLink(controller: "staff", action: "doDish", params: [orderId: orderId], backUrl: backUrl) + "'>点菜</a>&nbsp;&nbsp;";
+                                    }
                                 }
                                 if (orderInfo.status == OrderStatus.ORIGINAL_STATUS.code) {
                                     htmlTag += "<a href='" + createLink(controller: "staff", action: "completeDish", params: [orderId: orderId, backUrl: backUrl]) + "'>完成点菜</a>&nbsp;&nbsp;";

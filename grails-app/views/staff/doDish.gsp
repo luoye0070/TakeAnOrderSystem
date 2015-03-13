@@ -126,34 +126,34 @@
 
         }
 
-        %{--function delDish(dishId,orderId){--}%
-            %{--var delDishUrl="${createLink(controller: "staffAjax",action: "cancelAndDelDish")}";--}%
-            %{--$.ajax({--}%
-                %{--context:this,--}%
-                %{--url:delDishUrl,--}%
-                %{--async:false,--}%
-                %{--type:'post',--}%
-                %{--//data:{'orderId':orderId,countName:counts,remarkName:foodIds,'remarks':remarks},--}%
-                %{--data:"dishIds="+dishId,--}%
-                %{--dataType: 'json',--}%
-                %{--success:function(data){--}%
-                    %{--$("div[name='info']").html("");--}%
-                    %{--if(data.recode.code==0){--}%
-                        %{--//$("div[name='info']").html("<label style='height: 50px;line-height:50px;color: green'>点菜"+data.recode.label+"</label>");--}%
-                        %{--location.reload();--}%
-                    %{--}else{--}%
-                        %{--if(data.recode.code==5)--}%
-                            %{--$("div[name='info']").html("<label style='height: 50px;line-height:50px;color: red'>不成功："+data.failedList[0].msg+"</label>");--}%
-                        %{--else--}%
-                            %{--$("div[name='info']").html("<label style='height: 50px;line-height:50px;color: red'>不成功："+data.recode.label+"</label>");--}%
-                    %{--}--}%
-                %{--},--}%
-                %{--error:function(data){--}%
-                    %{--$("div[name='info']").html("<label style='height: 50px;line-height:50px;color: red'>"+"未知错误"+"</label>");--}%
-                %{--}--}%
-            %{--});--}%
+        function delDish(dishId,orderId){
+            var delDishUrl="${createLink(controller: "staffAjax",action: "delDish")}";
+            $.ajax({
+                context:this,
+                url:delDishUrl,
+                async:false,
+                type:'post',
+                //data:{'orderId':orderId,countName:counts,remarkName:foodIds,'remarks':remarks},
+                data:"dishIds="+dishId,//+"&orderId="+orderId,
+                dataType: 'json',
+                success:function(data){
+                    $("div[name='info']").html("");
+                    if(data.recode.code==0){
+                        //$("div[name='info']").html("<label style='height: 50px;line-height:50px;color: green'>点菜"+data.recode.label+"</label>");
+                        location.reload();
+                    }else{
+                        if(data.recode.code==5)
+                            $("div[name='info']").html("<label style='height: 50px;line-height:50px;color: red'>不成功："+data.failedList[0].msg+"</label>");
+                        else
+                            $("div[name='info']").html("<label style='height: 50px;line-height:50px;color: red'>不成功："+data.recode.label+"</label>");
+                    }
+                },
+                error:function(data){
+                    $("div[name='info']").html("<label style='height: 50px;line-height:50px;color: red'>"+"未知错误"+"</label>");
+                }
+            });
 
-        %{--}--}%
+        }
     </script>
 </head>
 
@@ -358,10 +358,10 @@
                         %{--dishesId="${dishesInfoInstance?.id}"></g:customerDishesOperation></td>--}%
                         <td>
                             %{--<g:if test="${isOwner}">--}%
-                                %{--<button onclick="delDish(${dishesInfoInstance?.id},${orderInfoInstance?.id})"--}%
-                                        %{--class="">删除</button>--}%
-                    <taos:staffDishesOperation dishesId="${dishesInfoInstance?.id}"
-                                               backUrl="${createLink(controller:"staff",action:  "doDish",params: params,absolute: true)}"/>
+                                <button onclick="delDish(${dishesInfoInstance?.id},${orderInfoInstance?.id})"
+                                        class="">删除</button>
+                    %{--<taos:staffDishesOperation dishesId="${dishesInfoInstance?.id}"--}%
+                                               %{--backUrl="${createLink(controller:"staff",action:  "doDish",params: params,absolute: true)}"/>--}%
                             %{--</g:if>--}%
                         </td>
                     </tr>
