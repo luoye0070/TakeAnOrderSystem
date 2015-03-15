@@ -9,6 +9,8 @@ import lj.data.DishesCollection
 import lj.data.DishesInfo
 import lj.data.FoodInfo
 import lj.data.OrderInfo
+import lj.data.ReserveOrderInfo
+import lj.data.RestaurantInfo
 import lj.data.TableInfo
 import lj.enumCustom.*
 import lj.mina.server.MinaServer
@@ -23,6 +25,7 @@ class CustomerOrderService {
     //MessageService messageService;
     //def userService;
     def clientService;
+    def shopService;
 
     def g = new org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib();
     /**
@@ -61,13 +64,36 @@ class CustomerOrderService {
                 }
             }
 
+            Date now = new Date();
             //检测桌位是否已经被预定
+            //从店铺属性中获取订单直接间隔
+            int intervalTime=60;//默认60分钟，单位分钟
+            def reInfo=shopService.getShopEnabled();
+            if(reInfo.recode!=ReCode.OK){
+                return reInfo;
+            }
+            if(reInfo.restaurantInfo.intervalTime){
+                intervalTime=reInfo.restaurantInfo.intervalTime;
+            }
+            Calendar calendar=Calendar.getInstance();
+            calendar.setTime(now);
+            calendar.add(Calendar.MINUTE,intervalTime*-1)
+            Date lowerDateTime=calendar.getTime();
+            println("lowerDateTime-->"+lowerDateTime.toLocaleString());
+            calendar.setTime(now);
+            calendar.add(Calendar.MINUTE,intervalTime)
+            Date upperDateTime=calendar.getTime();
+            println("upperDateTime-->"+upperDateTime.toLocaleString());
+            ReserveOrderInfo reserveOrderInfo=ReserveOrderInfo.findByTableInfoAndDinnerTimeBetweenAndValidAndStatus(it,lowerDateTime,upperDateTime,OrderValid.EFFECTIVE_VALID.code,ReserveOrderStatus.ORIGINAL_STATUS.code);
+            if(reserveOrderInfo){
+                return [recode: ReCode.TABLE_IS_RESERVED];
+            }
 
             orderInfo = new OrderInfo();
             orderInfo.clientInfo = clientInfo;
             orderInfo.tableInfo = tableInfo;
             orderInfo.partakeCode = ValidationCode.getAuthCodeStr(4, ValidationCode.NUMBER);
-            Date now = new Date();
+
             String orderNumStr = now.getTime() + ValidationCode.getAuthCodeStr(2, ValidationCode.NUMBER);
             long orderNum = Long.parseLong(orderNumStr);
             orderInfo.orderNum = orderNum;

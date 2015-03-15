@@ -82,6 +82,7 @@ public class ReCode {
     public final static def HAVE_ORDER_ALREADY=[code:-64,label:"有顾客正在该桌位上用餐"];
     public final static def NOT_ORDER_OWNER=[code:-65,label:"非该桌订单拥有者，不能做加菜操作"];
     public final static def NO_ADDITION_DISH=[code:-66,label:"没有加菜"];
+    public final static def TABLE_IS_RESERVED=[code:-67,label:"桌位已经被预定，请选择另一个桌位"];
 //    public Integer code
 //    public String label
 //
