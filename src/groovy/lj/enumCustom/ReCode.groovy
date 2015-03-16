@@ -83,6 +83,9 @@ public class ReCode {
     public final static def NOT_ORDER_OWNER=[code:-65,label:"非该桌订单拥有者，不能做加菜操作"];
     public final static def NO_ADDITION_DISH=[code:-66,label:"没有加菜"];
     public final static def TABLE_IS_RESERVED=[code:-67,label:"桌位已经被预定，请选择另一个桌位"];
+    public final static def PERSONCOUNT_MORE_THAN_TABLE_MAX=[code:-68,label:"用餐人数超过该桌位最大用餐人数"];
+    public final static def PERSONCOUNT_LESS_THAN_TABLE_MAN=[code:-69,label:"用餐人数不满该桌位最小用餐人数"];
+    public final static def CANNOT_DELETE_DISH=[code:-70,label:"订单当前状态或有效性下不能删除点菜"];
 //    public Integer code
 //    public String label
 //

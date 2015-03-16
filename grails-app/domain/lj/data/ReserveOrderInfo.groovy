@@ -37,7 +37,7 @@ class ReserveOrderInfo {
     //联系人
     String customerName;
     //点菜列表
-    List<DishesInfo> dishes;
+    List<ReserveDishesInfo> dishes;
     /*******************为了方便加的冗余数据*****************/
     //饭店Name
     String restaurantName;
@@ -46,7 +46,7 @@ class ReserveOrderInfo {
     //桌位
     String tableName;
 
-    static hasMany = [dishes:DishesInfo];
+    static hasMany = [dishes:ReserveDishesInfo];
     static constraints = {
         clientInfo(nullable: true)
         tableInfo(nullable: false)

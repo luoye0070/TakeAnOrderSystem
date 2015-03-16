@@ -44,7 +44,7 @@ class CustomerOrderService {
             webUtilService.setTableCode(params.code);
         }
         String code = webUtilService.getTableCode();
-        TableInfo tableInfo = TableInfo.findByCode(code);
+        TableInfo tableInfo = TableInfo.findByCodeAndEnabled(code,true);
         if (tableInfo == null) {
             return [recode: ReCode.TABLE_NOT_EXIST];
         }
