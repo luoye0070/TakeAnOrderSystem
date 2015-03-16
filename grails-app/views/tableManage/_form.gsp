@@ -29,13 +29,13 @@
     </div>
 </div>
 
-<div class="control-group">
-    <label class="control-label" for="canMultiOrder"><g:message code="tableInfo.canMultiOrder.label" default="Can Multi Order" />
-    </label>
-    <div class="controls">
-        <g:checkBox name="canMultiOrder" value="${tableInfoInstance?.canMultiOrder}" />
-    </div>
-</div>
+%{--<div class="control-group">--}%
+    %{--<label class="control-label" for="canMultiOrder"><g:message code="tableInfo.canMultiOrder.label" default="Can Multi Order" />--}%
+    %{--</label>--}%
+    %{--<div class="controls">--}%
+        %{--<g:checkBox name="canMultiOrder" value="${tableInfoInstance?.canMultiOrder}" />--}%
+    %{--</div>--}%
+%{--</div>--}%
 
 <div class="control-group">
     <label class="control-label" for="canReserve"><g:message code="tableInfo.canReserve.label" default="Can Reserve" />

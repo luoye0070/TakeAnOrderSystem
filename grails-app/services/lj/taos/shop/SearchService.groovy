@@ -115,7 +115,7 @@ class SearchService {
         def tableListTemp = TableInfo.createCriteria().list(params, condition);
         def totalCount = TableInfo.createCriteria().count(condition);
         def tableList = tableListTemp.collect {//检查是否可以使用
-            if (!it.canMultiOrder) {//不支持多单共桌
+//            if (!it.canMultiOrder) {//不支持多单共桌
                 //检查桌号是否被占
 //                Date date = null;
 //                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -129,6 +129,10 @@ class SearchService {
                 int orderCount = 0;
                 println("dateTime-->"+dateTime);
                 long tableId= it.id;
+                OrderInfo orderInfo=OrderInfo.findByTableInfoAndValidAndStatusLessThan(it,OrderValid.EFFECTIVE_VALID.code,OrderStatus.CHECKOUTED_STATUS.code);
+                if(orderInfo){
+                    orderCount=1;
+                }
 //                ReserveTypeInfo reserveTypeInfo=ReserveTypeInfo.findByRestaurantIdAndReserveType(lj.Number.toLong(params.restaurantId),reserveType);
                 if (dateTime) {
 //                    orderCount = OrderInfo.createCriteria().count() {
@@ -149,9 +153,9 @@ class SearchService {
                 } else {
                     [canUse: true, tableInfo: it];
                 }
-            } else {
-                [canUse: true, tableInfo: it];
-            }
+//            } else {
+//                [canUse: true, tableInfo: it];
+//            }
         }
 
 //        //根据预定类型查出饭店对应的时间

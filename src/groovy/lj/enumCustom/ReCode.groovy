@@ -79,6 +79,13 @@ public class ReCode {
     public final static def CAN_NOT_CHANGE_TABLE=[code:-62,label:"你点的菜已在做或者已上菜，当前不能换桌"];
     public final static def WRONG_PARTAKECODE=[code:-63,label:"点菜参与码错误,请重新输入"];
     public final static def NO_PARTAKECODE=[code:-63,label:"没有点菜参与码,请输入点菜参与码"];
+    public final static def HAVE_ORDER_ALREADY=[code:-64,label:"有顾客正在该桌位上用餐"];
+    public final static def NOT_ORDER_OWNER=[code:-65,label:"非该桌订单拥有者，不能做加菜操作"];
+    public final static def NO_ADDITION_DISH=[code:-66,label:"没有加菜"];
+    public final static def TABLE_IS_RESERVED=[code:-67,label:"桌位已经被预定，请选择另一个桌位"];
+    public final static def PERSONCOUNT_MORE_THAN_TABLE_MAX=[code:-68,label:"用餐人数超过该桌位最大用餐人数"];
+    public final static def PERSONCOUNT_LESS_THAN_TABLE_MAN=[code:-69,label:"用餐人数不满该桌位最小用餐人数"];
+    public final static def CANNOT_DELETE_DISH=[code:-70,label:"订单当前状态或有效性下不能删除点菜"];
 //    public Integer code
 //    public String label
 //
