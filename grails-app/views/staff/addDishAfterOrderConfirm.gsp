@@ -242,9 +242,9 @@
 <!--菜品类别列表-->
 <div>
     <ul class="breadcrumb">
-        <li class="active"><a href="${createLink(controller: "customer",action: "getOrCreateOrder",params: [foodClassId:0]<<params)}">全部</a></li>
+        <li class="active"><a href="${createLink(controller: "customer",action: "getOrCreateOrder",params:params<< [foodClassId:0])}">全部</a></li>
         <g:each in="${foodClassInfoInstanceList}" status="i" var="foodClassInfoInstance">
-            <li><a href="${createLink(controller: "customer",action: "getOrCreateOrder",params: [foodClassId:foodClassInfoInstance.id]<<params)}">${foodClassInfoInstance.name}</a></li>
+            <li><a href="${createLink(controller: "customer",action: "getOrCreateOrder",params: params<<[foodClassId:foodClassInfoInstance.id])}">${foodClassInfoInstance.name}</a></li>
         </g:each>
     </ul>
 </div>

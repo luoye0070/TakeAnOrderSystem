@@ -8,7 +8,7 @@ import lj.enumCustom.OrderType
 class ReserveDishesInfo {
 
     //订单ID
-    ReserveOrderInfo order;
+    //ReserveOrderInfo reserveOrderInfo;
     //菜单Id
     FoodInfo food;
     //备注
@@ -29,7 +29,7 @@ class ReserveDishesInfo {
     String tableName;
 
     static constraints = {
-        order(nullable: false)
+        //reserveOrderInfo(nullable: false)
         food(nullable: false)
         remark(nullable: true, blank: true, maxSize: 256);
         num(nullable: false, min: 1);
@@ -45,7 +45,7 @@ class ReserveDishesInfo {
     public java.lang.String toString() {
         return "ReserveDishesInfo{" +
                 "id=" + id +
-                ", order=" + order +
+                //", reserveOrderInfo=" + reserveOrderInfo +
                 ", food=" + food +
                 ", remark='" + remark + '\'' +
                 ", num=" + num +

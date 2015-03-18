@@ -129,7 +129,7 @@
     </style>
     <script type="text/javascript">
         function doDish(obj,foodId,orderId){
-            var doDishUrl="${createLink(controller: "customer",action: "addDishAfterOrderConfirmAjax")}";
+            var doDishUrl="${createLink(controller: "reserveCustomer",action: "dishAjax")}";
             var selectVar="#counts"+foodId;
             var countVal=$(obj).parent().parent().find("input[name='counts']").val();
             selectVar="#remarks"+foodId;
@@ -142,7 +142,7 @@
                 async:false,
                 type:'post',
                 //data:{'orderId':orderId,countName:counts,remarkName:foodIds,'remarks':remarks},
-                data:"orderId="+orderId+"&"+countName+"="+countVal+"&"+remarkName+"="+remarkVal+"&foodIds="+foodId,
+                data:"reserveOrderId="+orderId+"&"+countName+"="+countVal+"&"+remarkName+"="+remarkVal+"&foodIds="+foodId,
                 dataType: 'json',
                 success:function(data){
                     $("div[name='info']").html("");
@@ -164,14 +164,14 @@
         }
 
         function delDish(dishId,orderId){
-            var delDishUrl="${createLink(controller: "customer",action: "delDishAfterOrderConfirmAjax")}";
+            var delDishUrl="${createLink(controller: "reserveCustomer",action: "delDishAjax")}";
             $.ajax({
                 context:this,
                 url:delDishUrl,
                 async:false,
                 type:'post',
                 //data:{'orderId':orderId,countName:counts,remarkName:foodIds,'remarks':remarks},
-                data:"dishIds="+dishId+"&orderId="+orderId,
+                data:"dishIds="+dishId+"&reserveOrderId="+orderId,
                 dataType: 'json',
                 success:function(data){
                     $("div[name='info']").html("");
@@ -196,7 +196,7 @@
 <body>
 <div class="mc_main">
 <div class="mcm_top">
-    <div class="mcm_top_name">订单${orderInfo?.numInRestaurant}-点菜</div>
+    <div class="mcm_top_name">订单${reserveOrderInfo?.numInRestaurant}-点菜</div>
 
     <div class="mcm_top_banner"></div>
 </div>
@@ -208,29 +208,23 @@
 <!--订单简要信息-->
 <div class="mcmc_ssl" style="margin-left: 10px;margin-top: 0px;">
     <form class="well form-inline">
-        <g:if test="${orderInfo}">
-            <g:if test="${orderInfo?.numInRestaurant}">
-                <g:message code="orderInfo.numInRestaurant.label" default="Number In Restaurant"/> :
-                ${orderInfo?.numInRestaurant}
+        <g:if test="${reserveOrderInfo}">
+            <g:if test="${reserveOrderInfo?.numInRestaurant}">
+                <g:message code="reserveOrderInfo.numInRestaurant.label" default="Number In Restaurant"/> :
+                ${reserveOrderInfo?.numInRestaurant}
             </g:if>
 
             &nbsp;&nbsp;
-            <g:if test="${orderInfo?.tableInfo}">
-                <g:message code="orderInfo.tableInfo.label"
+            <g:if test="${reserveOrderInfo?.tableInfo}">
+                <g:message code="reserveOrderInfo.tableInfo.label"
                            default="Table Name"/>:
-                ${orderInfo.tableInfo.name}
+                ${reserveOrderInfo.tableInfo.name}
             </g:if>
             &nbsp;&nbsp;
-            <g:if test="${orderInfo?.waiter}">
-                <g:message code="orderInfo.waiter.label"
+            <g:if test="${reserveOrderInfo?.waiter}">
+                <g:message code="reserveOrderInfo.waiter.label"
                            default="Waiter"/>:
-                ${orderInfo.waiter.name}
-            </g:if>
-            &nbsp;&nbsp;
-            <g:if test="${orderInfo?.partakeCode}">
-                <g:message code="orderInfo.partakeCode.label"
-                           default="Partake Code"/>：<g:fieldValue
-                    bean="${orderInfo}" field="partakeCode"/>
+                ${reserveOrderInfo.waiter.name}
             </g:if>
             &nbsp;&nbsp;
         </g:if>
@@ -242,9 +236,9 @@
 <!--菜品类别列表-->
 <div>
     <ul class="breadcrumb">
-        <li class="active"><a href="${createLink(controller: "customer",action: "getOrCreateOrder",params: params<<[foodClassId:0])}">全部</a></li>
+        <li class="active"><a href="${createLink(controller: "reserveCustomer",action: "dishOfReserveOrder",params: params<<[foodClassId:0])}">全部</a></li>
         <g:each in="${foodClassInfoInstanceList}" status="i" var="foodClassInfoInstance">
-            <li><a href="${createLink(controller: "customer",action: "getOrCreateOrder",params: params<<[foodClassId:foodClassInfoInstance.id])}">${foodClassInfoInstance.name}</a></li>
+            <li><a href="${createLink(controller: "reserveCustomer",action: "dishOfReserveOrder",params: params<<[foodClassId:foodClassInfoInstance.id])}">${foodClassInfoInstance.name}</a></li>
         </g:each>
     </ul>
 </div>
@@ -298,7 +292,7 @@
                             %{--foodId="${foodInfoInstance?.id}">--}%
                             %{--加入外卖餐车</a>--}%
                             %{--</g:if>--}%
-                            <button onclick="doDish(this,${foodInfoInstance?.id},${orderInfo?.id})"
+                            <button onclick="doDish(this,${foodInfoInstance?.id},${reserveOrderInfo?.id})"
                                     class="">点一个</button>
                             %{--<a style="float: left;" href="#"--}%
                             %{--addToOrder="true"--}%
@@ -312,7 +306,7 @@
                 </li>
             </g:each>
         </ul>
-        <taos:paginate total="${totalCount ?: 0}" prev="&larr;" next="&rarr;" params="${params}" action="getOrCreateOrder"/>
+        <taos:paginate total="${totalCount ?: 0}" prev="&larr;" next="&rarr;" params="${params}" action="dishOfReserveOrder"/>
     </g:if>
     <g:else>
         <div style="margin: 0px auto;">
@@ -328,15 +322,11 @@
 
         <div class="mcmcdt_info">点菜信息</div>
     </div>
-    <g:if test="${dishList}">
+    <g:if test="${reserveOrderInfo?.dishes}">
     %{--<div>--}%
         <table class="table table-striped table-bordered table-condensed">
             <thead>
             <tr>
-
-                <g:sortableColumn property="orderId"
-                                  title="${message(code: 'dishesInfo.orderId.label', default: 'Order Id')}"
-                                  params="${params}"/>
 
                 <g:sortableColumn property="foodId"
                                   title="${message(code: 'dishesInfo.foodId.label', default: 'Food Id')}"
@@ -347,13 +337,6 @@
                                   params="${params}"/>
 
                 <g:sortableColumn property="num" title="${message(code: 'dishesInfo.num.label', default: 'num')}"
-                                  params="${params}"/>
-
-                <g:sortableColumn property="status"
-                                  title="${message(code: 'dishesInfo.status.label', default: 'Status')}"
-                                  params="${params}"/>
-
-                <g:sortableColumn property="valid" title="${message(code: 'dishesInfo.valid.label', default: 'Valid')}"
                                   params="${params}"/>
 
                 %{--<g:sortableColumn property="cancelReason"--}%
@@ -368,32 +351,24 @@
             </tr>
             </thead>
             <tbody>
-            <g:each in="${dishList}" status="i" var="dishesInfoInstance">
+            <g:each in="${reserveOrderInfo?.dishes}" status="i" var="reserveDishesInfo">
                 <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
-                    <td>${fieldValue(bean: dishesInfoInstance, field: "orderId")}</td>
+                    <td>${fieldValue(bean: reserveDishesInfo, field: "foodId")}</td>
 
-                    <td>${fieldValue(bean: dishesInfoInstance, field: "foodId")}</td>
+                    <td>${fieldValue(bean: reserveDishesInfo, field: "foodName")}</td>
 
-                    <td>${fieldValue(bean: dishesInfoInstance, field: "foodName")}</td>
+                    <td>${fieldValue(bean: reserveDishesInfo, field: "num")}</td>
 
-                    <td>${fieldValue(bean: dishesInfoInstance, field: "num")}</td>
+                    %{--<td>${fieldValue(bean: reserveDishesInfo, field: "cancelReason")}</td>--}%
 
-                    <td>${DishesStatus.getLable(dishesInfoInstance?.status)}</td>
-
-                    <td>${DishesValid.getLable(dishesInfoInstance?.valid)}</td>
-
-                    %{--<td>${fieldValue(bean: dishesInfoInstance, field: "cancelReason")}</td>--}%
-
-                    <td>${fieldValue(bean: dishesInfoInstance, field: "remark")}</td>
+                    <td>${fieldValue(bean: reserveDishesInfo, field: "remark")}</td>
 
                     %{--<td><g:customerDishesOperation--}%
-                    %{--dishesId="${dishesInfoInstance?.id}"></g:customerDishesOperation></td>--}%
+                    %{--dishesId="${reserveDishesInfo?.id}"></g:customerDishesOperation></td>--}%
                     <td>
-
-                            <button onclick="delDish(${dishesInfoInstance?.id},${orderInfo?.id})"
+                            <button onclick="delDish(${reserveDishesInfo?.id},${reserveOrderInfo?.id})"
                                     class="">删除</button>
-
                     </td>
                 </tr>
             </g:each>
@@ -410,20 +385,6 @@
         </div>
     </g:else>
 </div>
-<!--完成点菜-->
-    <div class="span11">
-        <form class="form-horizontal" method="POST" id="cancel_form" action="orderConfirmAfterOrderConfirm">
-            <div class="control-group">
-                <label class="control-label"></label>
-                <input type="hidden" name="orderId" value="${orderInfo?.id}"/>
-                <input type="hidden" name="code" value="${params.code}"/>
-                <div class="controls">
-                    <input type="submit" value="${message(code: 'default.button.confirmDishAdd.label', default: '确认加菜')}"
-                           class="btn send_btn"/>
-                </div>
-            </div>
-        </form>
-    </div>
 </div>
 </body>
 </html>

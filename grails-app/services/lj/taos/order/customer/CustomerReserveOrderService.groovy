@@ -50,6 +50,11 @@ class CustomerReserveOrderService {
 
         Calendar calendar=Calendar.getInstance();
         calendar.setTime(dinnerTime);
+        Calendar calendar1=Calendar.getInstance();
+        calendar1.setTime(new Date());
+        if(calendar.before(calendar1)){
+            return [recode:ReCode.BEFORE_NOW];
+        }
         calendar.add(Calendar.MINUTE,intervalTime*-1)
         Date lowerDateTime=calendar.getTime();
         println("lowerDateTime-->"+lowerDateTime.toLocaleString());
@@ -114,6 +119,11 @@ class CustomerReserveOrderService {
         }
         Calendar calendar=Calendar.getInstance();
         calendar.setTime(dinnerTime);
+        Calendar calendar1=Calendar.getInstance();
+        calendar1.setTime(new Date());
+        if(calendar.before(calendar1)){
+            return [recode:ReCode.BEFORE_NOW];
+        }
         calendar.add(Calendar.MINUTE,intervalTime*-1)
         Date lowerDateTime=calendar.getTime();
         println("lowerDateTime-->"+lowerDateTime.toLocaleString());
@@ -138,7 +148,9 @@ class CustomerReserveOrderService {
         reserveOrderInfoNew.clientInfo=clientService.getClient();
         reserveOrderInfoNew.dinnerTime=dinnerTime;
         Date now=new Date();
-        reserveOrderInfoNew.orderNum= now.getTime() + ValidationCode.getAuthCodeStr(2, ValidationCode.NUMBER);
+        String orderNumStr = now.getTime() + ValidationCode.getAuthCodeStr(2, ValidationCode.NUMBER);
+        long orderNum = Long.parseLong(orderNumStr);
+        reserveOrderInfoNew.orderNum= orderNum;
         //获取订单店内编号最大值
         String sqlStr = "select max(numInRestaurant) from ReserveOrderInfo";
         def result = OrderInfo.executeQuery(sqlStr);
@@ -210,7 +222,7 @@ class CustomerReserveOrderService {
 
         //创建点菜记录
         ReserveDishesInfo reserveDishesInfo = new ReserveDishesInfo();
-        reserveDishesInfo.order = reserveOrderInfo;
+        //reserveDishesInfo.reserveOrderInfo = reserveOrderInfo;
         reserveDishesInfo.food = foodInfo;
         reserveDishesInfo.num = foodCount;
         reserveDishesInfo.remark = remark;//备注
