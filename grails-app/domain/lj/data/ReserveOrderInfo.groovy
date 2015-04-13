@@ -13,7 +13,7 @@ class ReserveOrderInfo {
     //桌位
     TableInfo tableInfo;
     //有效性
-    Integer valid = OrderValid.EFFECTIVE_VALID.code;
+    int valid = OrderValid.EFFECTIVE_VALID.code;
     //状态,0初始态，1已到店
     int status=ReserveOrderStatus.ORIGINAL_STATUS.code;
     //饭店取消原因
@@ -60,7 +60,7 @@ class ReserveOrderInfo {
         personCount(nullable: true);
         createTime(nullable: false);
         dinnerTime(nullable: false);
-        phone(nullable: true,blank: true,maxSize: 16 ,validator: {
+        phone(nullable: false,blank: false,maxSize: 16 ,validator: {
             if (it) {
                 if (!StrCheckUtil.chkStrFormat(it, "phone")) {
                     return ["formatError"]
