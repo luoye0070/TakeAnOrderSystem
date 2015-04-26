@@ -84,7 +84,7 @@ class CustomerOrderService {
             calendar.add(Calendar.MINUTE,intervalTime)
             Date upperDateTime=calendar.getTime();
             println("upperDateTime-->"+upperDateTime.toLocaleString());
-            ReserveOrderInfo reserveOrderInfo=ReserveOrderInfo.findByTableInfoAndDinnerTimeBetweenAndValidAndStatus(it,lowerDateTime,upperDateTime,OrderValid.EFFECTIVE_VALID.code,ReserveOrderStatus.ORIGINAL_STATUS.code);
+            ReserveOrderInfo reserveOrderInfo=ReserveOrderInfo.findByTableInfoAndDinnerTimeBetweenAndValidAndStatus(tableInfo,lowerDateTime,upperDateTime,OrderValid.EFFECTIVE_VALID.code,ReserveOrderStatus.ORIGINAL_STATUS.code);
             if(reserveOrderInfo){
                 return [recode: ReCode.TABLE_IS_RESERVED];
             }
