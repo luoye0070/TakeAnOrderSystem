@@ -35,7 +35,7 @@ public class ReCode {
     public final static def ORDER_CANNOT_CAST_ACCOUNT=[code:-17,label:"订单当前状态或有效性下不能算账"];
     public final static def DENIED_USER=[code:-18,label:"非法用户"];
     public final static def NO_RESTAURANTINFO=[code:-19,label:"饭店不存在或不可用"];
-    public final static def NOT_REGISTER_RESTAURANT=[code:-20,label:"您还没有注册饭店"];
+    public final static def NOT_CREATE_RESTAURANT=[code:-20,label:"还没有创建饭店"];
     public final static def SHOP_NOT_ENABLED=[code:-21,label:"饭店关闭了"];
     public final static def SHOP_VERIFY_NOT_PASS=[code:-22,label:"饭店审核没有通过"];
     public final static def SHOP_WAIT_VERIFY=[code:-23,label:"饭店等待审核中"];
@@ -65,7 +65,7 @@ public class ReCode {
     public final static def NO_RESERVE_TABLE=[code:-48,label:"请选择预定的桌位"];
     public final static def OVER_RESERVE_DATE=[code:-49,label:"预定日期已经过了"];
     public final static def NOT_GET_PHONE_NUM=[code:-50,label:"没有获取到手机号"];
-    public final static def NO_CLIENT_OR_NOT_LOGIN=[code:-51,label:"没有客户端信息或没有登录"];
+    public final static def NO_CLIENT=[code:-51,label:"没有客户端信息"];
     public final static def NO_VALID_ADDRESS=[code:-52,label:"没有有效地址"];
     public final static def FOOD_NOT_EXIST=[code:-53,label:"食品不存在"];
     public final static def FOOD_CAN_NOT_TAKE_OUT=[code:-54,label:"食品不能外卖"];
@@ -73,6 +73,22 @@ public class ReCode {
     public final static def NO_RECORD=[code:-56,label:"没有记录"];
     public final static def NO_CARTS=[code:-57,label:"没有餐车记录"];
     public final static def SYSTEM_EXCEPTION = [code:-58, label:"系统异常"];
+    public final static def NO_FOODCLASSTINFO=[code:-59,label:"没有找到相关的菜品类别"];
+    public final static def PASSWORD_DIFFERENCE=[code:-60,label:"两次输入的密码不一致！"];
+    public final static def ORDER_CANNOT_BACKTODISH_DISH=[code:-61,label:"订单当前状态或有效性下不能做退回点菜操作"];
+    public final static def CAN_NOT_CHANGE_TABLE=[code:-62,label:"你点的菜已在做或者已上菜，当前不能换桌"];
+    public final static def WRONG_PARTAKECODE=[code:-63,label:"点菜参与码错误,请重新输入"];
+    public final static def NO_PARTAKECODE=[code:-63,label:"没有点菜参与码,请输入点菜参与码"];
+    public final static def HAVE_ORDER_ALREADY=[code:-64,label:"有顾客正在该桌位上用餐"];
+    public final static def NOT_ORDER_OWNER=[code:-65,label:"非该桌订单拥有者，不能做加菜操作"];
+    public final static def NO_ADDITION_DISH=[code:-66,label:"没有加菜"];
+    public final static def TABLE_IS_RESERVED=[code:-67,label:"桌位已经被预定，请选择另一个桌位"];
+    public final static def PERSONCOUNT_MORE_THAN_TABLE_MAX=[code:-68,label:"用餐人数超过该桌位最大用餐人数"];
+    public final static def PERSONCOUNT_LESS_THAN_TABLE_MAN=[code:-69,label:"用餐人数不满该桌位最小用餐人数"];
+    public final static def CANNOT_DELETE_DISH=[code:-70,label:"订单当前状态或有效性下不能删除点菜"];
+    public final static def BEFORE_NOW=[code:-71,label:"到店时间不能在现在之前哦"];
+    public final static def RESERVE_ORDER_CANNOT_CANCEL=[code:-72,label:"订单当前状态或有效性下不能取消订单"];
+    public final static def RESERVE_ORDER_CANNOT_REACH=[code:-73,label:"取消订单不能做到店操作"];
 //    public Integer code
 //    public String label
 //

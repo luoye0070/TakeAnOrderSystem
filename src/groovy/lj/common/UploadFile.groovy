@@ -46,7 +46,8 @@ class UploadFile {
             fos.close();
             //is = null;
             fos = null;
-            fileFullName = filePath + fileName;
+            //fileFullName = filePath + fileName;
+            fileFullName = fileName;
         } catch (IOException exception) {
             exception.printStackTrace()
         } finally {
@@ -74,6 +75,10 @@ class UploadFile {
     //从文件系统删除文件
     public static boolean deleteFromFileSystem(String fileFullName) {
         try {
+            // 获取系统默认文件路径分隔符
+            def separator = System.getProperty("file.separator");
+            def filePath = bootPath+"uploadFile" + separator;
+            fileFullName=filePath+fileFullName;
             File file = new File(fileFullName);
             return file.delete();
         }
@@ -87,6 +92,10 @@ class UploadFile {
         FileInputStream fis = null;
         int recode = 0;
         try {
+            // 获取系统默认文件路径分隔符
+            def separator = System.getProperty("file.separator");
+            def filePath = bootPath+"uploadFile" + separator;
+            fileFullName=filePath+fileFullName;
             fis = new FileInputStream(fileFullName);
             byte[] buff = new byte[4 * 1024];
             int count = -1;
@@ -117,6 +126,10 @@ class UploadFile {
         int recode = 0;
         BufferedImage originalImage = null;
         try {
+            // 获取系统默认文件路径分隔符
+            def separator = System.getProperty("file.separator");
+            def filePath = bootPath+"uploadFile" + separator;
+            fileFullName=filePath+fileFullName;
             println("fileFullName-->"+fileFullName);
             fis = new FileInputStream(fileFullName);
             originalImage = ImageIO.read(fis);

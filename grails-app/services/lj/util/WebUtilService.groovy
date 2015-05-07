@@ -1,5 +1,6 @@
 package lj.util
 
+import lj.data.StaffInfo
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsWebRequest
 import org.codehaus.groovy.grails.web.util.WebUtils
@@ -111,5 +112,72 @@ class WebUtilService {
     //获取sessionID
     def getSessionId(){
         return session.id;
+    }
+
+    //设置是否手机访问
+    def setMobileRequest(){
+        session.mobileRequest=true;
+    }
+    //设置不是手机访问
+    def setNotMobileRequest(){
+        session.mobileRequest=false;
+    }
+    //获取是否是移动设备访问
+    def isMobileRequest(){
+        if(session.mobileRequest!=null&&session.mobileRequest==true){
+            return true;
+        }
+        return false;
+    }
+    //获取session中是否设置了访问方式
+    def isHaveSetRequest(){
+        if(session.mobileRequest!=null){
+            return true;
+        }
+        return false;
+    }
+    //根据session中标志返回桌面视图或是移动设备视图
+    def getView(String viewName){
+        if(session.mobileRequest!=null&&session.mobileRequest==true){
+            return viewName+"Mobile";
+        }
+        return viewName;
+    }
+
+    //设置工作人员
+    def setStaff(StaffInfo staffInfo){
+        session.staffId=staffInfo.id;
+    }
+    //获取工作人员ID
+    def getStaffId(){
+        long staffId=lj.Number.toLong(session.staffId);
+        return staffId;
+    }
+    //获取工作人员
+    def getStaff(){
+        long staffId=lj.Number.toLong(session.staffId);
+        StaffInfo staffInfo=StaffInfo.get(staffId);
+        return staffInfo;
+    }
+    //判定工作人员是否登录
+    Boolean isStaffLoggedIn(){
+        return (session.staffId!=null)
+    }
+
+    //设置点菜参与码到session
+    def setPartakeCode(String partakeCode){
+        session.partakeCode=partakeCode;
+    }
+    //获取点菜参与码
+    String getPartakeCode(){
+        return session.partakeCode;
+    }
+    //设置桌位Code到session
+    def setTableCode(String code){
+        session.tableCode=code;
+    }
+    //获取桌位code
+    String getTableCode(){
+        return session.tableCode;
     }
 }

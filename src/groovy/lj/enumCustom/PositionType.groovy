@@ -11,10 +11,10 @@ package lj.enumCustom
 public enum PositionType {
     SHOPKEEPER(0,'店主'),
     WAITER(1,'服务员'),
-    WAITER_HEADER(2,'服务员总管'),
+    //WAITER_HEADER(2,'服务员总管'),
     COOK(3,'厨师'),
     BAD_TYPE(4,'收银员') ,
-    ORDER_TAKER(5,"送餐员"),
+    //ORDER_TAKER(5,"送餐员"),
     CLEANER(6,'清洁工')
 
     public Integer code
@@ -30,14 +30,14 @@ public enum PositionType {
                 return SHOPKEEPER;
             case 1:
                 return WAITER;
-            case 2:
-                return WAITER_HEADER;
+//            case 2:
+//                return WAITER_HEADER;
             case 3:
                 return COOK;
             case 4:
                 return BAD_TYPE;
-            case 5:
-                return ORDER_TAKER;
+//            case 5:
+//                return ORDER_TAKER;
             case 6:
                 return CLEANER;
             default:
@@ -45,5 +45,6 @@ public enum PositionType {
         }
     }
 
-    public static PositionType [] positionTypes=[WAITER,WAITER_HEADER,COOK,BAD_TYPE,ORDER_TAKER,CLEANER];
+    //public static PositionType [] positionTypes=[WAITER,WAITER_HEADER,COOK,BAD_TYPE,ORDER_TAKER,CLEANER];
+    public static PositionType [] positionTypes=[WAITER,COOK,BAD_TYPE,CLEANER];
 }

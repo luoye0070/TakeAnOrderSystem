@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="orderList" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f40db104-aa55-46be-a7cf-c3d8fa0b9655">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="79"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="b20e2cee-ff47-4b40-a139-dd5c8159bd11"/>
+	<parameter name="beginDate" class="java.lang.String"/>
+	<parameter name="endDate" class="java.lang.String"/>
+	<parameter name="reserveType" class="java.lang.String"/>
+	<parameter name="valid" class="java.lang.String"/>
+	<parameter name="status" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["F:\\program\\canmeng\\src\\reports\\"]]></defaultValueExpression>
+	</parameter>
+	<field name="orderID" class="java.lang.Long"/>
+	<field name="userName" class="java.lang.String"/>
+	<field name="table" class="java.lang.String"/>
+	<field name="restaurantName" class="java.lang.String"/>
+	<field name="date" class="java.lang.String"/>
+	<field name="time" class="java.lang.String"/>
+	<field name="valid" class="java.lang.String"/>
+	<field name="status" class="java.lang.String"/>
+	<field name="reserveType" class="java.lang.String"/>
+	<field name="total" class="java.lang.Double"/>
+	<field name="foodName" class="java.lang.String"/>
+	<field name="num" class="java.lang.Integer"/>
+	<field name="status1" class="java.lang.String"/>
+	<field name="valid1" class="java.lang.String"/>
+	<field name="price" class="java.lang.Double"/>
+	<variable name="group_sum" class="java.lang.Double" resetType="Group" resetGroup="g_orderID" calculation="Sum">
+		<variableExpression><![CDATA[$F{price}]]></variableExpression>
+	</variable>
+	<variable name="group_orderID" class="java.lang.Long" resetType="Group" resetGroup="g_orderID" calculation="First">
+		<variableExpression><![CDATA[$F{orderID}]]></variableExpression>
+	</variable>
+	<variable name="group_userName" class="java.lang.String" resetType="Group" resetGroup="g_orderID" calculation="First">
+		<variableExpression><![CDATA[$F{userName}]]></variableExpression>
+	</variable>
+	<variable name="group_table" class="java.lang.String" resetType="Group" resetGroup="g_orderID" calculation="First">
+		<variableExpression><![CDATA[$F{table}]]></variableExpression>
+	</variable>
+	<variable name="group_date" class="java.lang.String" resetType="Group" resetGroup="g_orderID" calculation="First">
+		<variableExpression><![CDATA[$F{date}]]></variableExpression>
+	</variable>
+	<variable name="group_time" class="java.lang.String" resetType="Group" resetGroup="g_orderID" calculation="First">
+		<variableExpression><![CDATA[$F{time}]]></variableExpression>
+	</variable>
+	<variable name="group_valid" class="java.lang.String" resetType="Group" resetGroup="g_orderID" calculation="First">
+		<variableExpression><![CDATA[$F{valid}]]></variableExpression>
+	</variable>
+	<variable name="group_status" class="java.lang.String" resetType="Group" resetGroup="g_orderID" calculation="First">
+		<variableExpression><![CDATA[$F{status}]]></variableExpression>
+	</variable>
+	<variable name="group_reserveType" class="java.lang.String" resetType="Group" resetGroup="g_orderID" calculation="First">
+		<variableExpression><![CDATA[$F{reserveType}]]></variableExpression>
+	</variable>
+	<group name="g_orderID">
+		<groupExpression><![CDATA[$F{orderID}]]></groupExpression>
+		<groupHeader>
+			<band height="41">
+				<staticText>
+					<reportElement uuid="a07aa033-00d5-47a2-ac19-4cfee41e302d" x="196" y="20" width="110" height="20"/>
+					<box>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[菜名]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="a07aa033-00d5-47a2-ac19-4cfee41e302d" x="306" y="20" width="38" height="20"/>
+					<box>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[份数]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="a07aa033-00d5-47a2-ac19-4cfee41e302d" x="344" y="20" width="79" height="20"/>
+					<box>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[点菜状态]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="a07aa033-00d5-47a2-ac19-4cfee41e302d" x="423" y="20" width="73" height="20"/>
+					<box>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[点菜有效性]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="326d5d88-7490-4e36-8a69-ca7067c7ce03" x="496" y="19" width="59" height="21"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[单价]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="d6392fad-adde-4167-8bc3-6c977007267b" x="497" y="-1" width="58" height="20"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{group_sum}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="50"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="56" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="205a392c-dacd-441d-80ac-745d364e953a" x="0" y="0" width="555" height="22"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[订单列表]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement uuid="bb4cec8a-c604-40a0-800f-14d9b555d957" x="455" y="36" width="100" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="eeee157c-6475-403f-bb91-a808e66a3277" x="2" y="36" width="82" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{beginDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3be5fbb0-5fd0-4c02-89f3-b243518d07ce" x="94" y="36" width="84" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{endDate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="019ba794-8545-4b51-aab3-92c2987fee83" x="84" y="36" width="10" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[--]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fcbbf9cb-6e24-48c6-b97f-65a4e363319f" x="344" y="36" width="50" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[预订类别：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0fe5283d-0565-4952-bdd0-e21d7aa82c5b" x="266" y="36" width="40" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[有效性：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="13500909-83a4-46d7-890a-f9ed12e5f203" x="178" y="36" width="30" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[状态：]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="52d56419-0c0b-44ff-b6f7-7b706bee6c3a" x="394" y="36" width="61" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{reserveType}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d33b8c27-27b1-47c7-a2fe-3bd771788042" x="306" y="36" width="38" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{valid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="85f1af2d-d434-4a0e-ac63-7e4f70b55c9d" x="208" y="36" width="58" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{status}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="10265230-11cc-44e8-b3c6-759603bef9bd" x="1" y="1" width="46" height="18"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[订单id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9e8ebbe3-1fb4-4853-a4eb-f07ea2b4a498" x="47" y="1" width="69" height="18"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[用户]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="90194ed9-7202-4a5a-aa43-2baeff72facd" x="116" y="1" width="57" height="18"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[桌位]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a07aa033-00d5-47a2-ac19-4cfee41e302d" x="173" y="1" width="64" height="18"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[用餐日期]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="326d5d88-7490-4e36-8a69-ca7067c7ce03" x="237" y="1" width="63" height="18"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[用餐时间]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="326d5d88-7490-4e36-8a69-ca7067c7ce03" x="300" y="1" width="65" height="18"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[有效性]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="326d5d88-7490-4e36-8a69-ca7067c7ce03" x="365" y="1" width="72" height="18"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[状态]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="326d5d88-7490-4e36-8a69-ca7067c7ce03" x="437" y="1" width="60" height="18"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[预订类型]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="326d5d88-7490-4e36-8a69-ca7067c7ce03" x="497" y="1" width="58" height="18"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[总金额]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement uuid="acc5a94c-abef-4f8c-98e3-630c5cb0afdc" x="47" y="-42" width="69" height="20"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{group_userName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="023b1622-7f56-408c-882b-7e9253465300" x="116" y="-42" width="57" height="20"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{group_table}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="58a9f54b-fc40-4223-ac58-6b749fe5e7fe" x="173" y="-42" width="64" height="20"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{group_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="32b2949f-db92-469b-bfc6-14ed0e802e78" x="237" y="-42" width="63" height="20"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{group_time}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="400063d5-9c8d-48a4-86f2-bd02c39ba187" x="300" y="-42" width="65" height="20"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{group_valid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0f242876-542a-427d-a152-a01820e865f6" x="365" y="-42" width="72" height="20"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{group_status}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d6392fad-adde-4167-8bc3-6c977007267b" x="437" y="-42" width="60" height="20"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{group_reserveType}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a8527ad1-5d08-4c08-85bd-670ee7bedae9" x="1" y="-42" width="46" height="20"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{group_orderID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9a85e1ed-3578-47c7-9253-ca2167b45937" x="196" y="-1" width="110" height="20"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{foodName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="64df5f0f-4508-4e15-b5b7-4e9fd590324e" x="306" y="-1" width="38" height="20"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{num}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="57eb19b1-cbf9-4ce3-b535-126b0b1617c8" x="344" y="-1" width="79" height="20"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{status1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c2a6db46-98b5-4025-b7c7-7d990ac53e78" x="423" y="-1" width="73" height="20"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{valid1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="150a02d2-dbe6-4ab1-b9e5-83f43ed22ceb" x="496" y="-1" width="59" height="20"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
