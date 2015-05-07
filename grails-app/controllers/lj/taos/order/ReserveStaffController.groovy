@@ -5,8 +5,8 @@ import lj.enumCustom.OrderValid
 import lj.enumCustom.ReCode
 import lj.enumCustom.ReserveOrderStatus
 
-class ReserveCustomerController {
-    def customerReserveOrderService;
+class ReserveStaffController {
+    def staffReserveOrderService;
     def searchService;
     def index() {
         redirect(action: "reserveDinnerTimeInput");
@@ -21,7 +21,7 @@ class ReserveCustomerController {
     def reserveTables(){
         def errors = null;
         def msgs = null;
-        def reInfo=customerReserveOrderService.getReserveTable(params);
+        def reInfo=staffReserveOrderService.getReserveTable(params);
         if(reInfo.recode!=ReCode.OK){
             flash.errors=reInfo.recode.label;
             redirect(action: "reserveDinnerTimeInput",params: params);
@@ -33,7 +33,7 @@ class ReserveCustomerController {
     //预定第三步，创建预定订单
     def createReserveOrder(){
         println("params->"+params);
-        def reInfo= customerReserveOrderService.createReserveOrder(params);
+        def reInfo= staffReserveOrderService.createReserveOrder(params);
         if(reInfo.recode==ReCode.OK){ //跳转到点菜界面
             flash.message=reInfo.recode.label;
             redirect(action: "dishOfReserveOrder",params: [reserveOrderId:reInfo.reserveOrderInfo.id]);
@@ -54,7 +54,7 @@ class ReserveCustomerController {
         def errors = null;
         def msgs = null;
         //查询出相应预定订单
-        def reInfo=customerReserveOrderService.getReserveOrderInfo(params);
+        def reInfo=staffReserveOrderService.getReserveOrderInfo(params);
         if(reInfo.recode!=ReCode.OK){
             errors=reInfo.recode.label;
             render(view: "dishOfReserveOrder",model: [errors:errors]);
@@ -80,7 +80,7 @@ class ReserveCustomerController {
     //点菜方法,ajax方法
     def dishAjax(){
         try{
-        def reInfo = customerReserveOrderService.addDish(params);
+        def reInfo = staffReserveOrderService.addDish(params);
         println("reInfo-->" + reInfo);
         render(reInfo as JSON);
         }catch (Exception ex){
@@ -90,7 +90,7 @@ class ReserveCustomerController {
     }
     //删除点菜,ajax方法
     def delDishAjax(){
-        def reInfo = customerReserveOrderService.delDish(params);
+        def reInfo = staffReserveOrderService.delDish(params);
         println("reInfo-->" + reInfo);
         render(reInfo as JSON);
     }
@@ -98,24 +98,41 @@ class ReserveCustomerController {
 
     //预定订单列表
     def reserveOrderList(){
-          def reInfo=customerReserveOrderService.reserveOrderList(params);
+          def reInfo=staffReserveOrderService.reserveOrderList(params);
         println("reInfo-->" + reInfo);
         render(view: "reserveOrderList", model: reInfo);
     }
     //预定订单详情
     def reserveOrderDetail(){
-        def reInfo=customerReserveOrderService.getReserveOrderInfo(params);
+        def reInfo=staffReserveOrderService.getReserveOrderInfo(params);
         println("reInfo-->" + reInfo);
         render(view: "reserveOrderDetail", model: reInfo);
     }
     //预定订单取消
     def reserveOrderCancel(){
-        def reInfo=customerReserveOrderService.reserveOrderCancel(params);
+        def reInfo=staffReserveOrderService.reserveOrderCancel(params);
         println("reInfo-->" + reInfo);
         if(params.backUrl){
-            redirect(params.backUrl);
+            redirect(url: params.backUrl);
             return;
         }
         redirect(action: "reserveOrderList");
     }
+    //顾客到店
+    def reserveOrderReach(){
+        try {
+            def reInfo=staffReserveOrderService.reserveOrderReach(params);
+            println("reInfo-->" + reInfo);
+        }
+         catch (Exception ex){
+             println("reInfo-->" + ex.message);
+         }
+        String backUrl=params.backUrl;
+        if(backUrl){
+            redirect(url:backUrl);
+            return;
+        }
+        redirect(action: "reserveOrderList");
+    }
+
 }

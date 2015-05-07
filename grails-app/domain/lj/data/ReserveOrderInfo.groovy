@@ -51,7 +51,7 @@ class ReserveOrderInfo {
         clientInfo(nullable: true)
         tableInfo(nullable: false)
         valid inList: OrderValid.getCodeList()
-        valid inList: ReserveOrderStatus.getCodeList()
+        status inList: ReserveOrderStatus.getCodeList()
         cancelReason nullable: true, maxSize: 128
         waiter nullable: true
         remark nullable: true, maxSizes: 256

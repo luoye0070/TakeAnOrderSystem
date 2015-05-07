@@ -1,25 +1,23 @@
-package lj.taos.order.customer
+package lj.taos.order.staff
 
 import lj.I18nError
+import lj.Number
 import lj.common.ValidationCode
-import lj.data.ClientInfo
-import lj.data.FoodInfo
-import lj.data.OrderInfo
-import lj.data.ReserveDishesInfo
-import lj.data.ReserveOrderInfo
-import lj.data.RestaurantInfo
-import lj.data.TableInfo
+import lj.data.*
+import lj.enumCustom.DishesStatus
+import lj.enumCustom.DishesValid
 import lj.enumCustom.OrderStatus
 import lj.enumCustom.OrderValid
 import lj.enumCustom.ReCode
 import lj.enumCustom.ReserveOrderStatus
-import lj.Number
 
 import java.text.SimpleDateFormat
 
-class CustomerReserveOrderService {
+class StaffReserveOrderService {
     def shopService;
-    def clientService;
+//    def clientService;
+    def webUtilService;
+    def staffOrderService;
 
     def g = new org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib();
 
@@ -82,6 +80,7 @@ class CustomerReserveOrderService {
 
     //创建预定订单
     def createReserveOrder(def params){
+        StaffInfo staffInfo=webUtilService.getStaff();
         /**************取参数***************/
         SimpleDateFormat sdfDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String dinnerTimeStr=params.dinnerTime;
@@ -145,7 +144,8 @@ class CustomerReserveOrderService {
         /*********************创建预定订单***********************/
         ReserveOrderInfo reserveOrderInfoNew=new ReserveOrderInfo();
         reserveOrderInfoNew.tableInfo=tableInfo;
-        reserveOrderInfoNew.clientInfo=clientService.getClient();
+        //reserveOrderInfoNew.clientInfo=clientService.getClient();
+        reserveOrderInfoNew.waiter=webUtilService.getStaff();
         reserveOrderInfoNew.dinnerTime=dinnerTime;
         Date now=new Date();
         String orderNumStr = now.getTime() + ValidationCode.getAuthCodeStr(2, ValidationCode.NUMBER);
@@ -165,6 +165,7 @@ class CustomerReserveOrderService {
         reserveOrderInfoNew.customerName=customerName;
         reserveOrderInfoNew.restaurantName=restaurantInfo.name;
         reserveOrderInfoNew.tableName=tableInfo.name;
+        reserveOrderInfoNew.waiter=staffInfo;
 
         if(!reserveOrderInfoNew.save(flush: true)){
             return [recode: ReCode.SAVE_FAILED, reserveOrderInfo: reserveOrderInfoNew, errors: I18nError.getMessage(g, reserveOrderInfoNew.errors.allErrors)];
@@ -179,18 +180,18 @@ class CustomerReserveOrderService {
         long reserveOrderId = lj.Number.toLong(params.reserveOrderId);//订单ID
         def foodIds = params.foodIds;//菜品Id列表
 
-        ClientInfo clientInfo = clientService.getClient();
-        if (clientInfo == null) {
-            return [recode: ReCode.NO_CLIENT];
-        }
+//        ClientInfo clientInfo = clientService.getClient();
+//        if (clientInfo == null) {
+//            return [recode: ReCode.NO_CLIENT];
+//        }
 
         ReserveOrderInfo reserveOrderInfo = ReserveOrderInfo.get(reserveOrderId);
         if (reserveOrderInfo == null) {
             return [recode: ReCode.NO_ORDER];
         }
-        if (reserveOrderInfo.clientInfo != clientInfo) { //非订单拥有者不能做加菜
-            return [recode: ReCode.NOT_ORDER_OWNER];
-        }
+//        if (reserveOrderInfo.clientInfo != clientInfo) { //非订单拥有者不能做加菜
+//            return [recode: ReCode.NOT_ORDER_OWNER];
+//        }
 
         //检查定当前状态是否能点菜
         if (reserveOrderInfo.status == ReserveOrderStatus.REACHED_STATUS.code||reserveOrderInfo.valid>=OrderValid.USER_CANCEL_VALID.code) {//取消订单和已到店订单不能再点菜
@@ -253,18 +254,18 @@ class CustomerReserveOrderService {
         long reserveOrderId = lj.Number.toLong(params.reserveOrderId);//订单ID
         def dishIds = params.dishIds;//点菜Id列表
 
-        ClientInfo clientInfo = clientService.getClient();
-        if (clientInfo == null) {
-            return [recode: ReCode.NO_CLIENT];
-        }
+//        ClientInfo clientInfo = clientService.getClient();
+//        if (clientInfo == null) {
+//            return [recode: ReCode.NO_CLIENT];
+//        }
 
         ReserveOrderInfo reserveOrderInfo = ReserveOrderInfo.get(reserveOrderId);
         if (reserveOrderInfo == null) {
             return [recode: ReCode.NO_ORDER];
         }
-        if (reserveOrderInfo.clientInfo != clientInfo) { //非订单拥有者不能做加菜
-            return [recode: ReCode.NOT_ORDER_OWNER];
-        }
+//        if (reserveOrderInfo.clientInfo != clientInfo) { //非订单拥有者不能做加菜
+//            return [recode: ReCode.NOT_ORDER_OWNER];
+//        }
         //检查定当前状态是否能点菜
         if (reserveOrderInfo.status == ReserveOrderStatus.REACHED_STATUS.code||reserveOrderInfo.valid>=OrderValid.USER_CANCEL_VALID.code) {//取消订单和已到店订单不能再点菜
             return [recode: ReCode.CANNOT_DELETE_DISH];//不能删除点菜
@@ -296,11 +297,17 @@ class CustomerReserveOrderService {
         String endTimeStr = params.endTime;//截止时间
         Date endTime = null;
         try { endTime = sdfDate.parse(endTimeStr); } catch (Exception ex) {}
-
-        ClientInfo clientInfo = clientService.getClient();
-        if (clientInfo == null) {
-            return [recode: ReCode.NO_CLIENT];
-        }
+        String phone=params.phone;
+        int status=-1;
+        if(params.status!=null)
+            status=Number.toInteger(params.status);//订单状态
+        int valid=-1;
+        if (params.valid!=null)
+            valid=Number.toInteger(params.valid);//有效性
+//        ClientInfo clientInfo = clientService.getClient();
+//        if (clientInfo == null) {
+//            return [recode: ReCode.NO_CLIENT];
+//        }
 
         if (!params.max) {
             params.max = 10
@@ -311,7 +318,7 @@ class CustomerReserveOrderService {
 
 //             def cIds=userService.getIds(ClientInfo.get(clientId));
         def condition = {
-            eq("clientInfo.id",clientInfo.id);
+//            eq("clientInfo.id",clientInfo.id);
             if (reserveOrderId) {
                 eq("id", reserveOrderId);//id条件
             }
@@ -319,10 +326,19 @@ class CustomerReserveOrderService {
                 eq("tableInfo.id", tableId);//桌位ID条件
             }
             if (beginTime) {
-                ge("createTime", beginTime);//日期条件
+                ge("dinnerTime", beginTime);//日期条件
             }
             if (endTime) {
-                le("createTime", endTime);//日期条件
+                le("dinnerTime", endTime);//日期条件
+            }
+            if(phone){
+                eq("phone",phone);//手机号条件
+            }
+            if(status>=0){
+                eq("status",status);//订单状态条件
+            }
+            if(valid>=0){
+                eq("valid",valid);//订单有效性条件
             }
         }
 
@@ -340,33 +356,149 @@ class CustomerReserveOrderService {
     def getReserveOrderInfo(def params){
         //获取参数
         long reserveOrderId = Number.toLong(params.reserveOrderId);//订单ID
-        ClientInfo clientInfo = clientService.getClient();
-        if (clientInfo == null) {
-            return [recode: ReCode.NO_CLIENT];
-        }
-        ReserveOrderInfo reserveOrderInfo=ReserveOrderInfo.findByIdAndClientInfo(reserveOrderId,clientInfo);
+//        ClientInfo clientInfo = clientService.getClient();
+//        if (clientInfo == null) {
+//            return [recode: ReCode.NO_CLIENT];
+//        }
+        ReserveOrderInfo reserveOrderInfo=ReserveOrderInfo.findById(reserveOrderId);
         if(reserveOrderInfo){
             return [recode: ReCode.OK,reserveOrderInfo:reserveOrderInfo];
         }else{
             return [recode: ReCode.NO_RESULT];
         }
     }
+    //订单取消
     def reserveOrderCancel(def params){
         //获取参数
         long reserveOrderId = Number.toLong(params.reserveOrderId);//订单ID
-        ClientInfo clientInfo = clientService.getClient();
-        if (clientInfo == null) {
-            return [recode: ReCode.NO_CLIENT];
-        }
-        ReserveOrderInfo reserveOrderInfo=ReserveOrderInfo.findByIdAndClientInfo(reserveOrderId,clientInfo);
+        ReserveOrderInfo reserveOrderInfo=ReserveOrderInfo.findById(reserveOrderId);
         if(reserveOrderInfo){
             if(reserveOrderInfo.status==ReserveOrderStatus.REACHED_STATUS.code){//到店订单不能取消
                 return [recode: ReCode.RESERVE_ORDER_CANNOT_CANCEL];
             }
             if(reserveOrderInfo.valid<=OrderValid.EFFECTIVE_VALID.code){
-               reserveOrderInfo.valid=OrderValid.USER_CANCEL_VALID.code;
+                reserveOrderInfo.valid=OrderValid.RESTAURANT_CANCEL_VALID.code;
                 if(!reserveOrderInfo.save(flush: true)){
                     return [recode: ReCode.SAVE_FAILED, reserveOrderInfo: reserveOrderInfo, errors: I18nError.getMessage(g, reserveOrderInfo.errors.allErrors)];
+                }
+            }
+            return [recode: ReCode.OK,reserveOrderInfo:reserveOrderInfo];
+        }else{
+            return [recode: ReCode.NO_RESULT];
+        }
+    }
+    //顾客到店
+    def reserveOrderReach(def params){
+        //获取参数
+        long reserveOrderId = Number.toLong(params.reserveOrderId);//订单ID
+        ReserveOrderInfo reserveOrderInfo=ReserveOrderInfo.findById(reserveOrderId);
+        if(reserveOrderInfo){
+            if(reserveOrderInfo.valid>=OrderValid.USER_CANCEL_VALID.code){//到店订单不能
+                return [recode: ReCode.RESERVE_ORDER_CANNOT_REACH];
+            }
+
+            //设置状态和初始值
+            int status = DishesStatus.ORIGINAL_STATUS.code;;
+            int valid = DishesValid.ORIGINAL_VALID.code;
+
+            if(reserveOrderInfo.status==ReserveOrderStatus.ORIGINAL_STATUS.code){
+                reserveOrderInfo.status=ReserveOrderStatus.REACHED_STATUS.code;
+                if(!reserveOrderInfo.save(flush: true)){
+                    println("保存记录失败:" + reserveOrderInfo);
+                    throw new RuntimeException(I18nError.getMessage(g, reserveOrderInfo.errors.allErrors));
+                }
+//                //根据预定订单创建订单
+//                OrderInfo orderInfo=new OrderInfo();
+//                orderInfo.tableInfo=reserveOrderInfo.tableInfo;
+//                orderInfo.waiter=reserveOrderInfo.waiter;
+//                orderInfo.partakeCode=ValidationCode.getAuthCodeStr(4,ValidationCode.NUMBER);
+//                Date now=new Date();
+//                String orderNumStr=now.getTime()+ValidationCode.getAuthCodeStr(2,ValidationCode.NUMBER);
+//                long orderNum=Long.parseLong(orderNumStr);
+//                orderInfo.orderNum=orderNum;
+//                //获取订单店内编号最大值
+//                String sqlStr="select max(numInRestaurant) from OrderInfo";
+//                def result=OrderInfo.executeQuery(sqlStr);
+//                long numInRestaurant=1;
+//                if(result!=null&&result[0]!=null){
+//                    numInRestaurant=result[0]+1;
+//                }
+//                orderInfo.numInRestaurant=numInRestaurant;
+//                if(!orderInfo.save(flush: true)){
+//                    throw new RuntimeException(I18nError.getMessage(g,orderInfo.errors.allErrors));
+//                }
+//                if(reserveOrderInfo.dishes){
+//                    def failedList = [];//点菜失败的菜列表
+//                    int size=reserveOrderInfo.dishes.size();
+//                    for (int i=0;i<size;i++){
+//                        ReserveDishesInfo rdishInfo=reserveOrderInfo.dishes.get(i);
+//                        if(rdishInfo.food?.isReady){
+//                            status=DishesStatus.COOKED_STATUS.code;
+//                        }
+//                        //创建点菜记录
+//                        DishesInfo dishesInfo = new DishesInfo();
+//                        dishesInfo.order = orderInfo;
+//                        dishesInfo.food = rdishInfo.food;
+//                        dishesInfo.status = status;
+//                        dishesInfo.valid = valid;
+//                        dishesInfo.numInRestaurant = 0;//先不要店内编号
+//                        dishesInfo.num = rdishInfo.count;
+//                        dishesInfo.remark=rdishInfo.remark;//备注
+//                        dishesInfo.foodPrice= rdishInfo.food?.price;//价格
+//                        dishesInfo.foodName=rdishInfo.food?.name;
+//                        dishesInfo.orderTime=orderInfo.createTime;
+//                        dishesInfo.foodImg=rdishInfo.food?.image;
+//                        dishesInfo.tableName=orderInfo.tableName;
+//                        dishesInfo.orderType=orderInfo.orderType;
+//                        if (!dishesInfo.save(flush: true)) {//保存数据失败输出日志
+//                            println("保存点菜记录失败:" + dishesInfo);
+//                            failedList.add([foodId: it.foodId, msg: "保存点菜记录失败",errors:I18nError.getMessage(g,dishesInfo.errors.allErrors)]);
+//                        }
+//                    }
+//                    if(failedList.size()>0){
+//                        return [recode: ReCode.DISH_HAVEERROR,failedList: failedList];
+//                    }
+//                }
+                //创建订单
+                OrderInfo orderInfo=null;
+                def reInfo=staffOrderService.createOrder([code: reserveOrderInfo.tableInfo.code]);
+                if(reInfo.recode!=ReCode.OK){
+                    throw new RuntimeException(reInfo.recode.label);
+                }else{
+                    orderInfo=reInfo.orderInfo;
+                }
+                //点菜
+                if(reserveOrderInfo.dishes){
+                    def failedList = [];//点菜失败的菜列表
+                    int size=reserveOrderInfo.dishes.size();
+                    for (int i=0;i<size;i++){
+                        ReserveDishesInfo rdishInfo=reserveOrderInfo.dishes.get(i);
+                        if(rdishInfo.food?.isReady){
+                            status=DishesStatus.COOKED_STATUS.code;
+                        }
+                        //创建点菜记录
+                        DishesInfo dishesInfo = new DishesInfo();
+                        dishesInfo.order = orderInfo;
+                        dishesInfo.food = rdishInfo.food;
+                        dishesInfo.status = status;
+                        dishesInfo.valid = valid;
+                        dishesInfo.numInRestaurant = 0;//先不要店内编号
+                        dishesInfo.num = rdishInfo.count;
+                        dishesInfo.remark=rdishInfo.remark;//备注
+                        dishesInfo.foodPrice= rdishInfo.food?.price;//价格
+                        dishesInfo.foodName=rdishInfo.food?.name;
+                        dishesInfo.orderTime=orderInfo.createTime;
+                        dishesInfo.foodImg=rdishInfo.food?.image;
+                        dishesInfo.tableName=orderInfo.tableName;
+                        dishesInfo.orderType=orderInfo.orderType;
+                        if (!dishesInfo.save(flush: true)) {//保存数据失败输出日志
+                            println("保存点菜记录失败:" + dishesInfo);
+                            failedList.add([foodId: rdishInfo.food?.id, msg: "保存点菜记录失败",errors:I18nError.getMessage(g,dishesInfo.errors.allErrors)]);
+                        }
+                    }
+                    if(failedList.size()>0){
+                        return [recode: ReCode.DISH_HAVEERROR,failedList: failedList];
+                    }
                 }
             }
             return [recode: ReCode.OK,reserveOrderInfo:reserveOrderInfo];

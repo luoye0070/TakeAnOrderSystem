@@ -192,9 +192,16 @@
                 ${reserveOrderInfo.waiter.name}
             </g:if>
             &nbsp;&nbsp;
+            <g:if test="${reserveOrderInfo?.tableInfo}">
+                <g:message code="reserveOrderInfo.tableInfo.label"
+                           default="tableInfo"/>:
+                ${reserveOrderInfo.tableInfo.code}
+            </g:if>
+            &nbsp;&nbsp;
         </g:if>
-        <taos:customerReserveOrderOperation reserveOrderId="${reserveOrderInfo.id}"
-                                            backUrl="${createLink(controller: "reserveCustomer", action: "reserveOrderDetail",params: params,absolute: true)}"/>
+
+        <taos:staffReserveOrderOperation reserveOrderId="${reserveOrderInfo.id}" backUrl="${createLink(controller: "reserveStaff", action: "reserveOrderDetail",params: params,absolute: true)}"></taos:staffReserveOrderOperation>
+
         %{--<a href="${params.backUrl ?: createLink(controller: "customer", action: "orderList")}"--}%
         %{--class="btn btn-link">返回</a>--}%
     </form>

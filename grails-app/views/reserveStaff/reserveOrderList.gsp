@@ -127,6 +127,73 @@
         overflow: hidden;
     }
     </style>
+    <link type="text/css" href="${resource(dir: "js/dateTimePicker/css", file: "jquery-ui-1.8.17.custom.css")}" rel="stylesheet" />
+
+    <link type="text/css" href="${resource(dir: "js/dateTimePicker/css", file: "jquery-ui-timepicker-addon.css")}" rel="stylesheet" />
+
+    <script type="text/javascript" src="${resource(dir: "js/dateTimePicker/js", file: "jquery-1.7.1.min.js")}"></script>
+
+    <script type="text/javascript" src="${resource(dir: "js/dateTimePicker/js", file: "jquery-ui-1.8.17.custom.min.js")}"></script>
+
+    <script type="text/javascript" src="${resource(dir: "js/dateTimePicker/js", file: "jquery-ui-timepicker-addon.js")}"></script>
+
+    <script type="text/javascript" src="${resource(dir: "js/dateTimePicker/js", file: "jquery-ui-timepicker-zh-CN.js")}"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            //日期选择器
+//            $("#beginDate").datepicker({format: "yyyy-mm-dd"});
+//            $("#endDate").datepicker({format: "yyyy-mm-dd"});
+
+            $("#beginDate").datetimepicker({
+
+                //showOn: "button",
+
+                //buttonImage: "./css/images/icon_calendar.gif",
+
+                //buttonImageOnly: true,
+
+                showSecond: true,
+
+                timeFormat: 'hh:mm:ss',
+
+                stepHour: 1,
+
+                stepMinute: 1,
+
+                stepSecond: 1
+
+            });
+
+            $("#endDate").datetimepicker({
+
+                //showOn: "button",
+
+                //buttonImage: "./css/images/icon_calendar.gif",
+
+                //buttonImageOnly: true,
+
+                showSecond: true,
+
+                timeFormat: 'hh:mm:ss',
+
+                stepHour: 1,
+
+                stepMinute: 1,
+
+                stepSecond: 1
+
+            });
+
+
+            $("#beginDateDel").click(function () {
+                $("#beginDate").val("");
+            });
+            $("#endDateDel").click(function () {
+                $("#endDate").val("");
+            });
+        });
+    </script>
 </head>
 <body>
 <div class="mc_main">
@@ -140,6 +207,86 @@
         <g:render template="../layouts/msgs_and_errors"></g:render>
         <div name="info"></div>
     </div>
+
+
+    <!--搜索条件-->
+    <div class="mcmc_ssl">
+        <form class="well form-inline" action="${createLink(controller: "reserveStaff", action: "reserveOrderList")}">
+
+            <div class="mcmcs_field_middle">
+                <label>
+                    电话：
+                </label>
+                <input type="text" name="phone" value="${params.phone}"/>
+            </div>
+
+            <div class="mcmcs_field" style="width: 420px;">
+                <label>
+                    时间：
+                </label>
+                <div class="input-append">
+                    <input style="float: left;width: 120px;" id="beginDate" name="beginTime" type="text"
+                           value="${params.beginDate}" class="mcmcsf_input_middle"/>
+                    <span class="add-on"><a id="beginDateDel" class="close" href="#" style="float: left;">&times;</a></span>
+                </div>
+                <label style="">&nbsp;-&nbsp;</label>
+                <div class="input-append">
+                    <input style="float: left;width: 120px;" id="endDate" name="endTime" type="text"
+                           value="${params.endDate}" class="mcmcsf_input_middle"/>
+                    <span class="add-on"><a id="endDateDel" class="close" href="#" style="float: left;">&times;</a></span>
+                </div>
+            </div>
+
+            %{--<div class="mcmcs_field_middle" style="width: 180px">--}%
+            %{--<label>--}%
+            %{--预定类型：--}%
+            %{--</label>--}%
+            %{--<select name="reserveType" class="mcmcsf_input_middle">--}%
+            %{--<option value="-1" ${params.reserveType == "-1" ? "selected='selected'" : ""}>全部</option>--}%
+            %{--<option value="0" ${params.reserveType == "0" ? "selected='selected'" : ""}>非预定</option>--}%
+            %{--<g:each in="${lj.enumCustom.ReserveType.reserveTypes}">--}%
+            %{--<option value="${it.code}" ${(lj.Number.toInteger(params.reserveType) == it.code) ? "selected='selected'" : ""}>${it.label}</option>--}%
+            %{--</g:each>--}%
+            %{--</select>--}%
+            %{--</div>--}%
+
+            <div class="mcmcs_field_middle">
+                <label>
+                    有效性：
+                </label>
+                <select name="valid" class="mcmcsf_input_middle">
+                    <option value="-1" ${params.status == "-1" ? "selected='selected'" : ""}>全部</option>
+                    <g:each in="${lj.enumCustom.OrderValid.valids}">
+                        <option value="${it.code}" ${params.valid == it.code.toString() ? "selected='selected'" : ""}>${it.label}</option>
+                    </g:each>
+                </select>
+            </div>
+
+            <div class="mcmcs_field_middle">
+                <label>
+                    状态：
+                </label>
+                <select name="status" class="mcmcsf_input_middle">
+                    <option value="-1" ${params.status == "-1" ? "selected='selected'" : ""}>全部</option>
+                    <g:each in="${lj.enumCustom.ReserveOrderStatus.statuses}">
+                        <option value="${it.code}" ${params.status == it.code.toString() ? "selected='selected'" : ""}>${it.label}</option>
+                    </g:each>
+                </select>
+            </div>
+
+            <div class="ms_field_small">
+                <input type="submit" value="${message(code: 'default.button.search.label', default: 'search')}"
+                       class="btn btn-primary"/>
+
+
+                %{--<g:actionSubmit value="导出Excel" action="exportOrderList" class="btn btn-primary"/>--}%
+
+            </div>
+
+        </form>
+    </div>
+
+
     <!--订单列表-->
     <div class="mcmc_detail">
     <g:if test="${reserveOrderInfoList}">
@@ -164,7 +311,9 @@
                 <g:sortableColumn property="valid" title="${message(code: 'reserveOrderInfo.valid.label', default: 'Valid')}" params="${params}"/>
 
                 <g:sortableColumn property="status" title="${message(code: 'reserveOrderInfo.status.label', default: 'Status')}" params="${params}"/>
-                <th>操作</th>
+
+                <g:sortableColumn property="status" title="${message(code: 'reserveOrderInfo.phone.label', default: 'Phone')}" params="${params}"/>
+                 <th>操作</th>
             </tr>
             </thead>
             <tbody>
@@ -184,7 +333,7 @@
                             </g:else>
                         </g:if>
                         <g:else>
-                            服务员
+                                服务员
                         </g:else>
                     </td>
 
@@ -205,13 +354,13 @@
 
                     <td>${ReserveOrderStatus.getLable(reserveOrderInfoInstance.status)}</td>
 
+                    <td>${reserveOrderInfoInstance.phone}</td>
+
                     %{--<td>${ReserveType.getLabel(reserveOrderInfoInstance.reserveType)}</td>--}%
-                    <td><a href="${createLink(controller: "reserveCustomer", action: "reserveOrderDetail", params: [reserveOrderId: reserveOrderInfoInstance.id])}">订单详情</a>
+                    <td><a href="${createLink(controller: "reserveStaff", action: "reserveOrderDetail", params: [reserveOrderId: reserveOrderInfoInstance.id])}">订单详情</a>
                     </td>
                     <td>
-                        %{--<a href="${createLink(controller: "reserveCustomer", action: "reserveOrderCancel", params: [reserveOrderId: reserveOrderInfoInstance.id])}">取消</a>--}%
-                        <taos:customerReserveOrderOperation reserveOrderId="${reserveOrderInfoInstance.id}"
-                         backUrl="${createLink(controller: "reserveCustomer", action: "reserveOrderList",params: params,absolute: true)}"/>
+                        <taos:staffReserveOrderOperation reserveOrderId="${reserveOrderInfoInstance.id}" backUrl="${createLink(controller: "reserveStaff", action: "reserveOrderList",params: params,absolute: true)}"></taos:staffReserveOrderOperation>
                     </td>
                 </tr>
             </g:each>

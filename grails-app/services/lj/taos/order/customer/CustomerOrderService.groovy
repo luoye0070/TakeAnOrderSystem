@@ -108,6 +108,11 @@ class CustomerOrderService {
             if (!orderInfo.save(flush: true)) {
                 return [recode: ReCode.SAVE_FAILED, orderInfo: orderInfo, errors: I18nError.getMessage(g, orderInfo.errors.allErrors)];
             }
+        }else if (orderInfo.clientInfo == null) {
+            orderInfo.clientInfo = clientInfo;
+            if (!orderInfo.save(flush: true)) {
+                return [recode: ReCode.SAVE_FAILED, orderInfo: orderInfo, errors: I18nError.getMessage(g, orderInfo.errors.allErrors)];
+            }
         } else {//获取订单，需要验证订单参与码
             if (orderInfo.clientInfo != clientInfo) {
                 String partakeCode = params.partakeCode;
@@ -125,12 +130,7 @@ class CustomerOrderService {
                 }
             }
         }
-        if (orderInfo.clientInfo == null) {
-            orderInfo.clientInfo = clientInfo;
-            if (!orderInfo.save(flush: true)) {
-                return [recode: ReCode.SAVE_FAILED, orderInfo: orderInfo, errors: I18nError.getMessage(g, orderInfo.errors.allErrors)];
-            }
-        }
+
         boolean isOwner = false;
         if (orderInfo.clientInfo == clientInfo) {
             isOwner = true;

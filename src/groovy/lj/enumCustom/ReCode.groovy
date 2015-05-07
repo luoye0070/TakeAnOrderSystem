@@ -87,6 +87,8 @@ public class ReCode {
     public final static def PERSONCOUNT_LESS_THAN_TABLE_MAN=[code:-69,label:"用餐人数不满该桌位最小用餐人数"];
     public final static def CANNOT_DELETE_DISH=[code:-70,label:"订单当前状态或有效性下不能删除点菜"];
     public final static def BEFORE_NOW=[code:-71,label:"到店时间不能在现在之前哦"];
+    public final static def RESERVE_ORDER_CANNOT_CANCEL=[code:-72,label:"订单当前状态或有效性下不能取消订单"];
+    public final static def RESERVE_ORDER_CANNOT_REACH=[code:-73,label:"取消订单不能做到店操作"];
 //    public Integer code
 //    public String label
 //
