@@ -113,7 +113,7 @@ class ReserveCustomerController {
         def reInfo=customerReserveOrderService.reserveOrderCancel(params);
         println("reInfo-->" + reInfo);
         if(params.backUrl){
-            redirect(params.backUrl);
+            redirect(url:  params.backUrl);
             return;
         }
         redirect(action: "reserveOrderList");

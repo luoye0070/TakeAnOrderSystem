@@ -16,6 +16,12 @@
 </head>
 <body>
 <div class="mc_main">
+<div class="mcm_top">
+    %{--<div class="mcm_top_name"><g:message code='restaurantInfo.update.label'/></div>--}%
+
+    %{--<div class="mcm_top_banner"></div>--}%
+    <g:render template="../layouts/shopMenu"></g:render>
+</div>
     <div  class="span10" style="margin-left: 10px;margin-top: 10px;">
 
         %{--<g:render template="../layouts/shopMenu"/>--}%
@@ -31,7 +37,7 @@
             <g:sortableColumn property="name" title="${message(code: 'tableInfo.name.label', default: 'Name')}" />
             <g:sortableColumn property="minPeople" title="${message(code: 'tableInfo.minPeople.label', default: 'Min People')}" />
             <g:sortableColumn property="maxPeople" title="${message(code: 'tableInfo.maxPeople.label', default: 'Max People')}" />
-            <g:sortableColumn property="canMultiOrder" title="${message(code: 'tableInfo.canMultiOrder.label', default: 'Can Multi Order')}" />
+            <g:sortableColumn property="code" title="${message(code: 'tableInfo.code.label', default: 'Code')}" />
             <g:sortableColumn property="canReserve" title="${message(code: 'tableInfo.canReserve.label', default: 'Can Reserve')}" />
             <th>桌位二维码</th>
             <th>操作</th>
@@ -47,7 +53,7 @@
 
                 <td>${fieldValue(bean: tableInfoInstance, field: "maxPeople")}</td>
 
-                <td>${FormatUtil.boolFormat(tableInfoInstance.canMultiOrder)}</td>
+                <td>${tableInfoInstance?.code}</td>
 
                 <td>${FormatUtil.boolFormat(tableInfoInstance.canReserve)}</td>
 

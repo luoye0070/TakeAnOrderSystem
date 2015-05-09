@@ -9,7 +9,7 @@
 	</head>
 	<body>
 
-    %{--<g:render template="../layouts/shopMenu"/>--}%
+    <g:render template="../layouts/shopMenu"/>
 
 		<div class="button-group" style="margin: 9px 0px 9px 40px;">
 			<ul>

@@ -17,7 +17,7 @@
 <div class="mc_main">
     <div  class="span10" style="margin-left: 10px;margin-top: 10px;">
 
-        %{--<g:render template="../layouts/shopMenu"/>--}%
+        <g:render template="../layouts/shopMenu"/>
 
         <g:render template="../layouts/msgs_and_errors"></g:render>
 

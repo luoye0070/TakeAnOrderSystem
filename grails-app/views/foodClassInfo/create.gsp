@@ -9,7 +9,7 @@
 
 	<body>
 
-    %{--<g:render template="../layouts/shopMenu"/>--}%
+    <g:render template="../layouts/shopMenu"/>
 
     <div id="create-foodClassInfo" class="content scaffold-create" role="main" style="width: 800px;">
         <h1 style="margin: 9px 0px 9px 40px;" class="breadcrumb"><g:message code="default.create.label" args="[entityName]" /></h1>

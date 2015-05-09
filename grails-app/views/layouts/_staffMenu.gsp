@@ -14,7 +14,7 @@
         <li><g:link controller="staff" action="dishList">点菜列表</g:link></li>
     </g:else>
     <li class="divider-vertical"></li>
-    <g:if test="${controllerName=="staff" && actionName in ["tablesShow"]}">
+    <g:if test="${controllerName=="reserveStaff" && actionName in ["reserveOrderList"]}">
         <li class="active"><a href="#">桌位预定</a></li>
     </g:if>
     <g:else>

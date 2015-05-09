@@ -64,7 +64,7 @@
 
     .m_head {
         width: 1100px;
-        height: 50px;
+        height: 250px;
         /*height: auto;*/
         margin: 0px auto;
         background: url('${resource(dir:"images",file:"main_head.png")}');
@@ -168,31 +168,31 @@
 </head>
 
 <body>
-<g:render template="/layouts/top"></g:render>
+%{--<g:render template="/layouts/top"></g:render>--}%
 <div class="main">
     <!--header-->
     <div class="m_head">
         <div class="mh_menu">
             <div class="mhm_city">
-                <label>${cityIdAndName?.cityName?:"乌鲁木齐"}</label>
-                <a href="${createLink(controller: "citySelect",action: "cityList",params: params<<[co:controllerName,ac:actionName])}">切换城市</a>
+                %{--<label>${cityIdAndName?.cityName?:"乌鲁木齐"}</label>--}%
+                %{--<a href="${createLink(controller: "citySelect",action: "cityList",params: params<<[co:controllerName,ac:actionName])}">切换城市</a>--}%
             </div>
             <ul style="float: right;margin-right: 20px;">
-                <% String url=request.getRequestURL();
-                url=url.substring(url.lastIndexOf("/")+1);
-                %>
-                <li ${url==""?'class="current"':""}><g:link url="/canmeng"> 餐萌首页</g:link></li>
-                <li  ${controllerName=="user"?'class="current"':""}><g:link controller="user" action="viewUserInfo">我的餐萌</g:link></li>
-                <li  ${controllerName=="customer"?'class="current"':""}><g:link controller="customer" action="orderList">我的订单</g:link></li>
-                <li  ${controllerName=="shop"?'class="current"':""}><g:link controller="shop" action="shopInfo">我的饭店</g:link></li>
-                <li  ${url=="c"?'class="current"':""}><a href="about.html">联系餐萌</a></li>
-                <li ${(controllerName=="staff"||(controllerName=="staffManage"&&actionName=="staffLogin"))?"class='current'":""}><g:link controller="staff" action="index">工作人员入口</g:link></li>
-                <g:if test="${session && (session.clientId||session.staffInfo)}">
-                    <li><g:link controller="user" action="logout">退出餐萌</g:link></li>
-                </g:if>
-                <g:else>
-                    <li><g:link controller="user" action="login">登录餐萌</g:link></li>
-                </g:else>
+                %{--<% String url=request.getRequestURL();--}%
+                %{--url=url.substring(url.lastIndexOf("/")+1);--}%
+                %{--%>--}%
+                %{--<li ${url==""?'class="current"':""}><g:link url="/canmeng"> 餐萌首页</g:link></li>--}%
+                <li  ${controllerName=="reserveCustomer"?'class="current"':""}><g:link controller="reserveCustomer" action="reserveDinnerTimeInput">桌位预定</g:link></li>
+                <li  ${controllerName=="customer"?'class="current"':""}><g:link controller="customer" action="getOrCreateOrder">用餐点菜</g:link></li>
+                <li ${(controllerName=="staff"||(controllerName=="staffManage"&&actionName=="staffLogin"))?"class='current'":""}><g:link controller="staff" action="index">后台管理</g:link></li>
+                <li ${(controllerName=="shop"||controllerName=="customerRelations"||controllerName=="foodClassInfo"||controllerName=="foodManage"||controllerName=="imageSpace"
+                        ||controllerName=="staffManage"||controllerName=="tableManage")?"class='current'":""}><g:link controller="shop" action="index">饭店管理</g:link></li>
+                %{--<g:if test="${session && (session.clientId||session.staffInfo)}">--}%
+                    %{--<li><g:link controller="user" action="logout">退出餐萌</g:link></li>--}%
+                %{--</g:if>--}%
+                %{--<g:else>--}%
+                    %{--<li><g:link controller="user" action="login">登录餐萌</g:link></li>--}%
+                %{--</g:else>--}%
             </ul>
         </div>
         %{--<div class="mh_center"></div>--}%

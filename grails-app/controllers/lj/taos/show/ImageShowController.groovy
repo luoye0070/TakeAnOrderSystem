@@ -89,20 +89,20 @@ class ImageShowController {
     }
     //显示一个二维码图片
     def showQRCode() {
-        //防盗链处理
-        String Referer = request.getHeader("Referer");
-        String baseUrl = null;
-        def reInfo = shopService.getShopInfo();
-        if (ReCode.OK == reInfo.recode) {
-            baseUrl = reInfo.restaurantInfo?.baseUrl;
-        }
-        if (baseUrl == null) {
-            baseUrl = grailsApplication.config.grails.baseurls.baseUrl;
-        }
-        if (baseUrl==null||(Referer != null && Referer.indexOf(baseUrl) < 0)) {//盗链
-            println("图片盗链");
-            return;
-        }
+//        //防盗链处理
+//        String Referer = request.getHeader("Referer");
+//        String baseUrl = null;
+//        def reInfo = shopService.getShopInfo();
+//        if (ReCode.OK == reInfo.recode) {
+//            baseUrl = reInfo.restaurantInfo?.baseUrl;
+//        }
+//        if (baseUrl == null) {
+//            baseUrl = grailsApplication.config.grails.baseurls.baseUrl;
+//        }
+//        if (baseUrl==null||(Referer != null && Referer.indexOf(baseUrl) < 0)) {//盗链
+//            println("图片盗链");
+//            return;
+//        }
         //根据字符串显示二维码图片
         String str = params.str;
         if(!str){

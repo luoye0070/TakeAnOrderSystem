@@ -43,9 +43,11 @@
 <body>
 <div class="mc_main">
     <div class="mcm_top">
-        <div class="mcm_top_name"><g:message code='restaurantInfo.create.label'/></div>
+        %{--<div class="mcm_top_name"><g:message code='restaurantInfo.create.label'/></div>--}%
 
-        <div class="mcm_top_banner"></div>
+        %{--<div class="mcm_top_banner"></div>--}%
+
+        <g:render template="../layouts/reserveCustomerMenu"></g:render>
     </div>
 
     <div class="span10" style="margin-left: 10px;margin-top: 0px;">

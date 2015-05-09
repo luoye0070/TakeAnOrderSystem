@@ -9,7 +9,9 @@ class CustomerController {
     def customerOrderService;
     def searchService;
 
-    def index() {}
+    def index() {
+        redirect(action: "getOrCreateOrder");
+    }
 
     def getOrCreateOrder() {
         def errors = null;

@@ -15,6 +15,9 @@
 </head>
 <body>
 <div class="mc_main">
+    <div class="mcm_top">
+        <g:render template="../layouts/shopMenu"></g:render>
+    </div>
     <div  class="span10" style="margin-left: 10px;margin-top: 10px;">
 
         %{--<g:render template="../layouts/shopMenu"/>--}%

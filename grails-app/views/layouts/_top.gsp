@@ -207,7 +207,7 @@
         </div>
          <div class="tcr_search">
              <div class="tcrs_tab">
-                 <div id="searchFoodTab" class="tcrst_item_selected">菜谱</div>
+                 <div id="searchFoodTab" class="tcrst_item_selected">菜品</div>
                  <div id="searchShopTab" class="tcrst_item">饭店</div>
              </div>
              <div class="tcrs_content">

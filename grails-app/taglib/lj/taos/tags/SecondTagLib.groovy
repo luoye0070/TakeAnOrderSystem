@@ -1,14 +1,29 @@
 package lj.taos.tags
 
 import lj.data.AppraiseInfo
+import lj.data.TableInfo
+import lj.enumCustom.ReCode
 
 class SecondTagLib {
-    static namespace = "taos"
+    static namespace = "taos";
+    def shopService;
     def tableQRCode = { attr, body ->
         String htmlTag = "";
         try {
             long tableId = attr.tableId as long;
-            htmlTag += "<img src='" + createLink(controller: "imageShow",action: "showQRCode",params: [str:"|"+tableId]) + "'/>";
+            TableInfo tableInfo=TableInfo.get(tableId);
+            String urlStr="";
+            String baseUrl = null;
+            def reInfo = shopService.getShopInfo();
+            if (ReCode.OK == reInfo.recode) {
+                baseUrl = reInfo.restaurantInfo?.baseUrl;
+            }
+            if (baseUrl == null) {
+                baseUrl = grailsApplication.config.grails.baseurls.baseUrl;
+            }
+            urlStr=createLink(controller: "customer",action: "getOrCreateOrder",params: [code:tableInfo?.code],absolute: true,base: baseUrl);
+
+            htmlTag += "<img src='" + createLink(controller: "imageShow",action: "showQRCode",params: [str:urlStr]) + "'/>";
         }
         catch (Exception ex) {
             htmlTag += "<font color='RED'>" + ex.message + "</font>";

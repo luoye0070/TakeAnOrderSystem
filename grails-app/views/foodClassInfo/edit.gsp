@@ -8,7 +8,7 @@
 	</head>
 	<body>
 
-    %{--<g:render template="../layouts/shopMenu"/>--}%
+    <g:render template="../layouts/shopMenu"/>
 
     <div id="edit-foodClassInfo" class="content scaffold-edit" role="main" style="width: 800px;">
         <h1 style="margin: 9px 0px 9px 40px;" class="breadcrumb"><g:message code="default.edit.label" args="[entityName]" /></h1>
