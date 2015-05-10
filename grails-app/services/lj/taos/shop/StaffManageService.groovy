@@ -290,4 +290,20 @@ class StaffManageService {
             return [recode: ReCode.NO_RESULT];
         }
     }
+
+    //判断是否店主登录
+    def isMasterLogin(){
+        def staffInfo=webUtilService.getStaff();
+        if(staffInfo){
+            //查询工作人员职务
+            def staffPositionInfoList = StaffPositionInfo.findAllByStaffInfo(staffInfo);
+            if (staffPositionInfoList) {
+                def positionList = staffPositionInfoList.collect { it.positionType };
+                if (PositionType.SHOPKEEPER.code in positionList){
+                     return true;
+                }
+            }
+        }
+        return false;
+    }
 }

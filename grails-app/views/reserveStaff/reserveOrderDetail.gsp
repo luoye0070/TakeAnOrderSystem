@@ -161,9 +161,10 @@
 <body>
 <div class="mc_main">
 <div class="mcm_top">
-    <div class="mcm_top_name">订单${reserveOrderInfo?.numInRestaurant}-详情</div>
+    %{--<div class="mcm_top_name">订单${reserveOrderInfo?.numInRestaurant}-详情</div>--}%
 
-    <div class="mcm_top_banner"></div>
+    %{--<div class="mcm_top_banner"></div>--}%
+    <g:render template="../layouts/staffMenu"></g:render>
 </div>
 
 <div class="span10" style="margin-left: 10px;margin-top: 0px;">

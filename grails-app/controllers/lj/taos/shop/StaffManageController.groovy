@@ -67,7 +67,7 @@ class StaffManageController {
     def staffLogin(){
         def errors=null;
         def msgs=null;
-        jump();
+//        jump();
         if(request.method=="POST"){//提交登录信息
             println("llllll");
             def reInfo=staffManageService.staffLogin(params);

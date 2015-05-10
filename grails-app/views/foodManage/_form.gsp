@@ -42,14 +42,14 @@
     </div>
 </div>
 
-<div class="control-group">
-    <label class="control-label" for="countLimit"><g:message code="foodInfo.countLimit.label" default="Count Limit" />
-        <span class="required-indicator">*</span>
-    </label>
-    <div class="controls">
-        <g:field name="countLimit" type="number" min="0" value="${foodInfoInstance?.countLimit}" required=""/>
-    </div>
-</div>
+%{--<div class="control-group">--}%
+    %{--<label class="control-label" for="countLimit"><g:message code="foodInfo.countLimit.label" default="Count Limit" />--}%
+        %{--<span class="required-indicator">*</span>--}%
+    %{--</label>--}%
+    %{--<div class="controls">--}%
+        %{--<g:field name="countLimit" type="number" min="0" value="${foodInfoInstance?.countLimit}" required=""/>--}%
+    %{--</div>--}%
+%{--</div>--}%
 
 %{--<div class="control-group">--}%
     %{--<label class="control-label" for="isSetMeal"><g:message code="foodInfo.isSetMeal.label" default="Is Set Meal" />--}%

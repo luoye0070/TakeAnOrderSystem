@@ -74,11 +74,6 @@ class CustomerRelationsService {
             //修改客户类型
             customerRelations.type = type;
         } else {
-            //检查客户关系是否已经存在
-            customerRelations = CustomerRelations.findByCustomerClient(ClientInfo.get(customerClientId));
-            if (customerRelations) {//客户关系已经存在
-                return [recode: ReCode.CUSTOMER_RELATIONS_EXIST];
-            }
             //检查客户用户是否存在
             ClientInfo clientInfo = null;
             if (customerClientId)
@@ -86,6 +81,11 @@ class CustomerRelationsService {
             else if (clientMark)
                 clientInfo = ClientInfo.findByClientMark(clientMark);
             if (clientInfo) {
+                //检查客户关系是否已经存在
+                customerRelations = CustomerRelations.findByCustomerClient(clientInfo);
+                if (customerRelations) {//客户关系已经存在
+                    return [recode: ReCode.CUSTOMER_RELATIONS_EXIST];
+                }
                 customerRelations = new CustomerRelations();
                 customerRelations.customerClient = clientInfo;
                 customerRelations.type = type;

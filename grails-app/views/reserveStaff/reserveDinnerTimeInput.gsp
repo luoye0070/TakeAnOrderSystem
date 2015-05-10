@@ -82,9 +82,10 @@
 <body>
 <div class="mc_main">
     <div class="mcm_top">
-        <div class="mcm_top_name"><g:message code='restaurantInfo.create.label'/></div>
+        %{--<div class="mcm_top_name"><g:message code='restaurantInfo.create.label'/></div>--}%
 
-        <div class="mcm_top_banner"></div>
+        %{--<div class="mcm_top_banner"></div>--}%
+        <g:render template="../layouts/staffMenu"></g:render>
     </div>
 
     <div class="span10" style="margin-left: 10px;margin-top: 0px;">
@@ -109,7 +110,7 @@
                 <label class="control-label"></label>
 
                 <div class="controls">
-                    <input type="submit" value="${message(code: 'default.button.create.label', default: 'Create')}"
+                    <input type="submit" value="${message(code: 'default.button.next.label', default: 'Next')}"
                            class="btn send_btn"/>
                 </div>
             </div>

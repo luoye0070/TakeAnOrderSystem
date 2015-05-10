@@ -196,9 +196,10 @@
 <body>
 <div class="mc_main">
 <div class="mcm_top">
-    <div class="mcm_top_name">订单${reserveOrderInfo?.numInRestaurant}-点菜</div>
+    %{--<div class="mcm_top_name">订单${reserveOrderInfo?.numInRestaurant}-点菜</div>--}%
 
-    <div class="mcm_top_banner"></div>
+    %{--<div class="mcm_top_banner"></div>--}%
+    <g:render template="../layouts/staffMenu"></g:render>
 </div>
 
 <div class="span10" style="margin-left: 10px;margin-top: 0px;">
@@ -329,7 +330,7 @@
             <tr>
 
                 <g:sortableColumn property="foodId"
-                                  title="${message(code: 'dishesInfo.foodId.label', default: 'Food Id')}"
+                                  title="${message(code: 'dishesInfo.food.label', default: 'Food')}"
                                   params="${params}"/>
 
                 <g:sortableColumn property="foodName"

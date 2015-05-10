@@ -28,11 +28,8 @@
                 <thead>
                 <tr>
 
-                    <g:sortableColumn property="restaurantId"
-                                      title="${message(code: 'customerRelations.restaurantId.label', default: 'Restaurant Id')}"/>
-
-                    <g:sortableColumn property="customerClientId"
-                                      title="${message(code: 'customerRelations.customerClientId.label', default: 'Customer User Id')}"/>
+                    %{--<g:sortableColumn property="customerClientId"--}%
+                                      %{--title="${message(code: 'customerRelations.customerClient.label', default: 'Customer User')}"/>--}%
 
                     <g:sortableColumn property="customerUserName"
                                       title="${message(code: 'customerRelations.customerUserName.label', default: 'Customer User Name')}"/>
@@ -46,12 +43,9 @@
                 <g:each in="${customerRelationsList}" status="i" var="customerRelationsInstance">
                     <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
-                        <td><g:link action="show"
-                                    id="${customerRelationsInstance.id}">${fieldValue(bean: customerRelationsInstance, field: "restaurantId")}</g:link></td>
+                        %{--<td>${customerRelationsInstance?.customerClient?.id}</td>--}%
 
-                        <td>${fieldValue(bean: customerRelationsInstance, field: "customerClientId")}</td>
-
-                        <td>${fieldValue(bean: customerRelationsInstance, field: "customerUserName")}</td>
+                        <td>${customerRelationsInstance?.customerClient?.clientMark}</td>
 
                         <td>${CustomerRelationsType.getCustomerRelationsType(customerRelationsInstance?.type ?: 0).label}</td>
 

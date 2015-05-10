@@ -330,7 +330,7 @@
             <tr>
 
                 <g:sortableColumn property="foodId"
-                                  title="${message(code: 'dishesInfo.foodId.label', default: 'Food Id')}"
+                                  title="${message(code: 'dishesInfo.food.label', default: 'Food')}"
                                   params="${params}"/>
 
                 <g:sortableColumn property="foodName"

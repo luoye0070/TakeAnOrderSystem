@@ -111,7 +111,7 @@
                 <label class="control-label"></label>
 
                 <div class="controls">
-                    <input type="submit" value="${message(code: 'default.button.create.label', default: 'Create')}"
+                    <input type="submit" value="${message(code: 'default.button.next.label', default: 'Next')}"
                            class="btn send_btn"/>
                 </div>
             </div>
