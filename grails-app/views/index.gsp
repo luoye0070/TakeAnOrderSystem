@@ -79,6 +79,9 @@
 				}
 			}
 		</style>
+        <script type="text/javascript">
+            window.location.href="${createLink(controller: "customer",action: "getOrCreateOrder")}";
+        </script>
 	</head>
 	<body>
 		<a href="#page-body" class="skip"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>

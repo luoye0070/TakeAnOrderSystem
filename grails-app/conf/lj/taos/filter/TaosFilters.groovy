@@ -50,6 +50,7 @@ class TaosFilters {
                         return false
                     }
                 }
+                return true;
             }
             after = { Map model ->
 
@@ -77,6 +78,7 @@ class TaosFilters {
                         return false
                     }
                 }
+                return true;
             }
             after = { Map model ->
 

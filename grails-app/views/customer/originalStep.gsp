@@ -53,7 +53,7 @@
     </div>
 
     <div class="span11">
-        <form class="form-horizontal" method="POST" id="create_form" action="getOrCreateOrder">
+        <form class="form-horizontal" method="POST" id="create_form" action="${createLink(controller: "customer",action: "getOrCreateOrder")}">
             <g:if test="${!isNeedPartakeCode}">
             <div class="control-group">
                 <label class="control-label" style="font-size: 16px;font-weight: bolder;">
