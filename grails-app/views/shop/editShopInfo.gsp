@@ -62,7 +62,7 @@
     <div class="span10" style="margin-left: 10px;margin-top: 10px;">
         %{--<g:render template="../layouts/shopMenu" />--}%
 
-        <form class="form-horizontal" method="POST" action="editShopInfo" enctype="multipart/form-data">
+        <g:form class="form-horizontal" method="POST" action="editShopInfo" enctype="multipart/form-data">
             <fieldset>
                 <g:render template="../layouts/msgs_and_errors"></g:render>
 
@@ -214,7 +214,7 @@
                 </div>
 
             </fieldset>
-        </form>
+        </g:form>
 
     </div>
 

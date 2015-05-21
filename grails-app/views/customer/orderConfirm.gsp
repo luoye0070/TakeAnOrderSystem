@@ -305,7 +305,7 @@
     </div>
 <g:if test="${isOwner}">
     <div class="span11">
-        <form class="form-horizontal" method="POST" id="cancel_form" action="orderCancel">
+        <form class="form-horizontal" method="POST" id="cancel_form" action="${createLink(controller: "customer",action: "orderCancel")}">
             <div class="control-group">
                 <label class="control-label"></label>
                 <input type="hidden" name="orderId" value="${orderInfo?.id}"/>
@@ -319,7 +319,7 @@
     </div>
     <!--完成点菜-->
     <div class="span11">
-        <form class="form-horizontal" method="POST" id="back_to_dish_form" action="backToDish">
+        <form class="form-horizontal" method="POST" id="back_to_dish_form" action="${createLink(controller: "customer",action: "backToDish")}">
             <input type="hidden" name="orderId" value="${orderInfo?.id}"/>
             <input type="hidden" name="code" value="${params.code}"/>
             <div class="control-group">
@@ -332,7 +332,7 @@
                 </div>
             </div>
         </form>
-    <form class="form-horizontal" method="POST" id="dishConfirm_form" action="orderConfirm">
+    <form class="form-horizontal" method="POST" id="dishConfirm_form" action="${createLink(controller: "customer",action: "orderConfirm")}">
         <input type="hidden" name="orderId" value="${orderInfo?.id}"/>
         <input type="hidden" name="code" value="${params.code}"/>
         <div class="control-group">

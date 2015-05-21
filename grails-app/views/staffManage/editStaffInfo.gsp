@@ -28,7 +28,7 @@
 
 
 
-        <form method="post" action="editStaffInfo" class="form-horizontal">
+        <g:form method="post" action="editStaffInfo" class="form-horizontal">
             <g:hiddenField name="staffId" value="${staffInfoInstance?.staffInfo?.id}"/>
             <g:hiddenField name="version" value="${staffInfoInstance?.staffInfo?.version}"/>
             <fieldset class="form">
@@ -39,7 +39,7 @@
                 <g:submitButton name="create" value="${message(code: 'default.button.create.label', default: 'Create')}"
                                 class="btn send_btn"/>
             </fieldset>
-        </form>
+        </g:form>
     </div>
 </div>
 </body>

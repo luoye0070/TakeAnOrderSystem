@@ -93,7 +93,7 @@
     </div>
 
     <div class="span11">
-        <form class="form-horizontal" method="POST" id="create_form" action="reserveTables">
+        <g:form class="form-horizontal" method="POST" id="create_form" action="reserveTables">
 
                 <div class="control-group">
                     <label class="control-label" for="dinnerTime">
@@ -115,7 +115,7 @@
                 </div>
             </div>
 
-        </form>
+        </g:form>
     </div>
 </div>
 </body>

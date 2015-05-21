@@ -57,7 +57,7 @@
     <a href="${createLink(controller: "reserveCustomer", action: "reserveDinnerTimeInput", params: [dinnerTime: params.dinnerTime])}">返回时间选择</a>
 
     <div class="span11">
-        <form class="form-horizontal" method="POST" id="create_form" action="createReserveOrder">
+        <g:form class="form-horizontal" method="POST" id="create_form" action="createReserveOrder">
             <g:if test="${tableInfoList}">
                 <input type="hidden" name="dinnerTime" id="dinnerTime"
                        value="${params.dinnerTime}"/>
@@ -129,7 +129,7 @@
                 </div>
             </div>
 
-        </form>
+        </g:form>
     </div>
 </div>
 </body>

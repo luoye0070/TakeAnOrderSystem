@@ -23,7 +23,7 @@
         %{--<g:render template="../layouts/shopMenu"/>--}%
         <g:render template="../layouts/msgs_and_errors"></g:render>
 
-        <form method="post" action="editTableInfo"  class="form-horizontal">
+        <g:form method="post" action="editTableInfo"  class="form-horizontal">
             <g:hiddenField name="tableId" value="${tableInfoInstance?.id}"/>
             <g:hiddenField name="version" value="${tableInfoInstance?.version}"/>
             <fieldset class="form">
@@ -35,7 +35,7 @@
                 <g:submitButton name="create" class="btn send_btn"
                                 value="${message(code: 'default.button.create.label', default: 'Create')}"/>
             </div>
-        </form>
+        </g:form>
 
     </div>
 </div>

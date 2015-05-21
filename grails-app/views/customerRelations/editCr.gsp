@@ -20,7 +20,7 @@
         <g:render template="../layouts/shopMenu"/>
         <g:render template="../layouts/msgs_and_errors"></g:render>
 
-        <form method="post" action="editCr" class="form-horizontal">
+        <g:form method="post" action="editCr" class="form-horizontal">
             <g:hiddenField name="crId" value="${customerRelationsInstance?.id}"/>
             <g:hiddenField name="version" value="${customerRelationsInstance?.version}"/>
             <fieldset class="form">
@@ -32,7 +32,7 @@
                                 value="${message(code: 'default.button.create.label', default: 'Create')}"
                                 class="btn send_btn"/>
             </fieldset>
-        </form>
+        </g:form>
     </div>
 </div>
 </body>

@@ -135,7 +135,7 @@
         %{--<g:render template="../layouts/shopMenu"/>--}%
         <g:render template="../layouts/msgs_and_errors"></g:render>
 
-        <form method="post" action="editFoodInfo"  class="form-horizontal">
+        <g:form method="post" action="editFoodInfo"  class="form-horizontal">
             <g:hiddenField name="foodId" value="${foodInfoInstance?.id}" />
             <g:hiddenField name="version" value="${foodInfoInstance?.version}" />
             <fieldset class="form">
@@ -145,7 +145,7 @@
                 <a href="${createLink(controller: "foodManage", action: "foodList")}" class="btn send_btn">取消</a>
                 <g:submitButton name="create"  value="${message(code: 'default.button.create.label', default: 'Create')}" class="btn send_btn"/>
             </div>
-        </form>
+        </g:form>
 
 
      </div>

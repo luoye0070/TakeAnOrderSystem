@@ -43,7 +43,7 @@
 
 
 
-            <form method="post" action="editImageClass" class="form-horizontal">
+            <g:form method="post" action="editImageClass" class="form-horizontal">
                 <input type="hidden" name="classId" id="id" value="${imageClassInfo?.id}"/>
 
                 <div class="control-group">
@@ -62,7 +62,7 @@
                     <input type="submit" class="btn btn-primary"
                            value="${message(code: 'default.button.create.label', default: 'Create')}"/>
                 </div>
-            </form>
+            </g:form>
         </div>
     </div>
 </div>

@@ -412,7 +412,7 @@
 </div>
 <!--完成点菜-->
     <div class="span11">
-        <form class="form-horizontal" method="POST" id="cancel_form" action="orderConfirmAfterOrderConfirm">
+        <g:form class="form-horizontal" method="POST" id="cancel_form" action="orderConfirmAfterOrderConfirm">
             <div class="control-group">
                 <label class="control-label"></label>
                 <input type="hidden" name="orderId" value="${orderInfo?.id}"/>
@@ -422,7 +422,7 @@
                            class="btn send_btn"/>
                 </div>
             </div>
-        </form>
+        </g:form>
     </div>
 </div>
 </body>

@@ -129,7 +129,7 @@
         <g:render template="../layouts/msgs_and_errors"></g:render>
 
         <div class="span11">
-            <form class="form-horizontal" method="POST" id="create_form" action="shopCreate">
+            <g:form class="form-horizontal" method="POST" id="create_form" action="shopCreate">
 
                 <div class="control-group">
                     <label class="control-label" style="font-size: 16px;font-weight: bolder;">
@@ -329,7 +329,7 @@
                     </div>
                 </div>
 
-            </form>
+            </g:form>
 
         </div>
     </div>

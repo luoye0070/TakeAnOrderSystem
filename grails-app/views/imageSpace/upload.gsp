@@ -40,7 +40,7 @@
             <g:render template="../layouts/msgs_and_errors"></g:render>
 
 
-            <form method="post" action="upload" enctype="multipart/form-data" class="form-horizontal">
+            <g:form method="post" action="upload" enctype="multipart/form-data" class="form-horizontal">
 
                 <div class="control-group">
                     <label class="control-label" for="classId">上传到
@@ -76,7 +76,7 @@
                     <input type="submit" value="${message(code: 'default.button.create.label', default: 'Create')}"
                            class="btn btn-primary"/>
                 </div>
-            </form>
+            </g:form>
         </div>
     </div>
 </div>

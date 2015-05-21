@@ -146,7 +146,7 @@
 <!--搜索栏-->
     <div class="m_ssl">
         <!--搜索条件-->
-        <form action="searchFood" method="post" class="well form-inline">
+        <g:form action="searchFood" method="post" class="well form-inline">
             <!--地区条件-->
             <div class="ms_field">
                 <label for="areaId">
@@ -194,7 +194,7 @@
                 <input type="submit" value="${message(code: 'default.button.search.label', default: 'Create')}"
                        class="btn send_btn"/>
             </div>
-        </form>
+        </g:form>
     </div>
 
 
