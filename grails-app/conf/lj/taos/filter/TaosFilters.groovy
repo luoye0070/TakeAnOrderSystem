@@ -62,7 +62,7 @@ class TaosFilters {
         //需要店主登录
         masterLogin(controller:'*', action:'*') {
             before = {
-                if(controllerName.equals('shop')
+                if((controllerName.equals('shop')&&(actionName in ["editShopInfo"]))
                     ||controllerName.equals('tableManage')
                     ||controllerName.equals('foodClassInfo')
                     ||controllerName.equals('foodManage')
