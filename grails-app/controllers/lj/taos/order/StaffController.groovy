@@ -73,7 +73,7 @@ class StaffController {
         println("reInfo-->" + reInfo);
         params.tableId = tableId;
         reInfo << [params: params];
-        render(view: "orderInput", model: reInfo);
+        render(view: webUtilService.getView("orderInput"), model: reInfo);
     }
 
 //    //预定桌位
@@ -210,7 +210,7 @@ class StaffController {
     def orderList() {
         def reInfo = staffOrderService.orderList(params);
         println("reInfo-->" + reInfo);
-        render(view: "orderList", model: reInfo);
+        render(view: webUtilService.getView("orderList"), model: reInfo);
     }
     //订单删除
     def delOrder() {
@@ -250,7 +250,7 @@ class StaffController {
         }
         //reInfo<<[orderInfoInstance:orderInfoInstance]<<[params:params];
         println("reInfo--->" + reInfo);
-        render(view: "orderShow", model: reInfo);
+        render(view: webUtilService.getView("orderShow"), model: reInfo);
     }
     //进入点菜界面
     def doDish() {
@@ -270,7 +270,7 @@ class StaffController {
             reInfo<<[dishes:reInfo1];
         }
         reInfo<< [params: params];
-        render(view: "doDish", model: reInfo);
+        render(view: webUtilService.getView("doDish"), model: reInfo);
     }
     //完成点菜
     def completeDish() {
@@ -326,7 +326,7 @@ class StaffController {
 //        println("params.date-->"+params.date);
         def reInfo = staffOrderService.dishList(params);
         println("reInfo-->" + reInfo);
-        render(view: "dishList", model: reInfo);
+        render(view: webUtilService.getView("dishList"), model: reInfo);
     }
     //点菜删除
     def delDish() {
@@ -357,7 +357,7 @@ class StaffController {
                 flash.warning = reInfo.warning;
             }
             println("reInfo-->" + reInfo);
-            render(view: "settleAccounts", model: reInfo);
+            render(view: webUtilService.getView("settleAccounts"), model: reInfo);
         }
         if (request.method == "POST") {//提交算账
             reInfo = staffOrderService.submitCastAccounts(params);
@@ -373,7 +373,7 @@ class StaffController {
             } else {
                 flash.errors = reInfo.recode.label;
             }
-            render(view: "settleAccounts", model: reInfo);
+            render(view: webUtilService.getView("settleAccounts"), model: reInfo);
             return;
         }
 
@@ -624,7 +624,7 @@ class StaffController {
             } else {
                 errors = reInfo.recode.label;
             }
-            render(view: "addDishAfterOrderConfirm", model: [errors: errors, msgs: msgs]);
+            render(view: webUtilService.getView("addDishAfterOrderConfirm"), model: [errors: errors, msgs: msgs]);
             return;
         }
         //查询菜品
@@ -636,7 +636,7 @@ class StaffController {
         reInfo << reInfo1;
         println("reInfo-->" + reInfo);
         println("orderInfo-->" + reInfo.orderInfo);
-        render(view: "addDishAfterOrderConfirm", model: reInfo);
+        render(view: webUtilService.getView("addDishAfterOrderConfirm"), model: reInfo);
     }
 
     //加菜确认

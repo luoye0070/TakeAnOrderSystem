@@ -78,7 +78,7 @@ class StaffManageController {
                 errors=reInfo.recode.label;
             }
         }
-        render(view: "staffLogin",model: [errors:errors,msgs:msgs,params:params]);
+        render(view: webUtilService.getView("staffLogin"),model: [errors:errors,msgs:msgs,params:params]);
     }
     def jump(){
         def defaultUrl="/";
