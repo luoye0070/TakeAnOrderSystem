@@ -210,6 +210,10 @@ class StaffController {
     def orderList() {
         def reInfo = staffOrderService.orderList(params);
         println("reInfo-->" + reInfo);
+        if(webUtilService.isMobileRequest()&&params.beginTime==null){//手机界面的特殊处理
+            reInfo.orderList=null;
+            reInfo<<[firstLoad:true];
+        }
         render(view: webUtilService.getView("orderList"), model: reInfo);
     }
     //订单删除

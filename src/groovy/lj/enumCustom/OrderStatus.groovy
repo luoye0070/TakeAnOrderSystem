@@ -12,11 +12,11 @@ public enum OrderStatus {
     //上菜完成
     SERVED_STATUS(3,'上菜完成'),
     //运送中
-    SHIPPING_STATUS(4,'运送中'),
+    //SHIPPING_STATUS(4,'运送中'),
     //结账完成
-    CHECKOUTED_STATUS(5,'结账完成'),
+    CHECKOUTED_STATUS(5,'结账完成');
     //评价完成
-    APPRAISED_STATUS(6,"评价完成");
+    //APPRAISED_STATUS(6,"评价完成");
 
     public Integer code
     public String label
@@ -34,12 +34,12 @@ public enum OrderStatus {
                 return  VERIFY_ORDERED_STATUS.label;
             case SERVED_STATUS.code:
                 return  SERVED_STATUS.label;
-            case SHIPPING_STATUS.code:
-                return  SHIPPING_STATUS.label;
+//            case SHIPPING_STATUS.code:
+//                return  SHIPPING_STATUS.label;
             case CHECKOUTED_STATUS.code:
                 return  CHECKOUTED_STATUS.label;
-            case APPRAISED_STATUS.code:
-                return  APPRAISED_STATUS.label;
+//            case APPRAISED_STATUS.code:
+//                return  APPRAISED_STATUS.label;
             default:
                 return "未知状态"
         }
@@ -54,11 +54,11 @@ public enum OrderStatus {
                 //上菜完成
                 SERVED_STATUS.code,
                 //运送中
-                SHIPPING_STATUS.code,
+//                SHIPPING_STATUS.code,
                 //结账完成
                 CHECKOUTED_STATUS.code,
                 //评价完成
-                APPRAISED_STATUS.code
+//                APPRAISED_STATUS.code
         ];
     }
     public static OrderStatus[] statuses=[
@@ -71,10 +71,10 @@ public enum OrderStatus {
             //上菜完成
             SERVED_STATUS,
             //运送中
-            SHIPPING_STATUS,
+//            SHIPPING_STATUS,
             //结账完成
-            CHECKOUTED_STATUS,
+            CHECKOUTED_STATUS
             //评价完成
-            APPRAISED_STATUS
+//            APPRAISED_STATUS
     ];
 }
