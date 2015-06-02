@@ -81,41 +81,14 @@
 <!--提示消息-->
 %{--<g:set var="errors" value="测试一个错误"/>--}%
 <g:render template="/layouts/staff_mobile_msgs_and_errors"></g:render>
-
-%{--<div class="panel panel-default">--}%
-%{--<div class="panel-heading">--}%
-    %{--<h3 class="panel-title">订单${params.orderId}-点菜</h3>--}%
-%{--</div>--}%
-
-%{--<div class="panel-body">--}%
-
-        %{--<div class="col-sm-12">--}%
-            %{--<a href="${params.backUrl ?: createLink(controller: "staff", action: "orderList")}">返回</a>--}%
-            %{--<g:if test="${orderInfoInstance?.tableInfo?.name}">--}%
-                %{--&nbsp;&nbsp;--}%
-                    %{--<g:message code="orderInfo.tableInfo.label" default="Table Info"/>--}%
-                    %{--:--}%
-                    %{--${orderInfoInstance?.tableInfo?.name}--}%
-            %{--</g:if>--}%
-            %{--<g:if test="${orderInfoInstance?.clientInfo?.nickname}">--}%
-                     %{--&nbsp;&nbsp;--}%
-                    %{--<g:message code="orderInfo.clientInfo.label" default="Client Info"/>--}%
-                    %{--:--}%
-                    %{--${orderInfoInstance?.clientInfo?.nickname}--}%
-            %{--</g:if>--}%
-
-        %{--</div>--}%
-
-%{--</div>--}%
-%{--</div>--}%
 <!--点菜列表-->
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">订单${params.orderId}-点菜列表</h3>
+        <h3 class="panel-title">订单${params.orderId}-点菜</h3>
     </div>
     <div class="panel-body">
 
-        <div class="col-sm-12">
+        <div class="col-xs-10">
             <a href="${params.backUrl ?: createLink(controller: "staff", action: "orderList")}">返回</a>
             <g:if test="${orderInfoInstance?.tableInfo?.name}">
                 &nbsp;&nbsp;
@@ -131,10 +104,15 @@
             </g:if>
 
         </div>
+        <div class="col-xs-2" style="text-align: right">
+            <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                <span class="caret"></span>
+            </button>
+        </div>
 
     </div>
     <g:if test="${dishes?.dishList}">
-    %{--<div>--}%
+    <div class="collapse"  id="collapseExample">
         <table class="table table-striped table-bordered table-condensed">
             <thead>
             <tr>
@@ -151,10 +129,6 @@
 
                 <g:sortableColumn property="valid" title="${message(code: 'dishesInfo.valid.label', default: 'Valid')}"
                                   params="${params}"/>
-
-                %{--<g:sortableColumn property="cancelReason"--}%
-                %{--title="${message(code: 'dishesInfo.cancelReason.label', default: 'Cancel Reason')}"--}%
-                %{--params="${params}"/>--}%
 
                 <g:sortableColumn property="remark"
                                   title="${message(code: 'dishesInfo.remark.label', default: 'Remark')}"
@@ -196,7 +170,7 @@
 
     %{--<taos:paginate action="orderShow" total="${totalCount ?: 0}" prev="&larr;" next="&rarr;" params="${params}"/>--}%
 
-    %{--</div>--}%
+    </div>
     </g:if>
     <g:else>
         <div class="panel-body">

@@ -21,7 +21,7 @@ class StaffController {
     def jasperReportService
     def staffCartService;
 //    CommonService commonService;
-
+    def orderAndReserveService;
     def index() {//根据不同的职位跳转到不同界面
         redirect(action: "orderList");
     }
@@ -62,6 +62,8 @@ class StaffController {
 
     //到店吃饭创建订单输入界面
     def orderInput() {
+        //标注过期订单
+        orderAndReserveService.markExpire();
         //查询出相应的桌位
         StaffInfo staffInfo = webUtilService.getStaff();
         params.enabled = true;

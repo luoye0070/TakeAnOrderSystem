@@ -26,6 +26,7 @@ class CustomerOrderService {
     //def userService;
     def clientService;
     def shopService;
+    def orderAndReserveService;
 
     def g = new org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib();
     /**
@@ -50,6 +51,9 @@ class CustomerOrderService {
         }
         OrderInfo orderInfo = OrderInfo.findByTableInfoAndValidAndStatusLessThan(tableInfo, OrderValid.EFFECTIVE_VALID.code, OrderStatus.CHECKOUTED_STATUS.code);
         if (orderInfo == null) {
+            //标注过期订单
+            orderAndReserveService.markExpire();
+
             //检测是否已经有其他桌的有效订单
             OrderInfo orderInfo1 = OrderInfo.findByValidAndStatusLessThanAndClientInfoAndTableInfoNotEqual(OrderValid.EFFECTIVE_VALID.code, OrderStatus.CHECKOUTED_STATUS.code, clientInfo, tableInfo);
             if (orderInfo1) {

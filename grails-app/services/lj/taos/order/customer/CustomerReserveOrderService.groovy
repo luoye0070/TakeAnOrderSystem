@@ -20,11 +20,14 @@ import java.text.SimpleDateFormat
 class CustomerReserveOrderService {
     def shopService;
     def clientService;
-
+    def orderAndReserveService;
     def g = new org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib();
 
     //根据预定信息查询出相应的可预定桌位
     def getReserveTable(def params){
+        //标注过期订单
+        orderAndReserveService.markExpire();
+
         SimpleDateFormat sdfDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String dinnerTimeStr=params.dinnerTime;
         Date dinnerTime=new Date();

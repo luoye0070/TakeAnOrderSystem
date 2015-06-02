@@ -10,7 +10,9 @@ public enum OrderValid {
     //用户取消
     USER_CANCEL_VALID(2,'用户取消'),
     //饭店取消
-    RESTAURANT_CANCEL_VALID(3,'饭店取消')
+    RESTAURANT_CANCEL_VALID(3,'饭店取消'),
+    //过期订单
+    EXPIRE_VALID(4,"过期")
     public Integer code
     public String label
     OrderValid(Integer code,String label){
@@ -26,7 +28,8 @@ public enum OrderValid {
                 //用户取消
                 USER_CANCEL_VALID.code,
                 //饭店取消
-                RESTAURANT_CANCEL_VALID.code
+                RESTAURANT_CANCEL_VALID.code,
+                EXPIRE_VALID.code
         ];
     }
 
@@ -40,6 +43,8 @@ public enum OrderValid {
                 return  USER_CANCEL_VALID.label;
             case RESTAURANT_CANCEL_VALID.code:
                 return  RESTAURANT_CANCEL_VALID.label;
+            case EXPIRE_VALID.code:
+                return  EXPIRE_VALID.label;
             default:
                 return "未知有效性"
         }
@@ -52,6 +57,7 @@ public enum OrderValid {
             //用户取消
             USER_CANCEL_VALID,
             //饭店取消
-            RESTAURANT_CANCEL_VALID
+            RESTAURANT_CANCEL_VALID,
+            EXPIRE_VALID
     ];
 }
