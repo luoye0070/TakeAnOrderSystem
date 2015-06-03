@@ -10,7 +10,9 @@ public enum DishesValid {
     //饭店在订单确认前取消
     RESTAURANT_BEFORE_VERIFYED_CANCEL_VALID(3,'饭店在订单确认前取消'),
     //饭店在订单确认后取消
-    RESTAURANT_AFTER_VERIFYED_CANCEL_VALID(4,'饭店在订单确认后取消')
+    RESTAURANT_AFTER_VERIFYED_CANCEL_VALID(4,'饭店在订单确认后取消'),
+    //过期订单
+    EXPIRE_VALID(4,"过期")
     public Integer code
     public String label
     DishesValid(Integer code,String label){
@@ -29,6 +31,8 @@ public enum DishesValid {
                 return  RESTAURANT_BEFORE_VERIFYED_CANCEL_VALID.label;
             case RESTAURANT_AFTER_VERIFYED_CANCEL_VALID.code:
                 return  RESTAURANT_AFTER_VERIFYED_CANCEL_VALID.label;
+            case EXPIRE_VALID.code:
+                return  EXPIRE_VALID.label;
             default:
                 return "未知有效性"
         }
@@ -44,7 +48,9 @@ public enum DishesValid {
                 //饭店在订单确认前取消
                 RESTAURANT_BEFORE_VERIFYED_CANCEL_VALID.code,
                 //饭店在订单确认后取消
-                RESTAURANT_AFTER_VERIFYED_CANCEL_VALID.code
+                RESTAURANT_AFTER_VERIFYED_CANCEL_VALID.code,
+                //过期
+                EXPIRE_VALID.code
         ];
     }
 }

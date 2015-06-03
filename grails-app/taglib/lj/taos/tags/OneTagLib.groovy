@@ -209,9 +209,9 @@ class OneTagLib {
                                 if (orderInfo.status <= OrderStatus.SERVED_STATUS.code) {
                                     htmlTag += "<a href='" + createLink(controller: "staff", action: "cancelOrder", params: [orderId: orderId, backUrl: backUrl]) + "'>取消</a>&nbsp;&nbsp;";
                                     if(orderInfo.status>=OrderStatus.VERIFY_ORDERED_STATUS.code){
-                                        htmlTag += "<a href='" + createLink(controller: "staff", action: "addDishAfterOrderConfirmView", params: [orderId: orderId], backUrl: backUrl) + "'>加菜</a>&nbsp;&nbsp;";
+                                        htmlTag += "<a href='" + createLink(controller: "staff", action: "addDishAfterOrderConfirmView", params: [orderId: orderId, backUrl: backUrl]) + "'>加菜</a>&nbsp;&nbsp;";
                                     }else{
-                                        htmlTag += "<a href='" + createLink(controller: "staff", action: "doDish", params: [orderId: orderId], backUrl: backUrl) + "'>点菜</a>&nbsp;&nbsp;";
+                                        htmlTag += "<a href='" + createLink(controller: "staff", action: "doDish", params: [orderId: orderId, backUrl: backUrl]) + "'>点菜</a>&nbsp;&nbsp;";
                                     }
                                 }
                                 if (orderInfo.status == OrderStatus.ORIGINAL_STATUS.code) {
@@ -227,7 +227,9 @@ class OneTagLib {
 //                                        htmlTag += "<a href='" + createLink(controller: "staff", action: "customerReach", params: [orderId: orderId],backUrl:backUrl) + "'>顾客到店</a>&nbsp;&nbsp;";
 //                                    }
                             }else{//取消订单，可以删除掉
-                                htmlTag += "<a href='" + createLink(controller: "staff", action: "delOrder", params: [orderId: orderId], backUrl: backUrl) + "'>删除</a>&nbsp;&nbsp;";
+                                if (PositionType.SHOPKEEPER.code in positionList){
+                                    htmlTag += "<a href='" + createLink(controller: "staff", action: "delOrder", params: [orderId: orderId, backUrl: backUrl]) + "'>删除</a>&nbsp;&nbsp;";
+                                }
                             }
                         }
                     }

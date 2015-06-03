@@ -325,6 +325,9 @@ class StaffController {
     }
     //点菜列表
     def dishList() { //厨师显示所有状态是1有效性是1的点菜
+        //标注过期订单
+        orderAndReserveService.markExpire();
+
         params.statusGe = 1;
         params.statusLe = 2;
         params.valid = 1;

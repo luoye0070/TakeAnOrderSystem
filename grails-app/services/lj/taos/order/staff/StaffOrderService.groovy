@@ -1151,12 +1151,14 @@ class StaffOrderService {
                 if(validLe>=0){
                     le("valid",validLe);//订单有效性条件
                 }
+                //加上order有效性为有效
+                //eq("order.valid",OrderValid.EFFECTIVE_VALID.code);
             }
 
-            if(!params.sort){//如果没有排序，则按ID倒排序
-                params.sort="id";
-                params.order="desc";
-            }
+//            if(!params.sort){//如果没有排序，则按ID倒排序
+//                params.sort="id";
+//                params.order="desc";
+//            }
 
             def dishList=DishesInfo.createCriteria().list(params,condition);
             def totalCount=DishesInfo.createCriteria().count(condition);

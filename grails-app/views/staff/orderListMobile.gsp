@@ -54,6 +54,11 @@
 
         <div class="col-sm-3" style="margin-top: 15px;">
             <select name="valid" class="form-control">
+                <%
+                    if(params.valid==null){
+                        params.valid=OrderValid.EFFECTIVE_VALID.code+"";
+                    }
+                %>
                 <option value="-1" ${params.status == "-1" ? "selected='selected'" : ""}>全部</option>
                 <g:each in="${lj.enumCustom.OrderValid.valids}">
                     <option value="${it.code}" ${params.valid == it.code.toString() ? "selected='selected'" : ""}>${it.label}</option>
