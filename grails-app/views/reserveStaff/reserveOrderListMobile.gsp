@@ -12,71 +12,16 @@
     <meta name="layout" content="staff_mobile_template"/>
     <title></title>
     <style type="text/css">
-    </style>
-    <link type="text/css" href="${resource(dir: "js/dateTimePicker/css", file: "jquery-ui-1.8.17.custom.css")}" rel="stylesheet" />
-
-    <link type="text/css" href="${resource(dir: "js/dateTimePicker/css", file: "jquery-ui-timepicker-addon.css")}" rel="stylesheet" />
-
-    <script type="text/javascript" src="${resource(dir: "js/dateTimePicker/js", file: "jquery-1.7.1.min.js")}"></script>
-
-    <script type="text/javascript" src="${resource(dir: "js/dateTimePicker/js", file: "jquery-ui-1.8.17.custom.min.js")}"></script>
-
-    <script type="text/javascript" src="${resource(dir: "js/dateTimePicker/js", file: "jquery-ui-timepicker-addon.js")}"></script>
-
-    <script type="text/javascript" src="${resource(dir: "js/dateTimePicker/js", file: "jquery-ui-timepicker-zh-CN.js")}"></script>
-
+    </style><link type="text/css" href="${resource(dir: "js/bootstrap-3.3.4/css", file: "bootstrap-datetimepicker.min.css")}" rel="stylesheet" />
+    <script type="text/javascript" src="${resource(dir: "js/bootstrap-3.3.4/js", file: "bootstrap-datetimepicker.min.js")}" charset="UTF-8"></script>
+    <script type="text/javascript" src="${resource(dir: "js/bootstrap-3.3.4/js/locales", file: "bootstrap-datetimepicker.zh-CN.js")}" charset="UTF-8"></script>
     <script type="text/javascript">
         $(function () {
-            //日期选择器
-//            $("#beginDate").datepicker({format: "yyyy-mm-dd"});
-//            $("#endDate").datepicker({format: "yyyy-mm-dd"});
-
-            $("#beginDate").datetimepicker({
-
-                //showOn: "button",
-
-                //buttonImage: "./css/images/icon_calendar.gif",
-
-                //buttonImageOnly: true,
-
-                showSecond: true,
-
-                timeFormat: 'hh:mm:ss',
-
-                stepHour: 1,
-
-                stepMinute: 1,
-
-                stepSecond: 1
-
+            $('#beginDate').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii:ss'
             });
-
-            $("#endDate").datetimepicker({
-
-                //showOn: "button",
-
-                //buttonImage: "./css/images/icon_calendar.gif",
-
-                //buttonImageOnly: true,
-
-                showSecond: true,
-
-                timeFormat: 'hh:mm:ss',
-
-                stepHour: 1,
-
-                stepMinute: 1,
-
-                stepSecond: 1
-
-            });
-
-
-            $("#beginDateDel").click(function () {
-                $("#beginDate").val("");
-            });
-            $("#endDateDel").click(function () {
-                $("#endDate").val("");
+            $('#endDate').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii:ss'
             });
         });
     </script>
@@ -89,7 +34,7 @@
 <form class="well form-horizontal" action="${createLink(controller: "reserveStaff", action: "reserveOrderList")}">
     <div class="form-group">
     <div class="col-sm-4" style="margin-top: 15px;">
-        <input class="form-control" type="text" name="phone" value="${params.phone}" placeholder="请输入手机号"/>
+        <input class="form-control" type="number" name="phone" value="${params.phone}" placeholder="请输入手机号"/>
     </div>
 
     %{--<div class="mcmcs_field_middle" style="width: 180px">--}%
@@ -125,16 +70,16 @@
 
 
         <div class="col-sm-4" style="margin-top: 15px;">
-            <input class="form-control" id="beginDate" name="beginTime" type="text"
+            <input class="form-control" id="beginDate" name="beginTime" type="text" readonly
                    value="${params.beginDate}" placeholder="请输入查询开始时间"/>
         </div>
         <div class="col-sm-4" style="margin-top: 15px;">
-        <input class="form-control" id="endDate" name="endTime" type="text"
+        <input class="form-control" id="endDate" name="endTime" type="text" readonly=""
                value="${params.endDate}" placeholder="请输入查询结束时间"/>
          </div>
     <div class="col-sm-4" style="margin-top: 15px;">
         <input type="submit" value="${message(code: 'default.button.search.label', default: 'search')}"
-               class="btn btn-primary"/>
+               class="form-control btn btn-primary"/>
 
 
         %{--<g:actionSubmit value="导出Excel" action="exportOrderList" class="btn btn-primary"/>--}%
@@ -160,7 +105,7 @@
 
 
             <g:sortableColumn property="createTime"
-                              title="${message(code: 'reserveOrderInfo.createTime.label', default: 'Time')}" params="${params}"/>
+                              title="${message(code: 'reserveOrderInfo.dinnerTime.label', default: 'Time')}" params="${params}"/>
 
             <g:sortableColumn property="valid" title="${message(code: 'reserveOrderInfo.valid.label', default: 'Valid')}" params="${params}"/>
 
@@ -168,7 +113,7 @@
 
             <g:sortableColumn property="status" title="${message(code: 'reserveOrderInfo.phone.label', default: 'Phone')}" params="${params}"/>
             <th>操作</th>
-            <th></th>
+            %{--<th></th>--}%
         </tr>
         </thead>
         <tbody>
@@ -203,7 +148,7 @@
 
 
 
-                <td>${FormatUtil.dateTimeFormat(reserveOrderInfoInstance.createTime)}</td>
+                <td>${FormatUtil.dateTimeFormat(reserveOrderInfoInstance.dinnerTime)}</td>
 
                 <td>${OrderValid.getLable(reserveOrderInfoInstance.valid)}</td>
 
@@ -214,9 +159,9 @@
                 %{--<td>${ReserveType.getLabel(reserveOrderInfoInstance.reserveType)}</td>--}%
                 <td><a href="${createLink(controller: "reserveStaff", action: "reserveOrderDetail", params: [reserveOrderId: reserveOrderInfoInstance.id])}">订单详情</a>
                 </td>
-                <td>
-                    <taos:staffReserveOrderOperation reserveOrderId="${reserveOrderInfoInstance.id}" backUrl="${createLink(controller: "reserveStaff", action: "reserveOrderList",params: params,absolute: true)}"></taos:staffReserveOrderOperation>
-                </td>
+                %{--<td>--}%
+                    %{--<taos:staffReserveOrderOperation reserveOrderId="${reserveOrderInfoInstance.id}" backUrl="${createLink(controller: "reserveStaff", action: "reserveOrderList",params: params,absolute: true)}"></taos:staffReserveOrderOperation>--}%
+                %{--</td>--}%
             </tr>
         </g:each>
         </tbody>

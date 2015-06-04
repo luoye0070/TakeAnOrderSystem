@@ -209,7 +209,7 @@ class StaffReserveOrderService {
         FoodInfo foodInfo = FoodInfo.get(foodId);
         if (foodInfo) {
             if (foodInfo.enabled) {//在售
-                if (foodInfo.countLimit != 0 && (foodInfo.countLimit >= foodCount + foodInfo.sellCount)) {//数量足够
+                if (foodInfo.countLimit == 0 || (foodInfo.countLimit >= foodCount + foodInfo.sellCount)) {//数量足够
                     foodInfo.sellCount += foodCount;//当日销售量加上点菜数量
                     if (!foodInfo.save(flush: true)) {//保存数据失败
                         throw new RuntimeException(I18nError.getMessage(g, foodInfo.errors.allErrors));
@@ -400,6 +400,7 @@ class StaffReserveOrderService {
                 return [recode: ReCode.RESERVE_ORDER_CANNOT_REACH];
             }
 
+            OrderInfo orderInfo=null;
             //设置状态和初始值
             int status = DishesStatus.ORIGINAL_STATUS.code;;
             int valid = DishesValid.ORIGINAL_VALID.code;
@@ -463,7 +464,6 @@ class StaffReserveOrderService {
 //                    }
 //                }
                 //创建订单
-                OrderInfo orderInfo=null;
                 def reInfo=staffOrderService.createOrder([code: reserveOrderInfo.tableInfo.code]);
                 if(reInfo.recode!=ReCode.OK){
                     throw new RuntimeException(reInfo.recode.label);
@@ -486,7 +486,7 @@ class StaffReserveOrderService {
                         dishesInfo.status = status;
                         dishesInfo.valid = valid;
                         dishesInfo.numInRestaurant = 0;//先不要店内编号
-                        dishesInfo.num = rdishInfo.count;
+                        dishesInfo.num = rdishInfo.num;
                         dishesInfo.remark=rdishInfo.remark;//备注
                         dishesInfo.foodPrice= rdishInfo.food?.price;//价格
                         dishesInfo.foodName=rdishInfo.food?.name;
@@ -504,7 +504,7 @@ class StaffReserveOrderService {
                     }
                 }
             }
-            return [recode: ReCode.OK,reserveOrderInfo:reserveOrderInfo];
+            return [recode: ReCode.OK,reserveOrderInfo:reserveOrderInfo,orderInfo:orderInfo];
         }else{
             return [recode: ReCode.NO_RESULT];
         }

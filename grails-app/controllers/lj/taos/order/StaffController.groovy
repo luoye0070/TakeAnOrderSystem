@@ -365,6 +365,9 @@ class StaffController {
             if (reInfo.warning) {
                 flash.warning = reInfo.warning;
             }
+            //查询点菜
+            def reInfo1 = staffOrderService.dishList(params);
+            reInfo<<reInfo1;
             println("reInfo-->" + reInfo);
             render(view: webUtilService.getView("settleAccounts"), model: reInfo);
         }
@@ -382,6 +385,9 @@ class StaffController {
             } else {
                 flash.errors = reInfo.recode.label;
             }
+            //查询点菜
+            def reInfo1 = staffOrderService.dishList(params);
+            reInfo<<reInfo1;
             render(view: webUtilService.getView("settleAccounts"), model: reInfo);
             return;
         }

@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<%@ page import="lj.enumCustom.OrderValid; lj.enumCustom.OrderStatus; lj.enumCustom.ReserveType; lj.FormatUtil" contentType="text/html;charset=UTF-8" %>
+<%@ page import="lj.enumCustom.DishesValid; lj.enumCustom.DishesStatus; lj.enumCustom.OrderValid; lj.enumCustom.OrderStatus; lj.enumCustom.ReserveType; lj.FormatUtil" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="staff_mobile_template"/>
@@ -17,6 +17,16 @@
         margin-bottom: 5px;
     }
     </style>
+    <script type="text/javascript">
+        $(function(){
+            $("#getAccount").change(function(){
+                var getAccount=$(this).val();
+                var realAccount=$("#realAccount").val();
+                var change=getAccount-realAccount;
+                $("#change").val(change);
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -159,7 +169,7 @@
             <div class="col-sm-3">
 
                 <g:message code="orderInfo.totalAccount.label" default="Total Account"/>:
-                <g:fieldValue bean="${orderInstance}" field="totalAccount"/>
+                <g:fieldValue bean="${orderInfo}" field="totalAccount"/>
             </div>
         </g:if>
 
@@ -175,7 +185,78 @@
             <a href="${params.backUrl ?: createLink(controller: "staff", action: "orderList")}"
                class="btn btn-link">返回</a>
         </div>
+    </div>
 
+<g:if test="${dishList}">
+%{--<div class="panel-body"></div>--}%
+%{--<div>--}%
+    <table class="table table-striped table-bordered table-condensed">
+        <thead>
+        <tr>
+            <g:sortableColumn property="foodName"
+                              title="${message(code: 'dishesInfo.foodName.label', default: 'Food Name')}"
+                              params="${params}"/>
+            <g:sortableColumn property="foodPrice" title="${message(code: 'dishesInfo.foodPrice.label', default: 'Food Price')}"
+                              params="${params}"/>
+
+            <g:sortableColumn property="num" title="${message(code: 'dishesInfo.num.label', default: 'num')}"
+                              params="${params}"/>
+
+            <g:sortableColumn property="status"
+                              title="${message(code: 'dishesInfo.status.label', default: 'Status')}"
+                              params="${params}"/>
+
+            <g:sortableColumn property="valid" title="${message(code: 'dishesInfo.valid.label', default: 'Valid')}"
+                              params="${params}"/>
+
+            %{--<g:sortableColumn property="cancelReason"--}%
+            %{--title="${message(code: 'dishesInfo.cancelReason.label', default: 'Cancel Reason')}"--}%
+            %{--params="${params}"/>--}%
+
+            <g:sortableColumn property="remark"
+                              title="${message(code: 'dishesInfo.remark.label', default: 'Remark')}"
+                              params="${params}"/>
+
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <g:each in="${dishList}" status="i" var="dishesInfoInstance">
+            <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+                <td>${fieldValue(bean: dishesInfoInstance, field: "foodName")}</td>
+
+                <td>${fieldValue(bean: dishesInfoInstance, field: "foodPrice")}</td>
+
+                <td>${fieldValue(bean: dishesInfoInstance, field: "num")}</td>
+
+                <td>${DishesStatus.getLable(dishesInfoInstance?.status)}</td>
+
+                <td>${DishesValid.getLable(dishesInfoInstance?.valid)}</td>
+
+                %{--<td>${fieldValue(bean: dishesInfoInstance, field: "cancelReason")}</td>--}%
+
+                <td>${fieldValue(bean: dishesInfoInstance, field: "remark")}</td>
+
+                <td><taos:staffDishesOperation
+                        dishesId="${dishesInfoInstance?.id}"></taos:staffDishesOperation></td>
+            </tr>
+        </g:each>
+        </tbody>
+    </table>
+    <div class="panel-footer">
+        <taos:paginateForBs3 action="orderShow" total="${totalCount ?: 0}" prev="&larr;" next="&rarr;" params="${params}"/>
+    </div>
+%{--</div>--}%
+</g:if>
+<g:else>
+    <div class="panel-body">
+        <div class="col-sm-12" style="text-align: center;">
+            没有点菜
+        </div>
+    </div>
+</g:else>
+
+    <div class="panel-body">
         <div class="col-sm-12">
             <!--提交算账的表单-->
             <form method="post" action="${createLink(controller: "staff", action: "settleAccounts",params:[backUrl:params.backUrl])}"
@@ -183,23 +264,46 @@
                 <input type="hidden" name="orderId" value="${orderInfo?.id}"/>
                 %{--<g:if test="${orderInfo?.realAccount!=null}">--}%
                 <div class="control-group">
-                    <label for="realAccount" class="control-label">
+                    <label for="realAccount" class="col-sm-3 control-label">
                         <g:message code="orderInfo.realAccount.label" default="Real Account"/>
                     </label>
 
-                    <div class="controls">
-                        <input type="text" id="realAccount" name="realAccount" value="${orderInfo?.realAccount}"/>
+                    <div class="col-sm-3">
+                        <input type="number" id="realAccount" name="realAccount" value="${orderInfo?.realAccount}" class="form-control"/>
                     </div>
 
                 </div>
                 %{--</g:if>--}%
+
+            <div class="control-group">
+                <label for="getAccount" class="col-sm-3 control-label">
+                    实收
+                </label>
+
+                <div class="col-sm-3">
+                    <input type="number" id="getAccount" value="" class="form-control"/>
+                </div>
+
+            </div>
+
+            <div class="control-group">
+                <label for="change" class="col-sm-3 control-label">
+                    找零
+                </label>
+
+                <div class="col-sm-3">
+                    <input type="text" id="change" value="" readonly="" class="form-control"/>
+                </div>
+
+            </div>
+
                 <div class="control-group">
-                    <label for="realAccount" class="control-label">
+                    <label for="realAccount" class="col-sm-3 control-label">
 
                     </label>
 
-                    <div class="controls">
-                        <input type="submit" class="btn btn-primary" value="${message(code: "default.button.settle.label", default: "submit")}"/>
+                    <div class="col-sm-3">
+                        <input type="submit" class="form-control btn btn-primary" value="${message(code: "default.button.settle.label", default: "submit")}"/>
                     </div>
                 </div>
             </form>

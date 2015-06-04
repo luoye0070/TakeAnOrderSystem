@@ -149,21 +149,21 @@
         </div>
     </g:if>
 
-    <g:if test="${orderInfoInstance?.totalAccount}">
-        <div class="col-sm-3">
-            
-                <g:message code="orderInfo.totalAccount.label" default="Total Account"/>:
-                <g:fieldValue bean="${orderInstance}" field="totalAccount"/>
-        </div>
-    </g:if>
+    %{--<g:if test="${orderInfoInstance?.totalAccount}">--}%
+        %{--<div class="col-sm-3">--}%
+            %{----}%
+                %{--<g:message code="orderInfo.totalAccount.label" default="Total Account"/>:--}%
+                %{--<g:fieldValue bean="${orderInfoInstance}" field="totalAccount"/>--}%
+        %{--</div>--}%
+    %{--</g:if>--}%
 
-    <g:if test="${orderInfoInstance?.realAccount}">
-        <div class="col-sm-3">
-            
-                <g:message code="orderInfo.realAccount.label" default="Real Account"/>:
-                <g:fieldValue bean="${orderInfoInstance}" field="realAccount"/>
-        </div>
-    </g:if>
+    %{--<g:if test="${orderInfoInstance?.realAccount}">--}%
+        %{--<div class="col-sm-3">--}%
+            %{----}%
+                %{--<g:message code="orderInfo.realAccount.label" default="Real Account"/>:--}%
+                %{--<g:fieldValue bean="${orderInfoInstance}" field="realAccount"/>--}%
+        %{--</div>--}%
+    %{--</g:if>--}%
 
     <div class="col-sm-12" style="margin-left: 0px;margin-right: 0px;">
         <taos:staffOrderOperation orderId="${orderInfoInstance?.id}"

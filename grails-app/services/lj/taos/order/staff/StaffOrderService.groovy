@@ -556,10 +556,10 @@ class StaffOrderService {
 //                     }
 
                      //这里暂时实付金额就是总金额加运费
-                     if(!totalAccount){
+                     if(totalAccount==null){
                          totalAccount=0;
                      }
-                     if(!postage){
+                     if(postage==null){
                          postage=0;
                      }
                      Double realAccount=totalAccount+postage;
@@ -626,7 +626,7 @@ class StaffOrderService {
                         orderInfo.realAccount=realAccount;
                     if(orderInfo.save(flush: true)){
                         //未做的有效的菜改为取消，并给厨师端点菜列表发消息刷新列表
-                        def dishesInfos=DishesInfo.findAllByValidAndStatus(DishesValid.EFFECTIVE_VALID.code,DishesStatus.VERIFYING_STATUS.code);
+                        def dishesInfos=DishesInfo.findAllByValidAndStatusAndOrder(DishesValid.EFFECTIVE_VALID.code,DishesStatus.VERIFYING_STATUS.code,orderInfo);
                         if(dishesInfos){
                             dishesInfos.each {
                                 it.valid=DishesValid.RESTAURANT_AFTER_VERIFYED_CANCEL_VALID.code;
@@ -929,7 +929,7 @@ class StaffOrderService {
                     FoodInfo foodInfo = FoodInfo.get(it.foodId);
                     if (foodInfo) {
                         if (foodInfo.enabled) {//在售
-                            if (foodInfo.countLimit!=0&&(foodInfo.countLimit >= it.count+foodInfo.sellCount)) {//数量足够
+                            if (foodInfo.countLimit==0||(foodInfo.countLimit >= it.count+foodInfo.sellCount)) {//数量足够
                                 foodInfo.sellCount += it.count;//当日销售量加上点菜数量
                                 if (!foodInfo.save(flush: true)) {//保存数据失败
                                     failedList.add([foodId: it.foodId, msg: "更新所点菜的限额失败"]);
@@ -1334,7 +1334,7 @@ class StaffOrderService {
         FoodInfo foodInfo = FoodInfo.get(foodId);
         if (foodInfo) {
             if (foodInfo.enabled) {//在售
-                if (foodInfo.countLimit != 0 && (foodInfo.countLimit >= foodCount + foodInfo.sellCount)) {//数量足够
+                if (foodInfo.countLimit == 0 || (foodInfo.countLimit >= foodCount + foodInfo.sellCount)) {//数量足够
                     foodInfo.sellCount += foodCount;//当日销售量加上点菜数量
                     if (!foodInfo.save(flush: true)) {//保存数据失败
                         throw new RuntimeException(I18nError.getMessage(g, foodInfo.errors.allErrors));

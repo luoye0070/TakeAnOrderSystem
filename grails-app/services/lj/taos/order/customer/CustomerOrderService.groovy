@@ -220,7 +220,7 @@ class CustomerOrderService {
                     FoodInfo foodInfo = FoodInfo.get(it.foodId);
                     if (foodInfo) {
                         if (foodInfo.enabled) {//在售
-                            if (foodInfo.countLimit != 0 && (foodInfo.countLimit >= it.count + foodInfo.sellCount)) {//数量足够
+                            if (foodInfo.countLimit == 0 || (foodInfo.countLimit >= it.count + foodInfo.sellCount)) {//数量足够
                                 foodInfo.sellCount += it.count;//当日销售量加上点菜数量
                                 if (!foodInfo.save(flush: true)) {//保存数据失败
                                     failedList.add([foodId: it.foodId, msg: "更新所点菜的限额失败"]);
@@ -1116,7 +1116,7 @@ class CustomerOrderService {
         FoodInfo foodInfo = FoodInfo.get(foodId);
         if (foodInfo) {
             if (foodInfo.enabled) {//在售
-                if (foodInfo.countLimit != 0 && (foodInfo.countLimit >= foodCount + foodInfo.sellCount)) {//数量足够
+                if (foodInfo.countLimit == 0 || (foodInfo.countLimit >= foodCount + foodInfo.sellCount)) {//数量足够
                     foodInfo.sellCount += foodCount;//当日销售量加上点菜数量
                     if (!foodInfo.save(flush: true)) {//保存数据失败
                         throw new RuntimeException(I18nError.getMessage(g, foodInfo.errors.allErrors));

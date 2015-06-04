@@ -208,7 +208,7 @@ class CustomerReserveOrderService {
         FoodInfo foodInfo = FoodInfo.get(foodId);
         if (foodInfo) {
             if (foodInfo.enabled) {//在售
-                if (foodInfo.countLimit != 0 && (foodInfo.countLimit >= foodCount + foodInfo.sellCount)) {//数量足够
+                if (foodInfo.countLimit == 0 || (foodInfo.countLimit >= foodCount + foodInfo.sellCount)) {//数量足够
                     foodInfo.sellCount += foodCount;//当日销售量加上点菜数量
                     if (!foodInfo.save(flush: true)) {//保存数据失败
                         throw new RuntimeException(I18nError.getMessage(g, foodInfo.errors.allErrors));

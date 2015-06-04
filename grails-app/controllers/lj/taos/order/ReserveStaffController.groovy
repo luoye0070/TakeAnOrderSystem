@@ -124,6 +124,10 @@ class ReserveStaffController {
         try {
             def reInfo=staffReserveOrderService.reserveOrderReach(params);
             println("reInfo-->" + reInfo);
+            if(reInfo.recode==ReCode.OK){//跳转到订单详情
+                redirect(controller: "staff",action: "orderShow",params: [orderId:reInfo.orderInfo?.id]);
+                return;
+            }
         }
          catch (Exception ex){
              println("reInfo-->" + ex.message);

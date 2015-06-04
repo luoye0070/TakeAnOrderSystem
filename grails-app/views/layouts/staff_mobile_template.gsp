@@ -68,7 +68,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">员工某某</a>
+        <a class="navbar-brand" href="#">餐萌点菜系统-工作人员端</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
