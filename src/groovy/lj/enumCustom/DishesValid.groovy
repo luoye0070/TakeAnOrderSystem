@@ -12,7 +12,7 @@ public enum DishesValid {
     //饭店在订单确认后取消
     RESTAURANT_AFTER_VERIFYED_CANCEL_VALID(4,'饭店在订单确认后取消'),
     //过期订单
-    EXPIRE_VALID(4,"过期")
+    EXPIRE_VALID(5,"过期")
     public Integer code
     public String label
     DishesValid(Integer code,String label){

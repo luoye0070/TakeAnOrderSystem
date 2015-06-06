@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<%@ page import="lj.enumCustom.DishesValid; lj.enumCustom.DishesStatus" contentType="text/html;charset=UTF-8" %>
+<%@ page import="lj.enumCustom.OrderValid; lj.enumCustom.ReserveOrderStatus; lj.enumCustom.DishesValid; lj.enumCustom.DishesStatus" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="staff_mobile_template"/>
@@ -19,6 +19,9 @@
     </style>
     <script type="text/javascript">
         function delDish(dishId,orderId){
+            if(!confirm("确定要删除吗？")){
+                return;
+            }
             var delDishUrl="${createLink(controller: "reserveStaff",action: "delDishAjax")}";
             $.ajax({
                 context:this,
@@ -47,6 +50,7 @@
 
         }
     </script>
+    <script type="text/javascript" src="${resource(dir: "js",file: "confirm_for_href.js")}"></script>
 </head>
 <body>
 <!--提示消息-->
@@ -76,11 +80,69 @@
                     </div>
                 </g:if>
 
+                <g:if test="${reserveOrderInfo?.valid}">
+                    <div class="col-sm-3">
+                        <g:message code="reserveOrderInfo.valid.label"
+                                   default="valid"/>:
+                        ${OrderValid.getLable(reserveOrderInfo.valid)}
+                    </div>
+                </g:if>
+
+                <g:if test="${reserveOrderInfo?.status}">
+                    <div class="col-sm-3">
+                        <g:message code="reserveOrderInfo.status.label"
+                                   default="status"/>:
+                        ${ReserveOrderStatus.getLable(reserveOrderInfo.status)}
+                    </div>
+                </g:if>
+
+                <g:if test="${reserveOrderInfo?.personCount}">
+                    <div class="col-sm-3">
+                        <g:message code="reserveOrderInfo.personCount.label"
+                                   default="personCount"/>:
+                        ${reserveOrderInfo.personCount}
+                    </div>
+                </g:if>
+                <g:if test="${reserveOrderInfo?.createTime}">
+                    <div class="col-sm-3">
+                        <g:message code="reserveOrderInfo.createTime.label"
+                                   default="createTime"/>:
+                        ${reserveOrderInfo.createTime}
+                    </div>
+                </g:if>
+                <g:if test="${reserveOrderInfo?.dinnerTime}">
+                    <div class="col-sm-3">
+                        <g:message code="reserveOrderInfo.dinnerTime.label"
+                                   default="dinnerTime"/>:
+                        ${reserveOrderInfo.dinnerTime}
+                    </div>
+                </g:if>
+                <g:if test="${reserveOrderInfo?.phone}">
+                    <div class="col-sm-3">
+                        <g:message code="reserveOrderInfo.phone.label"
+                                   default="phone"/>:
+                        ${reserveOrderInfo.phone}
+                    </div>
+                </g:if>
+                <g:if test="${reserveOrderInfo?.customerName}">
+                    <div class="col-sm-3">
+                        <g:message code="reserveOrderInfo.customerName.label"
+                                   default="customerName"/>:
+                        ${reserveOrderInfo.customerName}
+                    </div>
+                </g:if>
+
                 <g:if test="${reserveOrderInfo?.waiter}">
                     <div class="col-sm-3">
                     <g:message code="reserveOrderInfo.waiter.label"
                                default="Waiter"/>:
-                    ${reserveOrderInfo.waiter.name}
+                    <g:if test="${reserveOrderInfo.waiter.name}">
+                        ${reserveOrderInfo.waiter.name}
+                    </g:if>
+                    <g:else>
+                        ${reserveOrderInfo.waiter.loginName}
+                    </g:else>
+
                     </div>
                 </g:if>
 

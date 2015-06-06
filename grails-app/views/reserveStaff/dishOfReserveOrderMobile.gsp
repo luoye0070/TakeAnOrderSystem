@@ -50,6 +50,9 @@
         }
 
         function delDish(dishId,orderId){
+            if(!confirm("确定要删除吗？")){
+                return;
+            }
             var delDishUrl="${createLink(controller: "reserveStaff",action: "delDishAjax")}";
             $.ajax({
                 context:this,
@@ -78,6 +81,7 @@
 
         }
     </script>
+    <script type="text/javascript" src="${resource(dir: "js",file: "confirm_for_href.js")}"></script>
 </head>
 <body>
 
@@ -91,7 +95,7 @@
     </div>
     <div class="panel-body">
 
-        <div class="col-xs-10">
+        <div class="col-xs-8">
             <a href="${params.backUrl ?: createLink(controller: "reserveStaff", action: "reserveOrderList")}">返回</a>
 
             <g:if test="${reserveOrderInfo}">
@@ -116,15 +120,16 @@
             </g:if>
 
         </div>
-        <div class="col-xs-2" style="text-align: right">
+        <div class="col-xs-4" style="text-align: right">
             <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                <span class="caret"></span>
+                %{--<span class="caret"></span>--}%
+                收起/展开
             </button>
         </div>
 
     </div>
     <g:if test="${reserveOrderInfo?.dishes}">
-        <div class="collapse"  id="collapseExample">
+        <div class="collapse in"  id="collapseExample">
             <table class="table table-striped table-bordered table-condensed">
                 <thead>
                 <tr>

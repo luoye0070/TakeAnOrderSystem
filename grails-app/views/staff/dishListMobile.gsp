@@ -13,6 +13,7 @@
     <title>点菜列表-厨师用</title>
     <style type="text/css">
     </style>
+    <script type="text/javascript" src="${resource(dir: "js",file: "confirm_for_href.js")}"></script>
 </head>
 
 <body>

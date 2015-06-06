@@ -207,7 +207,7 @@ class OneTagLib {
                         if (orderInfo) {
                             if (orderInfo.valid < OrderValid.USER_CANCEL_VALID.code) { // 未取消的订单
                                 if (orderInfo.status <= OrderStatus.SERVED_STATUS.code) {
-                                    htmlTag += "<a href='" + createLink(controller: "staff", action: "cancelOrder", params: [orderId: orderId, backUrl: backUrl]) + "'>取消</a>&nbsp;&nbsp;";
+                                    htmlTag += "<a href='" + createLink(controller: "staff", action: "cancelOrder", params: [orderId: orderId, backUrl: backUrl]) + "' confirm='确定要取消订单吗？'>取消</a>&nbsp;&nbsp;";
                                     if(orderInfo.status>=OrderStatus.VERIFY_ORDERED_STATUS.code){
                                         htmlTag += "<a href='" + createLink(controller: "staff", action: "addDishAfterOrderConfirmView", params: [orderId: orderId, backUrl: backUrl]) + "'>加菜</a>&nbsp;&nbsp;";
                                     }else{
@@ -215,20 +215,20 @@ class OneTagLib {
                                     }
                                 }
                                 if (orderInfo.status == OrderStatus.ORIGINAL_STATUS.code) {
-                                    htmlTag += "<a href='" + createLink(controller: "staff", action: "completeDish", params: [orderId: orderId, backUrl: backUrl]) + "'>完成点菜</a>&nbsp;&nbsp;";
+                                    htmlTag += "<a href='" + createLink(controller: "staff", action: "completeDish", params: [orderId: orderId, backUrl: backUrl]) + "' confirm='确定要完成点菜吗？'>完成点菜</a>&nbsp;&nbsp;";
                                     if (orderInfo.valid == OrderValid.ORIGINAL_VALID.code) {
                                         htmlTag += "<a href='" + createLink(controller: "staff", action: "affirmValid", params: [orderId: orderId, backUrl: backUrl]) + "'>确认有效</a>&nbsp;&nbsp;";
                                     }
                                 }
                                 if (orderInfo.status == OrderStatus.ORDERED_STATUS.code) {
-                                    htmlTag += "<a href='" + createLink(controller: "staff", action: "completeAffirmDish", params: [orderId: orderId, backUrl: backUrl]) + "'>确认点菜完成</a>&nbsp;&nbsp;";
+                                    htmlTag += "<a href='" + createLink(controller: "staff", action: "completeAffirmDish", params: [orderId: orderId, backUrl: backUrl]) + "'confirm='确定后厨房将开始做菜，确定要这样做吗？'>确认点菜完成</a>&nbsp;&nbsp;";
                                 }
 //                                    if(!orderInfo.reachRestaurant&&orderInfo.orderType==OrderType.RESERVE.code){
 //                                        htmlTag += "<a href='" + createLink(controller: "staff", action: "customerReach", params: [orderId: orderId],backUrl:backUrl) + "'>顾客到店</a>&nbsp;&nbsp;";
 //                                    }
                             }else{//取消订单，可以删除掉
                                 if (PositionType.SHOPKEEPER.code in positionList){
-                                    htmlTag += "<a href='" + createLink(controller: "staff", action: "delOrder", params: [orderId: orderId, backUrl: backUrl]) + "'>删除</a>&nbsp;&nbsp;";
+                                    htmlTag += "<a href='" + createLink(controller: "staff", action: "delOrder", params: [orderId: orderId, backUrl: backUrl]) + "' confirm='确定要删除该订单吗？'>删除</a>&nbsp;&nbsp;";
                                 }
                             }
                         }
@@ -269,36 +269,39 @@ class OneTagLib {
                     //查询点菜
                     DishesInfo dishesInfo = DishesInfo.get(dishesId);
                     //查询相应的订单的状态
-//                    OrderInfo orderInfo = OrderInfo.get(dishesInfo.orderId);
-//                    if(orderInfo.valid>=OrderValid.USER_CANCEL_VALID.code||orderInfo.status>=OrderStatus.SHIPPING_STATUS.code){
-//                        out << htmlTag;
-//                        return ;
-//                    }
+                    OrderInfo orderInfo = OrderInfo.get(dishesInfo.orderId);
+                    if(orderInfo.valid>=OrderValid.USER_CANCEL_VALID.code||orderInfo.status>=OrderStatus.SERVED_STATUS.code){
+                        out << htmlTag;
+                        return ;
+                    }
                     //OrderInfo orderInfo = OrderInfo.get(dishesInfo.orderId);
 
                     def positionList = staffPositionInfoList.collect { it.positionType };
                     println("positionList-->" + positionList);
                     //if ((PositionType.SHOPKEEPER.code in positionList) || (PositionType.WAITER.code in positionList) || (PositionType.WAITER_HEADER.code in positionList)) {   //服务员
+                    if (dishesInfo.valid <= DishesValid.EFFECTIVE_VALID.code && dishesInfo.status < DishesStatus.SERVED_STATUS.code) {//初始态可以取消和确认点菜
+                        htmlTag += "<a href='" + createLink(controller: "staff", action: "cancelDish", params: [dishIds: dishesInfo.id, orderId: dishesInfo.orderId, backUrl: backUrl]) + "' confirm='确定要取消点菜吗？'>取消</a>&nbsp;&nbsp;";
+                    }
                     if ((PositionType.SHOPKEEPER.code in positionList) || (PositionType.WAITER.code in positionList)) {   //服务员
                         if (dishesInfo.orderType == OrderType.TAKE_OUT.code) {
                             println("orderType-->" + dishesInfo.orderType);
                             println("valid+status-->" + dishesInfo.valid + "+" + dishesInfo.status);
                             if (dishesInfo.valid < DishesValid.USER_CANCEL_VALID.code && dishesInfo.status < DishesStatus.SERVED_STATUS.code) {//打包前都可以取消点菜
                                 println("valid+status-->" + dishesInfo.valid + "+" + dishesInfo.status);
-                                htmlTag += "<a href='" + createLink(controller: "staff", action: "cancelDish", params: [dishIds: dishesInfo.id, orderId: dishesInfo.orderId, backUrl: backUrl]) + "'>取消</a>&nbsp;&nbsp;";
+                                htmlTag += "<a href='" + createLink(controller: "staff", action: "cancelDish", params: [dishIds: dishesInfo.id, orderId: dishesInfo.orderId, backUrl: backUrl]) + "' confirm='确定要取消点菜吗？'>取消</a>&nbsp;&nbsp;";
                             }
-                            if (dishesInfo.valid == DishesValid.ORIGINAL_VALID.code) {//初始态可以取消和确认点菜
+                            if (dishesInfo.valid == DishesValid.ORIGINAL_VALID.code&&orderInfo.status>=OrderStatus.ORDERED_STATUS.code) {//初始态可以取消和确认点菜
                                 htmlTag += "<a href='" + createLink(controller: "staff", action: "affirmDish", params: [dishIds: dishesInfo.id, orderId: dishesInfo.orderId, backUrl: backUrl]) + "'>确认点菜</a>&nbsp;&nbsp;";
                             }
                         } else {
-                            if (dishesInfo.valid == DishesValid.ORIGINAL_VALID.code && dishesInfo.status == DishesStatus.ORIGINAL_STATUS.code) {//初始态可以取消和确认点菜
-                                htmlTag += "<a href='" + createLink(controller: "staff", action: "cancelDish", params: [dishIds: dishesInfo.id, orderId: dishesInfo.orderId, backUrl: backUrl]) + "'>取消</a>&nbsp;&nbsp;";
-                            }
-                            if (dishesInfo.valid == DishesValid.ORIGINAL_VALID.code && dishesInfo.status == DishesStatus.ORIGINAL_STATUS.code) {//初始态可以取消和确认点菜
+//                            if (dishesInfo.valid <= DishesValid.EFFECTIVE_VALID.code && dishesInfo.status < DishesStatus.SERVED_STATUS.code) {//初始态可以取消和确认点菜
+//                                htmlTag += "<a href='" + createLink(controller: "staff", action: "cancelDish", params: [dishIds: dishesInfo.id, orderId: dishesInfo.orderId, backUrl: backUrl]) + "' confirm='确定要取消点菜吗？'>取消</a>&nbsp;&nbsp;";
+//                            }
+                            if (dishesInfo.valid == DishesValid.ORIGINAL_VALID.code && dishesInfo.status == DishesStatus.ORIGINAL_STATUS.code&&orderInfo.status>=OrderStatus.ORDERED_STATUS.code) {//初始态可以取消和确认点菜
                                 htmlTag += "<a href='" + createLink(controller: "staff", action: "affirmDish", params: [dishIds: dishesInfo.id, orderId: dishesInfo.orderId, backUrl: backUrl]) + "'>确认点菜</a>&nbsp;&nbsp;";
                             }
                             if (dishesInfo.valid > DishesValid.EFFECTIVE_VALID.code) {//取消点菜可以删除
-                                htmlTag += "<a href='" + createLink(controller: "staff", action: "delDish", params: [dishIds: dishesInfo.id, orderId: dishesInfo.orderId, backUrl: backUrl]) + "'>删除</a>&nbsp;&nbsp;";
+                                //htmlTag += "<a href='" + createLink(controller: "staff", action: "delDish", params: [dishIds: dishesInfo.id, orderId: dishesInfo.orderId, backUrl: backUrl]) + "'>删除</a>&nbsp;&nbsp;";
                             }
                         }
                         if (dishesInfo.valid == DishesValid.EFFECTIVE_VALID.code && dishesInfo.status == DishesStatus.COOKED_STATUS.code) {//做菜完成可以上菜
@@ -309,7 +312,7 @@ class OneTagLib {
                         //厨师
                         println("chushi");
                         if (dishesInfo.valid == DishesValid.EFFECTIVE_VALID.code && dishesInfo.status == DishesStatus.VERIFYING_STATUS.code) {//初始态可以取消和开始做菜
-                            htmlTag += "<a href='" + createLink(controller: "staff", action: "cancelDish", params: [dishIds: dishesInfo.id, orderId: dishesInfo.orderId, backUrl: backUrl]) + "'>取消</a>&nbsp;&nbsp;";
+//                            htmlTag += "<a href='" + createLink(controller: "staff", action: "cancelDish", params: [dishIds: dishesInfo.id, orderId: dishesInfo.orderId, backUrl: backUrl]) + "' confirm='确定要取消点菜吗？'>取消</a>&nbsp;&nbsp;";
                             htmlTag += "<a href='" + createLink(controller: "staff", action: "beginCook", params: [dishIds: dishesInfo.id, orderId: dishesInfo.orderId, backUrl: backUrl]) + "'>开始做菜</a>&nbsp;&nbsp;";
                         }
                         if (dishesInfo.valid == DishesValid.EFFECTIVE_VALID.code && dishesInfo.status == DishesStatus.COOKING_ORDERED_STATUS.code) {//做菜中的有效的点菜可以做菜完成操作

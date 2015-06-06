@@ -16,7 +16,7 @@
 </head>
 
 <body>
-
+<h4 style="margin-top: 0px;">桌位预定</h4>
 <!--提示消息-->
 %{--<g:set var="errors" value="测试一个错误"/>--}%
 <g:render template="/layouts/staff_mobile_msgs_and_errors"></g:render>

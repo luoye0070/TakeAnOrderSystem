@@ -19,6 +19,7 @@ class StaffOrderService {
     def webUtilService;
     def shopService;
 //    MessageService messageService;
+    def orderService;
 
     def g = new org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib();
 
@@ -124,6 +125,13 @@ class StaffOrderService {
             //获取参数
             Long orderId = Number.toLong(params.orderId);//订单Id
             int statusCode=Number.toInteger(params.statusCode);//状态代码
+            OrderInfo orderInfo=OrderInfo.get(orderId);
+            if(!orderInfo){
+                return [recode: ReCode.ORDER_NOT_EXIST];
+            }
+            if(orderInfo.status>=statusCode){
+                return [recode: ReCode.OK];
+            }
 
             if (statusCode == OrderStatus.ORDERED_STATUS.code) { //如果是帮顾客做"点菜完成"操作则调用顾客方法就行了
                 //如果是点菜完成的话且传入了点菜列表，则先做点菜
@@ -140,7 +148,6 @@ class StaffOrderService {
                         return reObj;
                     }
                 }
-                OrderInfo orderInfo=OrderInfo.findById(orderId);
                 if(orderInfo){
                     orderInfo.status=statusCode;
                     if(!orderInfo.save(flush: true)){//保存数据库失败
@@ -171,7 +178,7 @@ class StaffOrderService {
 
                 }
                 //修改订单订单状态，如果有效性为初始态则更新有效性改为“1有效”
-                OrderInfo orderInfo=OrderInfo.get(orderId);
+
                 if(orderInfo){
                     orderInfo.status=statusCode;         //状态更新为需要的状态
                     if(orderInfo.valid==OrderValid.ORIGINAL_VALID.code)
@@ -193,6 +200,12 @@ class StaffOrderService {
 //                        if(reInfo.recode!=ReCode.OK){
 //                            println("保存消息失败，但对于订单的产生没有致命影响，故忽略此错误，请系统管理员注意查证："+",reInfo="+reInfo);
 //                        }
+
+                        if(statusCode == OrderStatus.VERIFY_ORDERED_STATUS.code){
+                            def dishList=DishesInfo.findAllByOrderAndValidAndStatusGreaterThanEquals(orderInfo,DishesValid.EFFECTIVE_VALID.code,DishesStatus.VERIFYING_STATUS.code);
+                            //打印小票
+                            orderService.printDishes(orderInfo,dishList);
+                        }
 
                         return [recode: ReCode.OK];
                     }
@@ -538,7 +551,7 @@ class StaffOrderService {
 //                     }
                      //根据订单号查出点菜总金额
                      String sqlStr = "select sum(foodPrice*num) from DishesInfo where order=" + orderId +
-                             " and status=" + DishesStatus.SERVED_STATUS.code + " and valid=" + DishesValid.EFFECTIVE_VALID.code;
+                             " and valid=" + DishesValid.EFFECTIVE_VALID.code;//+" and status=" + DishesStatus.SERVED_STATUS.code;
                      def totalAccounts = DishesInfo.executeQuery(sqlStr);
                      def totalAccount = 0d;
                      if (totalAccounts) {
@@ -1028,7 +1041,7 @@ class StaffOrderService {
             }
             if(dishList){
                 dishList.each {
-                    if((it.valid<=DishesValid.EFFECTIVE_VALID.code&&it.status<=DishesStatus.VERIFYING_STATUS.code)
+                    if((it.valid<=DishesValid.EFFECTIVE_VALID.code&&it.status<=DishesStatus.COOKED_STATUS.code)
                             ||(it.orderType==OrderType.TAKE_OUT.code&&it.valid<=DishesValid.EFFECTIVE_VALID.code&&it.status<DishesStatus.SERVED_STATUS.code))//外卖可以在打包前取消
                     {//有效性小于1且状态小于1可以取消
                         //根据订单状态确定3或4
@@ -1430,6 +1443,7 @@ class StaffOrderService {
             return [recode: ReCode.SAVE_FAILED, errors: I18nError.getMessage(g, dishesCollection.errors.allErrors)];
         }
         //打印加菜信息
+        orderService.printDishes(orderInfo,dishesCollection.dishesInfos);
 
         return [recode: ReCode.OK];
     }

@@ -24,7 +24,7 @@ class StaffReserveOrderService {
     //根据预定信息查询出相应的可预定桌位
     def getReserveTable(def params){
         //标注过期订单
-        orderAndReserveService.markExpire();
+        //orderAndReserveService.markExpire();
 
         SimpleDateFormat sdfDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String dinnerTimeStr=params.dinnerTime;

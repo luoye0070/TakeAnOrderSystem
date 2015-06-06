@@ -11,6 +11,7 @@
             margin-bottom: 5px;
     }
     </style>
+    <script type="text/javascript" src="${resource(dir: "js",file: "confirm_for_href.js")}"></script>
 </head>
 
 <body>

@@ -1,5 +1,6 @@
 package lj.taos.order.common
 
+import lj.data.DishesInfo
 import lj.data.OrderInfo
 import lj.data.ReserveOrderInfo
 import lj.enumCustom.DishesValid
@@ -26,14 +27,14 @@ class OrderAndReserveService {
         if(orderList){
             orderList.each {
                 it.valid=OrderValid.EXPIRE_VALID.code;
-                it.save(flush: true);
+                //it.save(flush: true);
                 log.info("过期订单->"+it);
                 //点菜过期
-                def dishes=it.dishes;
+                def dishes=DishesInfo.findAllByOrderAndValidLessThanEquals(it,DishesValid.EFFECTIVE_VALID.code);
                 if(dishes){
                     dishes.each { dish ->
                         dish.valid=DishesValid.EXPIRE_VALID.code;
-                        dish.save();
+                        //dish.save();
                     }
                 }
             }
@@ -58,7 +59,7 @@ class OrderAndReserveService {
         if(reserveList){
              reserveList.each {
                  it.valid=OrderValid.EXPIRE_VALID.code;
-                 it.save(flush: true);
+                 //it.save(flush: true);
                  log.info("过期预定订单->"+it);
              }
         }

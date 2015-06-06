@@ -63,7 +63,7 @@ class StaffController {
     //到店吃饭创建订单输入界面
     def orderInput() {
         //标注过期订单
-        orderAndReserveService.markExpire();
+        //orderAndReserveService.markExpire();
         //查询出相应的桌位
         StaffInfo staffInfo = webUtilService.getStaff();
         params.enabled = true;
@@ -212,10 +212,10 @@ class StaffController {
     def orderList() {
         def reInfo = staffOrderService.orderList(params);
         println("reInfo-->" + reInfo);
-        if(webUtilService.isMobileRequest()&&params.beginTime==null){//手机界面的特殊处理
-            reInfo.orderList=null;
-            reInfo<<[firstLoad:true];
-        }
+//        if(webUtilService.isMobileRequest()&&params.beginTime==null){//手机界面的特殊处理
+//            reInfo.orderList=null;
+//            reInfo<<[firstLoad:true];
+//        }
         render(view: webUtilService.getView("orderList"), model: reInfo);
     }
     //订单删除
@@ -326,7 +326,7 @@ class StaffController {
     //点菜列表
     def dishList() { //厨师显示所有状态是1有效性是1的点菜
         //标注过期订单
-        orderAndReserveService.markExpire();
+        //orderAndReserveService.markExpire();
 
         params.statusGe = 1;
         params.statusLe = 2;

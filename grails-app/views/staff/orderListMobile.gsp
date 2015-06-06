@@ -11,10 +11,29 @@
 <head>
     <meta name="layout" content="staff_mobile_template">
     <title>订单列表</title>
+    <link type="text/css" href="${resource(dir: "js/bootstrap-3.3.4/css", file: "bootstrap-datetimepicker.min.css")}" rel="stylesheet" />
+    <script type="text/javascript" src="${resource(dir: "js/bootstrap-3.3.4/js", file: "bootstrap-datetimepicker.min.js")}" charset="UTF-8"></script>
+    <script type="text/javascript" src="${resource(dir: "js/bootstrap-3.3.4/js/locales", file: "bootstrap-datetimepicker.zh-CN.js")}" charset="UTF-8"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#beginDate').datetimepicker({
+                language:  'zh-CN',
+                autoclose: 1,
+                todayBtn:  1,
+                format: 'yyyy-mm-dd hh:ii:ss'
+            });
+            $('#endDate').datetimepicker({
+                language:  'zh-CN',
+                autoclose: 1,
+                todayBtn:  1,
+                format: 'yyyy-mm-dd hh:ii:ss'
+            });
+        });
+    </script>
 </head>
 
 <body>
-
+<h4 style="margin-top: 0px;">订单列表</h4>
 <!--提示消息-->
 %{--<g:set var="errors" value="测试一个错误"/>--}%
 <g:render template="/layouts/staff_mobile_msgs_and_errors"></g:render>
@@ -25,25 +44,26 @@
             Date now=new Date();
             SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Calendar calendar=Calendar.getInstance();
-            calendar.setTime(now);
-            calendar.add(Calendar.DATE,-1);
-            calendar.set(Calendar.HOUR_OF_DAY,0);
-            calendar.set(Calendar.MINUTE,0);
-            calendar.set(Calendar.SECOND,0);
-            String beginTimeStr=simpleDateFormat.format(calendar.getTime());
-            calendar.setTime(now);
-            calendar.add(Calendar.DATE,1);
-            calendar.set(Calendar.HOUR_OF_DAY,0);
-            calendar.set(Calendar.MINUTE,0);
-            calendar.set(Calendar.SECOND,0);
-            String endTimeStr=simpleDateFormat.format(calendar.getTime());
+            String beginTimeStr=params.beginTime;
+            if(beginTimeStr==null){
+                calendar.setTime(now);
+                calendar.add(Calendar.DATE,-1);
+                calendar.set(Calendar.HOUR_OF_DAY,0);
+                calendar.set(Calendar.MINUTE,0);
+                calendar.set(Calendar.SECOND,0);
+                beginTimeStr=simpleDateFormat.format(calendar.getTime());
+            }
+            String endTimeStr=params.endTime;
+                if(endTimeStr==null){
+                calendar.setTime(now);
+                calendar.add(Calendar.DATE,1);
+                calendar.set(Calendar.HOUR_OF_DAY,0);
+                calendar.set(Calendar.MINUTE,0);
+                calendar.set(Calendar.SECOND,0);
+                endTimeStr=simpleDateFormat.format(calendar.getTime());
+            }
          %>
-        <input id="beginDate" name="beginTime" type="hidden"
-               value="${beginTimeStr}"/>
-        <input id="endDate" name="endTime" type="hidden"
-               value="${endTimeStr}"/>
-
-        <div class="col-sm-3" style="margin-top: 15px;">
+        <div class="col-sm-4" style="margin-top: 15px;">
             <select name="tableId" class="form-control">
                 <option value="0" ${params.tableId == "0" ? "selected='selected'" : ""}>全部</option>
                 <g:each in="${lj.data.TableInfo.list()}" var="tableInfo">
@@ -52,21 +72,22 @@
             </select>
         </div>
 
-        <div class="col-sm-3" style="margin-top: 15px;">
+        <div class="col-sm-4" style="margin-top: 15px;">
             <select name="valid" class="form-control">
                 <%
-                    if(params.valid==null){
-                        params.valid=OrderValid.EFFECTIVE_VALID.code+"";
+                    def paramsT=params.clone();
+                    if(paramsT.valid==null){
+                        paramsT.valid=OrderValid.EFFECTIVE_VALID.code+"";
                     }
                 %>
-                <option value="-1" ${params.status == "-1" ? "selected='selected'" : ""}>全部</option>
+                <option value="-1" ${paramsT.valid == "-1" ? "selected='selected'" : ""}>全部</option>
                 <g:each in="${lj.enumCustom.OrderValid.valids}">
-                    <option value="${it.code}" ${params.valid == it.code.toString() ? "selected='selected'" : ""}>${it.label}</option>
+                    <option value="${it.code}" ${paramsT.valid == it.code.toString() ? "selected='selected'" : ""}>${it.label}</option>
                 </g:each>
             </select>
         </div>
 
-        <div class="col-sm-3" style="margin-top: 15px;">
+        <div class="col-sm-4" style="margin-top: 15px;">
             <select name="status" class="form-control">
                 <option value="-1" ${params.status == "-1" ? "selected='selected'" : ""}>全部</option>
                 <g:each in="${lj.enumCustom.OrderStatus.statuses}">
@@ -75,7 +96,29 @@
             </select>
         </div>
 
-        <div class="col-sm-3" style="margin-top: 15px;">
+        <div class="col-sm-4" style="margin-top: 15px;">
+            %{--<input id="beginDate" name="beginTime"  type="text" readonly="" class="form-control"--}%
+                   %{--value="${beginTimeStr}" placeholder="请输入查询开始时间"/>--}%
+
+            <div id="beginDate" style="padding: 0px;" class="form-control input-group date form_datetime col-md-5" data-date="${beginTimeStr}" data-link-field="dtp_input1">
+                <input class="form-control" size="16" type="text" value="${beginTimeStr}" readonly>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+            </div>
+            <input type="hidden" id="dtp_input1" value="${beginTimeStr}"  name="beginTime" />
+        </div>
+        <div class="col-sm-4" style="margin-top: 15px;">
+            %{--<input id="endDate" name="endTime" type="text" readonly=""  class="form-control"--}%
+                   %{--value="${endTimeStr}" placeholder="请输入查询结束时间"/>--}%
+            <div id="endDate" style="padding: 0px;" class="form-control input-group date form_datetime col-md-5" data-date="${endTimeStr}" data-link-field="dtp_input2">
+                <input class="form-control" size="16" type="text" value="${endTimeStr}" readonly>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+            </div>
+            <input type="hidden" id="dtp_input2" value="${endTimeStr}"  name="endTime" />
+        </div>
+
+        <div class="col-sm-4" style="margin-top: 15px;">
             <input type="submit"
                    value="${message(code: 'default.button.search.label', default: 'search')}"
                    class="form-control btn btn-primary"/>

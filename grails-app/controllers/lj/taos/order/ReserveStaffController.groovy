@@ -130,6 +130,7 @@ class ReserveStaffController {
             }
         }
          catch (Exception ex){
+             flash.errors=ex.message;
              println("reInfo-->" + ex.message);
          }
         String backUrl=params.backUrl;

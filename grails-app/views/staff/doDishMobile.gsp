@@ -8,6 +8,9 @@
         margin-top: 5px;
         margin-bottom: 5px;
     }
+    .col-sm-6{
+        float: none;
+    }
     </style>
 
     <script type="text/javascript">
@@ -47,6 +50,9 @@
         }
 
         function delDish(dishId,orderId){
+            if(!confirm("确定要删除吗？")){
+                return;
+            }
             var delDishUrl="${createLink(controller: "staffAjax",action: "delDish")}";
             $.ajax({
                 context:this,
@@ -75,6 +81,7 @@
 
         }
     </script>
+    <script type="text/javascript" src="${resource(dir: "js",file: "confirm_for_href.js")}"></script>
 </head>
 
 <body>
@@ -88,8 +95,13 @@
     </div>
     <div class="panel-body">
 
-        <div class="col-xs-10">
+        <div class="col-sm-12">
+            <taos:staffOrderOperation orderId="${orderInfoInstance?.id}"
+                                      backUrl="${createLink(controller: "staff", action: "orderShow", params: params, absolute: true)}"></taos:staffOrderOperation>
+            %{--<a href='${createLink(controller: "staff", action: "completeDish", params: [orderId: orderInfoInstance.id, backUrl: createLink(controller: "staff", action: "orderShow", params: params, absolute: true)])}' confirm='确定要完成点菜吗？'>完成点菜</a>&nbsp;&nbsp;--}%
             <a href="${params.backUrl ?: createLink(controller: "staff", action: "orderList")}">返回</a>
+        </div>
+        <div class="col-xs-8">
             <g:if test="${orderInfoInstance?.tableInfo?.name}">
                 &nbsp;&nbsp;
                 <g:message code="orderInfo.tableInfo.label" default="Table Info"/>
@@ -104,15 +116,16 @@
             </g:if>
 
         </div>
-        <div class="col-xs-2" style="text-align: right">
+        <div class="col-xs-4" style="text-align: right">
             <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                <span class="caret"></span>
+                %{--<span class="caret"></span>--}%
+                收起/展开
             </button>
         </div>
 
     </div>
     <g:if test="${dishes?.dishList}">
-    <div class="collapse"  id="collapseExample">
+    <div class="collapse in"  id="collapseExample">
         <table class="table table-striped table-bordered table-condensed">
             <thead>
             <tr>
@@ -182,10 +195,22 @@
 <div id='errors'></div>
 
 <div>
+    <g:set var="paramsT" value="${params.clone()}"></g:set>
     <ul class="breadcrumb">
-        <li class="active"><a href="${createLink(controller: "staff",action: "doDish",params: params<<[foodClassId:0])}">全部</a></li>
+            <g:if test="${params.foodClassId==null||params.foodClassId=="0"}">
+                <li class="active">全部</li>
+            </g:if>
+            <g:else>
+                <li class="active"><a href="${createLink(controller: "staff",action: "doDish",params: paramsT<<[foodClassId:0])}">全部</a></li>
+            </g:else>
         <g:each in="${foodClassInfoInstanceList}" status="i" var="foodClassInfoInstance">
-            <li><a href="${createLink(controller: "staff",action: "doDish",params: params<<[foodClassId:foodClassInfoInstance.id])}">${foodClassInfoInstance.name}</a></li>
+        %{--${params.foodClassId}--${foodClassInfoInstance.id.toString()}--}%
+            <g:if test="${params.foodClassId==foodClassInfoInstance.id.toString()}">
+                <li class="active">${foodClassInfoInstance.name}</li>
+            </g:if>
+            <g:else>
+                <li><a href="${createLink(controller: "staff",action: "doDish",params: paramsT<<[foodClassId:foodClassInfoInstance.id])}">${foodClassInfoInstance.name}</a></li>
+            </g:else>
         </g:each>
     </ul>
 </div>

@@ -12,22 +12,29 @@
     <meta name="layout" content="staff_mobile_template"/>
     <title></title>
     <style type="text/css">
-    </style><link type="text/css" href="${resource(dir: "js/bootstrap-3.3.4/css", file: "bootstrap-datetimepicker.min.css")}" rel="stylesheet" />
+    </style>
+    <link type="text/css" href="${resource(dir: "js/bootstrap-3.3.4/css", file: "bootstrap-datetimepicker.min.css")}" rel="stylesheet" />
     <script type="text/javascript" src="${resource(dir: "js/bootstrap-3.3.4/js", file: "bootstrap-datetimepicker.min.js")}" charset="UTF-8"></script>
     <script type="text/javascript" src="${resource(dir: "js/bootstrap-3.3.4/js/locales", file: "bootstrap-datetimepicker.zh-CN.js")}" charset="UTF-8"></script>
     <script type="text/javascript">
         $(function () {
             $('#beginDate').datetimepicker({
+                language:  'zh-CN',
+                autoclose: 1,
+                todayBtn:  1,
                 format: 'yyyy-mm-dd hh:ii:ss'
             });
             $('#endDate').datetimepicker({
+                language:  'zh-CN',
+                autoclose: 1,
+                todayBtn:  1,
                 format: 'yyyy-mm-dd hh:ii:ss'
             });
         });
     </script>
 </head>
 <body>
-
+<h4 style="margin-top: 0px;">桌位预定列表</h4>
 <!--提示消息-->
 %{--<g:set var="errors" value="测试一个错误"/>--}%
 <g:render template="/layouts/staff_mobile_msgs_and_errors"></g:render>
@@ -70,12 +77,24 @@
 
 
         <div class="col-sm-4" style="margin-top: 15px;">
-            <input class="form-control" id="beginDate" name="beginTime" type="text" readonly
-                   value="${params.beginDate}" placeholder="请输入查询开始时间"/>
+            %{--<input class="form-control" id="beginDate" name="beginTime" type="text" readonly--}%
+                   %{--value="${params.beginTime}" placeholder="请输入查询开始时间"/>--}%
+            <div id="beginDate" style="padding: 0px;" class="form-control input-group date form_datetime col-md-5" data-date="${params.beginTime}" data-link-field="dtp_input1">
+                <input class="form-control" size="16" type="text" value="${params.beginTime}" readonly>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+            </div>
+            <input type="hidden" id="dtp_input1" value="${params.beginTime}"  name="beginTime" />
         </div>
         <div class="col-sm-4" style="margin-top: 15px;">
-        <input class="form-control" id="endDate" name="endTime" type="text" readonly=""
-               value="${params.endDate}" placeholder="请输入查询结束时间"/>
+        %{--<input class="form-control" id="endDate" name="endTime" type="text" readonly=""--}%
+               %{--value="${params.endTime}" placeholder="请输入查询结束时间"/>--}%
+            <div id="endDate" style="padding: 0px;" class="form-control input-group date form_datetime col-md-5" data-date="${params.endTime}" data-link-field="dtp_input2">
+                <input class="form-control" size="16" type="text" value="${params.endTime}" readonly>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+            </div>
+            <input type="hidden" id="dtp_input2" value="${params.endTime}"  name="endTime" />
          </div>
     <div class="col-sm-4" style="margin-top: 15px;">
         <input type="submit" value="${message(code: 'default.button.search.label', default: 'search')}"
