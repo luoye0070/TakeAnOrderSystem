@@ -9,21 +9,20 @@
 <%@ page import="lj.enumCustom.DishesValid; lj.enumCustom.DishesStatus" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <meta name="layout" content="staff_mobile_template"/>
+    <meta name="layout" content="customer_mobile_template"/>
     <title></title>
     <style type="text/css">
-    .col-sm-3{
+    .col-xs-6{
         margin-top: 5px;
         margin-bottom: 5px;
     }
-
-    .col-sm-6{
-        float: none;
+    .col-xs-4{
+        margin-top: 10px;
     }
     </style>
     <script type="text/javascript">
         function doDish(obj,foodId,orderId){
-            var doDishUrl="${createLink(controller: "staffAjax",action: "addDishAfterOrderConfirmAjax")}";
+            var doDishUrl="${createLink(controller: "customer",action: "addDishAfterOrderConfirmAjax")}";
             var selectVar="#counts"+foodId;
             var countVal=$(obj).parent().parent().find("input[name='counts']").val();
             selectVar="#remarks"+foodId;
@@ -61,7 +60,7 @@
             if(!confirm("确定要删除吗？")){
                 return;
             }
-            var delDishUrl="${createLink(controller: "staffAjax",action: "delDishAfterOrderConfirmAjax")}";
+            var delDishUrl="${createLink(controller: "customer",action: "delDishAfterOrderConfirmAjax")}";
             $.ajax({
                 context:this,
                 url:delDishUrl,
@@ -89,58 +88,76 @@
 
         }
     </script>
+    <script type="text/javascript" src="${resource(dir: "js",file: "confirm_for_form.js")}"></script>
 </head>
 <body>
 
-<!--提示消息-->
-%{--<g:set var="errors" value="测试一个错误"/>--}%
-<g:render template="/layouts/staff_mobile_msgs_and_errors"></g:render>
-<!--点菜列表-->
+
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">订单${orderInfo?.numInRestaurant}-加菜</h3>
     </div>
-    <div class="panel-body">
 
-        <div class="col-xs-8">
-            <a href="${params.backUrl ?: createLink(controller: "staff", action: "orderList")}">返回</a>
-            <g:if test="${orderInfo?.tableInfo?.name}">
+    <div class="panel-body">
+        <g:if test="${orderInfo}">
+            <div class="col-sm-12">
+                <g:if test="${orderInfo?.tableInfo}">
+                    <g:message code="orderInfo.tableInfo.label"
+                               default="Table Name"/>:
+                    ${orderInfo.tableInfo.name}
+                </g:if>
                 &nbsp;&nbsp;
-                <g:message code="orderInfo.tableInfo.label" default="Table Info"/>
-                :
-                ${orderInfo?.tableInfo?.name}
-            </g:if>
-            <g:if test="${orderInfo?.clientInfo?.nickname}">
+                <g:if test="${orderInfo?.waiter}">
+                    <g:message code="orderInfo.waiter.label"
+                               default="Waiter"/>:
+                    <g:if test="${orderInfo.waiter.name}">
+                        ${orderInfo.waiter.name}
+                    </g:if>
+                    <g:else>
+                        ${orderInfo.waiter.loginName}
+                    </g:else>
+                </g:if>
                 &nbsp;&nbsp;
-                <g:message code="orderInfo.clientInfo.label" default="Client Info"/>
-                :
-                ${orderInfo?.clientInfo?.nickname}
-            </g:if>
-            <g:form class="form-horizontal" method="POST" id="cancel_form" action="orderConfirmAfterOrderConfirm">
-                <div class="control-group">
-                    <label class="control-label"></label>
-                    <input type="hidden" name="orderId" value="${orderInfo?.id}"/>
-                    <input type="hidden" name="code" value="${params.code}"/>
-                    <div class="controls">
-                        <input type="submit" value="${message(code: 'default.button.confirmDishAdd.label', default: '确认加菜')}"
-                               class="btn send_btn"/>
-                    </div>
-                </div>
-            </g:form>
-        </div>
-        <div class="col-xs-4" style="text-align: right">
-            <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                <g:if test="${orderInfo?.partakeCode}">
+                    <g:message code="orderInfo.partakeCode.label"
+                               default="Partake Code"/>：<g:fieldValue
+                        bean="${orderInfo}" field="partakeCode"/>
+                </g:if>
+            </div>
+        </g:if>
+    %{--<div class="col-sm-12" style="margin-top: 10px;">--}%
+        %{--<g:if test="${isOwner}">--}%
+            <div class="col-xs-4">
+                <a class="btn btn-default" href="${createLink(controller: "customer",action: "getOrCreateOrder",params: [orderId:orderInfo.id])}">返回</a>
+            </div>
+            <div class="col-xs-4">
+                <form class="form-horizontal" method="POST" id="confirm_add_dish_form" action="${createLink(controller: "customer",action: "orderConfirmAfterOrderConfirm")}" confirm="确定加菜完成了吗？">
+                        <input type="hidden" name="orderId" value="${orderInfo?.id}"/>
+                        <input type="hidden" name="code" value="${params.code}"/>
+                            <input type="submit" value="${message(code: 'default.button.confirmDishAdd.label', default: '确认加菜')}"
+                                   class="btn btn-default"/>
+                </form>
+            </div>
+        %{--</g:if>--}%
+        %{--<g:else>--}%
+            %{--<div class="col-xs-4"></div>--}%
+            %{--<div class="col-xs-4"></div>--}%
+        %{--</g:else>--}%
+        <div class="col-xs-4">
+            <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                 %{--<span class="caret"></span>--}%
                 收起/展开
             </button>
         </div>
-
+        %{--</div>--}%
     </div>
+
     <g:if test="${dishList}">
         <div class="collapse in"  id="collapseExample">
             <table class="table table-striped table-bordered table-condensed">
                 <thead>
                 <tr>
+
                     <g:sortableColumn property="foodName"
                                       title="${message(code: 'dishesInfo.foodName.label', default: 'Food Name')}"
                                       params="${params}"/>
@@ -148,12 +165,16 @@
                     <g:sortableColumn property="num" title="${message(code: 'dishesInfo.num.label', default: 'num')}"
                                       params="${params}"/>
 
-                    <g:sortableColumn property="status"
-                                      title="${message(code: 'dishesInfo.status.label', default: 'Status')}"
-                                      params="${params}"/>
+                    %{--<g:sortableColumn property="status"--}%
+                    %{--title="${message(code: 'dishesInfo.status.label', default: 'Status')}"--}%
+                    %{--params="${params}"/>--}%
 
                     <g:sortableColumn property="valid" title="${message(code: 'dishesInfo.valid.label', default: 'Valid')}"
-                                      params="${params}"/>
+                    params="${params}"/>
+
+                    %{--<g:sortableColumn property="cancelReason"--}%
+                    %{--title="${message(code: 'dishesInfo.cancelReason.label', default: 'Cancel Reason')}"--}%
+                    %{--params="${params}"/>--}%
 
                     <g:sortableColumn property="remark"
                                       title="${message(code: 'dishesInfo.remark.label', default: 'Remark')}"
@@ -170,7 +191,7 @@
 
                         <td>${fieldValue(bean: dishesInfoInstance, field: "num")}</td>
 
-                        <td>${DishesStatus.getLable(dishesInfoInstance?.status)}</td>
+                        %{--<td>${DishesStatus.getLable(dishesInfoInstance?.status)}</td>--}%
 
                         <td>${DishesValid.getLable(dishesInfoInstance?.valid)}</td>
 
@@ -182,10 +203,8 @@
                         %{--dishesId="${dishesInfoInstance?.id}"></g:customerDishesOperation></td>--}%
                         <td>
                             %{--<g:if test="${isOwner}">--}%
-                            <button onclick="delDish(${dishesInfoInstance?.id},${orderInfo?.id})"
-                                    class="">删除</button>
-                            %{--<taos:staffDishesOperation dishesId="${dishesInfoInstance?.id}"--}%
-                            %{--backUrl="${createLink(controller:"staff",action:  "doDish",params: params,absolute: true)}"/>--}%
+                                <button onclick="delDish(${dishesInfoInstance?.id},${orderInfo?.id})"
+                                        class="">删除</button>
                             %{--</g:if>--}%
                         </td>
                     </tr>
@@ -198,65 +217,88 @@
         </div>
     </g:if>
     <g:else>
-        <div class="panel-body">
+        <div class="panel-body" style="text-align: center">
             还没有点菜，点菜吧
         </div>
     </g:else>
+
 </div>
 
-<div name="info"></div>
+<div name='info'></div>
 
 <div>
     <g:set var="paramsT" value="${params.clone()}"></g:set>
     <ul class="breadcrumb">
-        <li class="active">
-            <g:if test="${params.foodClassId==null||params.foodClassId=="0"}">
-                全部
-            </g:if>
-            <g:else>
-            <a href="${createLink(controller: "staff",action: "addDishAfterOrderConfirmView",params: paramsT<<[foodClassId:0])}">全部</a>
-            </g:else>
-        </li>
+        <g:if test="${params.foodClassId==null||params.foodClassId=="0"}">
+            <li class="active">全部</li>
+        </g:if>
+        <g:else>
+            <li class="active"><a href="${createLink(controller: "customer",action: "addDishAfterOrderConfirmView",params: paramsT<<[foodClassId:0])}">全部</a></li>
+        </g:else>
         <g:each in="${foodClassInfoInstanceList}" status="i" var="foodClassInfoInstance">
-            %{--${params.foodClassId}--${foodClassInfoInstance.id.toString()}--}%
+        %{--${params.foodClassId}--${foodClassInfoInstance.id.toString()}--}%
             <g:if test="${params.foodClassId==foodClassInfoInstance.id.toString()}">
                 <li class="active">${foodClassInfoInstance.name}</li>
             </g:if>
             <g:else>
-                <li><a href="${createLink(controller: "staff",action: "addDishAfterOrderConfirmView",params: paramsT<<[foodClassId:foodClassInfoInstance.id])}">${foodClassInfoInstance.name}</a></li>
+                <li><a href="${createLink(controller: "customer",action: "addDishAfterOrderConfirmView",params: paramsT<<[foodClassId:foodClassInfoInstance.id])}">${foodClassInfoInstance.name}</a></li>
             </g:else>
         </g:each>
     </ul>
 </div>
 
 <g:if test="${foodList}">
-    <g:set var="backUrl" value="${createLink(controller: "staff",action: "addDishAfterOrderConfirmView",params: params,absolute: true)}"></g:set>
-    <ul class="list-group">
-        <g:each in="${foodList}" status="i" var="foodInfoInstance">
-            <li class="list-group-item">
-                <div class="col-sm-6">
-                    <label>
+    <g:set var="backUrl" value="${createLink(controller: "customer",action: "addDishAfterOrderConfirmView",params: params,absolute: true)}"></g:set>
+%{--<ul class="thumbnails" style="margin: 0px auto;">--}%
+    <g:each in="${foodList}" status="i" var="foodInfoInstance">
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
                         <a target="_parent" title="${foodInfoInstance?.name}"
                            href="${createLink(controller: "infoShow", action: "foodShow", params: [id: foodInfoInstance.id,backUrl:backUrl])}">${foodInfoInstance?.name}</a>
-                    </label>
-                    <label>￥${fieldValue(bean: foodInfoInstance, field: 'price')}</label>
-                    <g:if test="${foodInfoInstance?.originalPrice}">
-                        <label>￥${fieldValue(bean: foodInfoInstance, field: 'originalPrice')}</label>
-                    </g:if>
+                    </h3>
                 </div>
-                <div class="col-sm-6">
-                    <label id="counts${foodInfoInstance?.id}">数量:</label>
-                    <input id="counts${foodInfoInstance?.id}" name="counts" type="text" style="width: 50px;" value="1"/>
-
-                    <label id="remarks${foodInfoInstance?.id}">备注:</label>
-                    <input id="remarks${foodInfoInstance?.id}" name="remarks" type="text" style="width: 80px;" value=""/>
-                    <button onclick="doDish(this,${foodInfoInstance?.id},${orderInfo?.id})"
-                            class="">点一个</button>
+                <div class="panel-body">
+                    <div class="col-sm-12" style="margin-top: 5px;margin-bottom: 5px;">
+                        <a target="_parent" title="${foodInfoInstance?.name}"
+                           href="${createLink(controller: "infoShow", action: "foodShow", params: [id: foodInfoInstance.id,backUrl:backUrl])}">
+                            <img id="imageLabel" class="form-control"  style="height: auto;"
+                                 src="${createLink(controller: "imageShow", action: "downloadThumbnail", params: [imgUrl: foodInfoInstance?.image, width: 140, height: 120])}"/>
+                        </a>
+                    </div>
+                    %{--<div class="col-sm-12">--}%
+                    <div class="col-xs-6">
+                        <div  class="control-label">
+                            <label id="priceLabel">￥${fieldValue(bean: foodInfoInstance, field: 'price')}</label>
+                            <g:if test="${foodInfoInstance?.originalPrice}">
+                                &nbsp;&nbsp;
+                                <label id="originalPriceLabel"
+                                       style="font-size:12px;text-decoration:line-through">￥${fieldValue(bean: foodInfoInstance, field: 'originalPrice')}</label>
+                            </g:if>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <input id="counts${foodInfoInstance?.id}" name="counts" type="number" class="form-control" value="1"/>
+                    </div>
+                    %{--</div>--}%
+                    %{--<div class="col-sm-12">--}%
+                    <div class="col-xs-6">
+                        <input id="remarks${foodInfoInstance?.id}" name="remarks" type="text" class="form-control" value="" placeholder="输入备注"/>
+                    </div>
+                    <div class="col-xs-6">
+                        <button onclick="doDish(this,${foodInfoInstance?.id},${orderInfo?.id})"
+                                class="form-control btn btn-primary">点一个</button>
+                    </div>
+                    %{--</div>--}%
                 </div>
-            </li>
-        </g:each>
-    </ul>
-    <taos:paginateForBs3 total="${totalCount ?: 0}" prev="&larr;" next="&rarr;" params="${params}" action="getOrCreateOrder"/>
+            </div>
+        </div>
+    </g:each>
+%{--</ul>--}%
+    <div class="col-sm-12">
+        <taos:paginateForBs3 total="${totalCount ?: 0}" prev="&larr;" next="&rarr;" params="${params}" action="addDishAfterOrderConfirmView"/>
+    </div>
 </g:if>
 <g:else>
     <div style="margin: 0px auto;">

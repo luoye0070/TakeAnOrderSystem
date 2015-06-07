@@ -91,7 +91,7 @@
 <!--点菜列表-->
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">订单${params.orderId}-点菜</h3>
+        <h3 class="panel-title">订单${orderInfoInstance?.numInRestaurant}-点菜</h3>
     </div>
     <div class="panel-body">
 
@@ -216,13 +216,14 @@
 </div>
 
 <g:if test="${foodList}">
+    <g:set var="backUrl" value="${createLink(controller: "staff",action: "doDish",params: params,absolute: true)}"></g:set>
     <ul class="list-group">
         <g:each in="${foodList}" status="i" var="foodInfoInstance">
             <li class="list-group-item">
                 <div class="col-sm-6">
                 <label>
                 <a target="_parent" title="${foodInfoInstance?.name}"
-                   href="${createLink(controller: "infoShow", action: "foodShow", params: [id: foodInfoInstance.id])}">${foodInfoInstance?.name}</a>
+                   href="${createLink(controller: "infoShow", action: "foodShow", params: [id: foodInfoInstance.id,backUrl:backUrl])}">${foodInfoInstance?.name}</a>
                     </label>
                     <label>￥${fieldValue(bean: foodInfoInstance, field: 'price')}</label>
                     <g:if test="${foodInfoInstance?.originalPrice}">

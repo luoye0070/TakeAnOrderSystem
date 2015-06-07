@@ -149,7 +149,7 @@
         <tbody>
         <g:each in="${orderList}" status="i" var="orderInfoInstance">
             <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-                <td>${orderInfoInstance.id}</td>
+                <td>${orderInfoInstance?.numInRestaurant}</td>
 
                 <td>
                     <g:if test="${orderInfoInstance?.tableInfo?.name}">

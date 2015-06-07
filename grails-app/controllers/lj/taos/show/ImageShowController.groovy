@@ -82,7 +82,7 @@ class ImageShowController {
         } else {//显示一张默认图片
             response.contentType = "image/jpeg";
             def out = response.outputStream;
-            UploadFile.downloadFromFileSystem("web-app/images/no_image.jpg", out);
+            UploadFile.downloadFromFileSystem("no_image.jpg", out);
             out.flush();
             out.close();
         }

@@ -21,7 +21,7 @@ class SecondTagLib {
             if (baseUrl == null) {
                 baseUrl = grailsApplication.config.grails.baseurls.baseUrl;
             }
-            urlStr=createLink(controller: "customer",action: "getOrCreateOrder",params: [code:tableInfo?.code],absolute: true,base: baseUrl);
+            urlStr=createLink(controller: "customer",action: "getOrCreateOrder",params: [code:tableInfo?.code,mobile:"true"],absolute: true,base: baseUrl);
 
             htmlTag += "<img src='" + createLink(controller: "imageShow",action: "showQRCode",params: [str:urlStr]) + "'/>";
         }

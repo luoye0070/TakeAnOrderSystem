@@ -21,7 +21,7 @@
 
 <div class="panel panel-default">
 <div class="panel-heading">
-    <h3 class="panel-title">订单${params.orderId}-详情</h3>
+    <h3 class="panel-title">订单${orderInfoInstance?.numInRestaurant}-详情</h3>
 </div>
 
 <div class="panel-body">
@@ -184,7 +184,7 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">订单${params.orderId}-点菜列表</h3>
+        <h3 class="panel-title">订单${orderInfoInstance?.numInRestaurant}-点菜列表</h3>
     </div>
 
 

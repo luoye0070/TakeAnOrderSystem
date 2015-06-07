@@ -119,7 +119,7 @@ class ShopService {
 
     //获取店铺的可用性
     def getShopEnabled() {
-        def session = webUtilService.getSession();
+        //def session = webUtilService.getSession();
             //初始化一些参数
             RestaurantInfo restaurantInfo = RestaurantInfo.last();
             if (restaurantInfo) {

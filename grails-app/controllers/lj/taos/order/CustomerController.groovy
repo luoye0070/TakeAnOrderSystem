@@ -8,6 +8,7 @@ import lj.enumCustom.ReCode
 class CustomerController {
     def customerOrderService;
     def searchService;
+    def webUtilService;
 
     def index() {
         redirect(action: "getOrCreateOrder");
@@ -27,13 +28,13 @@ class CustomerController {
                     isNeedPartakeCode = true;
                 }
             }
-            render(view: "originalStep", model: [errors: errors, msgs: msgs, isNeedPartakeCode: isNeedPartakeCode]);
+            render(view: webUtilService.getView("originalStep"), model: [errors: errors, msgs: msgs, isNeedPartakeCode: isNeedPartakeCode]);
             return;
         }
         int orderStatus = reInfo.orderInfo.status;
         if (orderStatus == OrderStatus.ORIGINAL_STATUS.code) {//初始状态，加载点菜界面
             //查询菜品
-            params << [enabled: true];
+            params << [enabled: true,max:5];
             def reInfo1 = searchService.searchFood(params);
             reInfo << reInfo1;
             //查询菜品分类
@@ -46,7 +47,7 @@ class CustomerController {
 
             println("reInfo-->" + reInfo);
             println("orderInfo-->" + reInfo.orderInfo);
-            render(view: "orderDish", model: reInfo);
+            render(view: webUtilService.getView("orderDish"), model: reInfo);
             return;
         } else if (orderStatus == OrderStatus.ORDERED_STATUS.code) {//点菜完成状态，加载点菜确认界面
             //查询已有点菜
@@ -55,13 +56,13 @@ class CustomerController {
 
             println("reInfo-->" + reInfo);
             println("orderInfo-->" + reInfo.orderInfo);
-            render(view: "orderConfirm", model: reInfo);
+            render(view: webUtilService.getView("orderConfirm"), model: reInfo);
             return;
 //        }else if(orderStatus==OrderStatus.VERIFY_ORDERED_STATUS.code){//点菜确认完成状态，加载加菜界面
 
         } else {//其他状态，显示订单信息界面
             //查询菜品
-            params << [enabled: true];
+            params << [enabled: true,max:5];
             def reInfo1 = searchService.searchFood(params);
             reInfo << reInfo1;
             //查询菜品分类
@@ -74,7 +75,7 @@ class CustomerController {
 
             println("reInfo-->" + reInfo);
             println("orderInfo-->" + reInfo.orderInfo);
-            render(view: "orderInfo", model: reInfo);
+            render(view:  webUtilService.getView("orderInfo"), model: reInfo);
             return;
         }
 
@@ -148,7 +149,7 @@ class CustomerController {
         } else {
             msgs = reInfo.recode.label;
         }
-        render(view: "originalStep", model: [msgs: msgs]);
+        render(view: webUtilService.getView("originalStep"), model: [msgs: msgs]);
     }
 
     //加菜
@@ -162,11 +163,11 @@ class CustomerController {
             } else {
                 errors = reInfo.recode.label;
             }
-            render(view: "addDishAfterOrderConfirm", model: [errors: errors, msgs: msgs]);
+            render(view: webUtilService.getView("addDishAfterOrderConfirm"), model: [errors: errors, msgs: msgs]);
             return;
         }
         //查询菜品
-        params << [enabled: true];
+        params << [enabled: true,max: 5];
         def reInfo1 = searchService.searchFood(params);
         reInfo << reInfo1;
         //查询菜品分类
@@ -174,7 +175,7 @@ class CustomerController {
         reInfo << reInfo1;
         println("reInfo-->" + reInfo);
         println("orderInfo-->" + reInfo.orderInfo);
-        render(view: "addDishAfterOrderConfirm", model: reInfo);
+        render(view: webUtilService.getView("addDishAfterOrderConfirm"), model: reInfo);
     }
 
     //加菜

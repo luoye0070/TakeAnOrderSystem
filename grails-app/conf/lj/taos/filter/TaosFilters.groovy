@@ -5,7 +5,7 @@ class TaosFilters {
     def clientService;
     def webUtilService;
     def staffManageService;
-    def orderAndReserveService;
+    //def orderAndReserveService;
     def filters = {
         //访问设备判断过滤
         requestCheck(controller: '*', action: '*') {
@@ -13,7 +13,7 @@ class TaosFilters {
                 println "requestCheckFilter:"+controllerName+";"+actionName+";"+params
                 visitDeviceService.requestFilter(request,params);
                 //顺带做一下过期标注
-                orderAndReserveService.markExpire();
+                //orderAndReserveService.markExpire();
                 return true;
             }
             after = { Map model ->

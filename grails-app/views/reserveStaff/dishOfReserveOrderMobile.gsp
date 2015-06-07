@@ -12,6 +12,9 @@
     <meta name="layout" content="staff_mobile_template"/>
     <title></title>
     <style type="text/css">
+    .col-sm-6{
+        float: none;
+    }
     </style>
     <script type="text/javascript">
         function doDish(obj,foodId,orderId){
@@ -187,23 +190,47 @@
 
 <div name='info'></div>
 
+%{--<div>--}%
+    %{--<ul class="breadcrumb">--}%
+        %{--<li class="active"><a href="${createLink(controller: "reserveStaff",action: "dishOfReserveOrder",params: params<<[foodClassId:0])}">全部</a></li>--}%
+        %{--<g:each in="${foodClassInfoInstanceList}" status="i" var="foodClassInfoInstance">--}%
+            %{--<li><a href="${createLink(controller: "reserveStaff",action: "dishOfReserveOrder",params: params<<[foodClassId:foodClassInfoInstance.id])}">${foodClassInfoInstance.name}</a></li>--}%
+        %{--</g:each>--}%
+    %{--</ul>--}%
+%{--</div>--}%
+
 <div>
+    <g:set var="paramsT" value="${params.clone()}"></g:set>
     <ul class="breadcrumb">
-        <li class="active"><a href="${createLink(controller: "reserveStaff",action: "dishOfReserveOrder",params: params<<[foodClassId:0])}">全部</a></li>
+        <li class="active">
+            <g:if test="${params.foodClassId==null||params.foodClassId=="0"}">
+                全部
+            </g:if>
+            <g:else>
+                <a href="${createLink(controller: "reserveStaff",action: "dishOfReserveOrder",params: paramsT<<[foodClassId:0])}">全部</a>
+            </g:else>
+        </li>
         <g:each in="${foodClassInfoInstanceList}" status="i" var="foodClassInfoInstance">
-            <li><a href="${createLink(controller: "reserveStaff",action: "dishOfReserveOrder",params: params<<[foodClassId:foodClassInfoInstance.id])}">${foodClassInfoInstance.name}</a></li>
+        %{--${params.foodClassId}--${foodClassInfoInstance.id.toString()}--}%
+            <g:if test="${params.foodClassId==foodClassInfoInstance.id.toString()}">
+                <li class="active">${foodClassInfoInstance.name}</li>
+            </g:if>
+            <g:else>
+                <li><a href="${createLink(controller: "reserveStaff",action: "dishOfReserveOrder",params: paramsT<<[foodClassId:foodClassInfoInstance.id])}">${foodClassInfoInstance.name}</a></li>
+            </g:else>
         </g:each>
     </ul>
 </div>
 
 <g:if test="${foodList}">
+    <g:set var="backUrl" value="${createLink(controller: "reserveStaff",action: "dishOfReserveOrder",params: params,absolute: true)}"></g:set>
     <ul class="list-group">
         <g:each in="${foodList}" status="i" var="foodInfoInstance">
             <li class="list-group-item">
                 <div class="col-sm-6">
                     <label>
                         <a target="_parent" title="${foodInfoInstance?.name}"
-                           href="${createLink(controller: "infoShow", action: "foodShow", params: [id: foodInfoInstance.id])}">${foodInfoInstance?.name}</a>
+                           href="${createLink(controller: "infoShow", action: "foodShow", params: [id: foodInfoInstance.id,backUrl:backUrl])}">${foodInfoInstance?.name}</a>
                     </label>
                     <label>￥${fieldValue(bean: foodInfoInstance, field: 'price')}</label>
                     <g:if test="${foodInfoInstance?.originalPrice}">

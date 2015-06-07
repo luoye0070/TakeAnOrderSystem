@@ -585,7 +585,7 @@ class StaffOrderService {
                          //查询是否存在做菜中或做菜完成的点菜，有则需提醒收银员
                          DishesInfo dishesInfo=DishesInfo.findByStatusBetweenAndValidAndOrder(DishesStatus.COOKING_ORDERED_STATUS.code,DishesStatus.COOKED_STATUS.code,DishesValid.EFFECTIVE_VALID.code,OrderInfo.get(orderId));
                          if(dishesInfo){
-                             return [recode: ReCode.OK, orderInfo: orderInfo,warning:"还有做菜中或做菜完成的点菜因未上菜而未将费用计入到消费费用中，请注意查看确定后再做结账操作！"];
+                             return [recode: ReCode.OK, orderInfo: orderInfo,warning:"还有未上菜的有效点菜，请注意查看确定后再做结账操作！"];
                          }else{
                             return [recode: ReCode.OK, orderInfo: orderInfo];
                          }

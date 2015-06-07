@@ -36,7 +36,7 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">订单${params.orderId}-结账</h3>
+        <h3 class="panel-title">订单${orderInfo?.numInRestaurant}-结账</h3>
     </div>
 
     <div class="panel-body">

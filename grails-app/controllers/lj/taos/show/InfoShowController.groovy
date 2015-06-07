@@ -8,6 +8,7 @@ import lj.enumCustom.VerifyStatus
 class InfoShowController {
     def shopService;
     def searchService;
+    def webUtilService;
 
     def index() {}
 
@@ -59,7 +60,7 @@ class InfoShowController {
             }
         }
         if (foodInfo)
-            render(view: "foodShow", model: [foodInfo: foodInfo, restaurantInfo: restaurantInfo, foodList: foodList]);
+            render(view: webUtilService.getView("foodShow"), model: [foodInfo: foodInfo, restaurantInfo: restaurantInfo, foodList: foodList]);
         else
             render(view: "/error", model: [errors: "菜谱不存在或已经下架了"]);
     }
