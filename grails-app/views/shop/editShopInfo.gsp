@@ -78,7 +78,7 @@
                 </div>
 
                 <div class="control-group">
-                    <label class="control-label" for="image"><g:message code="restaurantInfo.image.label"
+                    <label class="control-label" for="imageHidden"><g:message code="restaurantInfo.image.label"
                                                                         default="Image"/><span
                             class="required-indicator"></span></label>
                     <div class="controls">
@@ -205,6 +205,17 @@
                     <div class="controls">
                         <input type="text" placeholder="店铺URL" id="baseUrl" name="baseUrl"
                                value="${restaurantInfoInstance?.baseUrl}"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="intervalTime"><g:message code="restaurantInfo.intervalTime.label"
+                                                                          default="intervalTime"/><span
+                            class="required-indicator"></span></label>
+
+                    <div class="controls">
+                        <input type="text" placeholder="订单间隔时间" id="intervalTime" name="intervalTime"
+                               value="${restaurantInfoInstance?.intervalTime}"/>
                     </div>
                 </div>
 
