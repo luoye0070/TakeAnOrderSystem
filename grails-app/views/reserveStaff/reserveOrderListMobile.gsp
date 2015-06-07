@@ -186,7 +186,9 @@
         </tbody>
     </table>
     <!--分页-->
+    <div class="panel-body" style="text-align: center;">
     <taos:paginateForBs3 action="reserveOrderList" total="${totalCount ?: 0}" prev="&larr;" next="&rarr;" params="${params}"/>
+    </div>
 </g:if>
 <g:else>
     <div style="margin: 0px auto;text-align: center">

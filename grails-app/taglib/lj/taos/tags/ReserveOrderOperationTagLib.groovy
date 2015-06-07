@@ -56,7 +56,7 @@ class ReserveOrderOperationTagLib {
                 if (reserveOrderInfo.valid < OrderValid.USER_CANCEL_VALID.code) { // 未取消的订单
                     if (reserveOrderInfo.status < ReserveOrderStatus.REACHED_STATUS.code) {
                         htmlTag += "<a href='" + createLink(controller: "reserveCustomer", action: "dishOfReserveOrder", params: [reserveOrderId: reserveOrderId, backUrl: backUrl]) + "'>点菜</a>&nbsp;&nbsp;";
-                        htmlTag += "<a href='" + createLink(controller: "reserveCustomer", action: "reserveOrderCancel", params: [reserveOrderId: reserveOrderId, backUrl: backUrl]) + "'>取消</a>&nbsp;&nbsp;";
+                        htmlTag += "<a href='" + createLink(controller: "reserveCustomer", action: "reserveOrderCancel", params: [reserveOrderId: reserveOrderId, backUrl: backUrl]) + "' confirm='确定要取消吗？'>取消</a>&nbsp;&nbsp;";
                     }
                 } else if (reserveOrderInfo.valid == OrderValid.USER_CANCEL_VALID.code) {//取消的订单可以删除
                     //htmlTag += "<a href='" + createLink(controller: "customer", action: "delOrder", params: [reserveOrderId: reserveOrderId, backUrl: backUrl]) + "'>删除</a>"
