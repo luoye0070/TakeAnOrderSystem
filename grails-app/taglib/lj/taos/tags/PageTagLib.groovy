@@ -135,7 +135,7 @@ class PageTagLib {
         def action = (attrs.action ? attrs.action : (params.action ? params.action : "list"))
         def offset = params.offset?.toInteger()
         def max = params.max?.toInteger()
-        def maxsteps = (attrs.maxsteps ? attrs.maxsteps.toInteger() : 10)
+        def maxsteps = (attrs.maxsteps ? attrs.maxsteps.toInteger() : 3)
 
         if (!offset) offset = (attrs.offset ? attrs.offset.toInteger() : 0)
         if (!max) max = (attrs.max ? attrs.max.toInteger() : 10)

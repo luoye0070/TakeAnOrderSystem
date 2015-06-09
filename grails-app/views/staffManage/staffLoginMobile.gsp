@@ -11,6 +11,20 @@
 <head>
     <meta name="layout" content="staff_mobile_template"/>
     <title>工作人员登录</title>
+    <script type="text/javascript">
+        $(function(){
+            //获取联系人列表
+            if (window.dataHelper) {
+                alert("dataHelper");
+                window.dataHelper.autoLogin();
+            }
+        });
+        function autoLogin(userName,passWord){
+            $("#loginName").val(userName);
+            $("#passWord").val(passWord);
+            $("#loginForm").submit();
+        }
+    </script>
 </head>
 
 <body>
@@ -23,7 +37,7 @@
     </div>
 
     <div class="panel-body">
-        <g:form class="form-horizontal" method="post" action="staffLogin">
+        <g:form class="form-horizontal" method="post" action="staffLogin" id="loginForm">
 
             <div class="form-group">
                 <label class="col-sm-2 control-label"><g:message code="staffInfo.loginName.label" default="Login Name"/>
