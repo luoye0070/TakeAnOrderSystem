@@ -110,11 +110,12 @@ class MessageService {
                     if (MinaServer.sendMsg(messageInfo.receiveId, userType, ([recode: ReCode.OK, messageInfo: messageInfo] as JSON).toString())) {
                         messageInfo.status = MessageStatus.READED_STATUS.code;
                     }
+                    //println("messageInfo.receiveId->"+messageInfo.receiveId);
                 }
             } else {
                 userType = 1; //顾客方
             }
-
+            //println("messageInfo.receiveId->"+messageInfo.receiveId);
             //发送不成功则保存消息
             if (messageInfo.status!=MessageStatus.READED_STATUS.code){
                 if (messageInfo.save(flush: true))

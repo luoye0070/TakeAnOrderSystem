@@ -33,12 +33,22 @@
 </head>
 
 <body>
+<div class="row" style="margin-bottom: 10px;">
+<div class="col-xs-8">
 <h4 style="margin-top: 0px;">订单列表</h4>
+</div>
+<div class="col-xs-4">
+<button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    %{--<span class="caret"></span>--}%
+    展开/收起
+</button>
+    </div>
+</div>
 <!--提示消息-->
 %{--<g:set var="errors" value="测试一个错误"/>--}%
 <g:render template="/layouts/staff_mobile_msgs_and_errors"></g:render>
 
-<form class="well form-horizontal" action="${createLink(controller: "staff", action: "orderList")}">
+<form style="margin-top: 0px;" class="well form-horizontal collapse"  id="collapseExample" action="${createLink(controller: "staff", action: "orderList")}">
     <div class="form-group">
         <%
             Date now=new Date();

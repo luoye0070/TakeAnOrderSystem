@@ -13,16 +13,25 @@
     <title>工作人员登录</title>
     <script type="text/javascript">
         $(function(){
-            //获取联系人列表
+            <g:if test="${errors}">
+            </g:if>
+            <g:else>
+            //获取用户名密码并进行登录
             if (window.dataHelper) {
-                alert("dataHelper");
+                //alert("dataHelper");
                 window.dataHelper.autoLogin();
+            }else{//测试自动登录
+                //autoLogin("dd","111");
             }
+            </g:else>
         });
         function autoLogin(userName,passWord){
+            $("#logining").css("display","");
+            $("#loginForm").css("display","none");
             $("#loginName").val(userName);
             $("#passWord").val(passWord);
             $("#loginForm").submit();
+            //alert("submit");
         }
     </script>
 </head>
@@ -37,7 +46,11 @@
     </div>
 
     <div class="panel-body">
-        <g:form class="form-horizontal" method="post" action="staffLogin" id="loginForm">
+        <div id="logining" style="text-align: center;display: none">
+            <img src="${resource(dir:"images",file:"loading.jpg")}"/>
+            <label>登录中，请稍后...</label>
+        </div>
+        <g:form class="form-horizontal" method="post" action="staffLogin" name="loginForm">
 
             <div class="form-group">
                 <label class="col-sm-2 control-label"><g:message code="staffInfo.loginName.label" default="Login Name"/>

@@ -233,7 +233,7 @@
     <g:set var="backUrl" value="${createLink(controller: "staff",action: "addDishAfterOrderConfirmView",params: params,absolute: true)}"></g:set>
     <ul class="list-group">
         <g:each in="${foodList}" status="i" var="foodInfoInstance">
-            <li class="list-group-item">
+            <li class="list-group-item" style="padding: 10px 5px;">
                 <div class="col-sm-6">
                     <label>
                         <a target="_parent" title="${foodInfoInstance?.name}"
