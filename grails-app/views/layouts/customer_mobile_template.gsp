@@ -53,7 +53,32 @@
             });
         });
     </script>
+    <script type="text/javascript">
+        <g:if test="${orderInfo}">
+            function sendMsg(content){
+                var tableName='${orderInfo?.tableInfo?.name}';
+                var fullContent="来自【"+tableName+"】的消息："+content;
+                var sendMsgUrl="${createLink(controller: "message",action: "sendMsgByCustomer")}";
+                $.ajax({
+                    context:this,
+                    url:sendMsgUrl,
+                    async:false,
+                    type:'post',
+                    //data:{'orderId':orderId,countName:counts,remarkName:foodIds,'remarks':remarks},
+                    data:"content="+fullContent,
+                    dataType: 'json',
+                    success:function(data){
+                        if(data.recode.code==0){
+                            alert("消息已经成功发送!");
+                        }
+                    },
+                    error:function(data){
 
+                    }
+                });
+            }
+        </g:if>
+    </script>
     <g:layoutHead/>
     <r:layoutResources/>
 </head>
@@ -93,6 +118,18 @@
                 <li><g:link controller="reserveCustomer" action="reserveDinnerTimeInput">桌位预定</g:link></li>
             </g:else>
             <li class="divider-vertical"></li>
+            <g:if test="${controllerName=="customer"}">
+            <li class="dropdown open">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">发送消息 <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#" onclick="sendMsg('太口渴了，来点茶水吧！')">需要茶水</a></li>
+                    <li><a href="#" onclick="sendMsg('我要点菜，来个服务员吧！')">要点菜</a></li>
+                    <li><a href="#" onclick="sendMsg('快上菜，上菜啊！')">催上菜</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#" onclick="sendMsg('服务员你过来一下，有事找你！')">叫服务员</a></li>
+                </ul>
+            </li>
+            </g:if>
         </ul>
     </div><!--/.nav-collapse -->
     </nav>
