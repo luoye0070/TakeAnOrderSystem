@@ -1,3 +1,7 @@
+import org.springframework.core.io.ClassPathResource
+import org.springframework.core.io.support.PropertiesLoaderUtils
+
+def propertiesdef = PropertiesLoaderUtils.loadProperties(new ClassPathResource("datasource.properties"))
 dataSource {
     pooled = true
     driverClassName = "com.mysql.jdbc.Driver"
@@ -27,8 +31,10 @@ environments {
     }
     production {
         dataSource {
-            dbCreate = "update"
-            url = "jdbc:h2:prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
+            username = propertiesdef.getProperty("username");//"ljsj"
+            password = propertiesdef.getProperty("password");
+            dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
+            url = propertiesdef.getProperty("url");//"jdbc:mysql://127.0.0.1:3306/taos?useUnicode=true&autoreconnect=true&characterEncoding=UTF-8"
             pooled = true
             properties {
                maxActive = -1

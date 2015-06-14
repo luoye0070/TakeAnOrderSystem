@@ -15,13 +15,13 @@ import java.lang.reflect.Field
 import java.text.SimpleDateFormat
 
 class RemoteShopService {
-
+    def grailsApplication;
     def updateShopInfo(RestaurantInfo restaurantInfo){
         if(restaurantInfo==null){
             return [recode: ReCode.NO_RESTAURANTINFO];
         }
 
-        String url = "http://localhost/TaosServer/restaurant/update";
+        String url = grailsApplication.config.grails.resaurant.update.url;//"http://localhost/TaosServer/restaurant/update";
         //String scope="";//：非必须参数。以空格分隔的权限列表，
         ArrayList<HashMap<String, String>> paramList = new ArrayList<HashMap<String, String>>();
         Class restaurantInfoClass=restaurantInfo.getClass();
@@ -195,7 +195,7 @@ class RemoteShopService {
             return [recode: ReCode.OK];
         }else{//从网络获取，并判断时候有效License
             try {
-                String url = "http://localhost/TaosServer/restaurant/getLicense?rId="+restaurantInfo.remoteId;
+                String url = grailsApplication.config.grails.license.url+"?rId="+restaurantInfo.remoteId;//"http://localhost/TaosServer/restaurant/getLicense?rId="+restaurantInfo.remoteId;
                 def result=url.toURL().getText("utf8");
                 if(result){
                     def responseObj=JSON.parse(result);

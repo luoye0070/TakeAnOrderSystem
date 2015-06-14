@@ -1,3 +1,6 @@
+import org.springframework.core.io.ClassPathResource
+import org.springframework.core.io.support.PropertiesLoaderUtils
+
 // locations to search for config files that get merged into the main config;
 // config files can be ConfigSlurper scripts, Java properties files, or classes
 // in the classpath in ConfigSlurper format
@@ -10,6 +13,8 @@
 // if (System.properties["${appName}.config.location"]) {
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 // }
+
+def propertiesdef = PropertiesLoaderUtils.loadProperties(new ClassPathResource("some.properties"));
 
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
@@ -67,6 +72,9 @@ environments {
                 //baseUrl:"http://cm.lj09.org",
                 //baseUrl1:"http://42.96.176.228"
         ]
+        grails.resaurant.update.url=propertiesdef.getProperty("resaurantUpdateUrl");
+        grails.license.url=propertiesdef.getProperty("getLicenseUrl");
+        grails.daily.report.url=propertiesdef.getProperty("dailyReportUrl");
     }
     production {
         grails.logging.jul.usebridge = false
@@ -75,6 +83,9 @@ environments {
                 baseUrl:"http://cm.lj09.org"
                 //baseUrl:"http://localhost:8080/canmeng"
         ]
+        grails.resaurant.update.url=propertiesdef.getProperty("resaurantUpdateUrl");
+        grails.license.url=propertiesdef.getProperty("getLicenseUrl");
+        grails.daily.report.url=propertiesdef.getProperty("dailyReportUrl");
     }
 }
 

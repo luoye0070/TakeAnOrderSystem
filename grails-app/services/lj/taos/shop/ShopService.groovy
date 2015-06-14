@@ -79,7 +79,6 @@ class ShopService {
 
     //店铺信息查询
     def getShopInfo() {
-        def session = webUtilService.getSession();
         //查找店铺信息
         RestaurantInfo restaurantInfo = RestaurantInfo.last();
         if (restaurantInfo) {
