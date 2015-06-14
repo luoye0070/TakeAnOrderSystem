@@ -7,6 +7,7 @@ import lj.enumCustom.ReCode
 //店铺相关控制器
 class ShopController {
     ShopService shopService;
+    def remoteShopService;
 
     def index() {
         redirect(action: "editShopInfo");

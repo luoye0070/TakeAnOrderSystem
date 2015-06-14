@@ -27,6 +27,7 @@ class CustomerOrderService {
     def clientService;
     def shopService;
     def orderAndReserveService;
+    def orderService;
 
     def g = new org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib();
     /**
@@ -1004,7 +1005,9 @@ class CustomerOrderService {
             params.statusCode = OrderStatus.VERIFY_ORDERED_STATUS.code;
             def reInfo = orderStatusUpdate(params);
             if (reInfo.recode == ReCode.OK) {//打印厨房做菜单子
-
+                def dishList=DishesInfo.findAllByOrderAndValidAndStatusGreaterThanEquals(orderInfo,DishesValid.EFFECTIVE_VALID.code,DishesStatus.VERIFYING_STATUS.code);
+                //打印小票
+                orderService.printDishes(orderInfo,dishList);
             }
             return reInfo;
         } else {
@@ -1260,6 +1263,7 @@ class CustomerOrderService {
             return [recode: ReCode.SAVE_FAILED, errors: I18nError.getMessage(g, dishesCollection.errors.allErrors)];
         }
         //打印加菜信息
+        orderService.printDishes(orderInfo,dishesCollection.dishesInfos);
 
         return [recode: ReCode.OK];
     }

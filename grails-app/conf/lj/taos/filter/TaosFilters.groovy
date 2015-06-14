@@ -1,12 +1,45 @@
 package lj.taos.filter
 
+import lj.enumCustom.ReCode
+
 class TaosFilters {
     def visitDeviceService;
     def clientService;
     def webUtilService;
     def staffManageService;
-    //def orderAndReserveService;
+    def remoteShopService;
+    def shopService;
     def filters = {
+        //访问检查License是否有效
+        requestCheckLicens(controller: '*', action: '*') {
+            before = {
+                if(
+                        !(controllerName.equals('shop')&&(actionName in ["shopCreate"]))
+                ){
+                    println "requestCheckLicensFilter:"+controllerName+";"+actionName+";"+params
+                    def reInfo=shopService.getShopInfo();
+                    if(reInfo.recode== ReCode.OK){
+                         reInfo=remoteShopService.getLicense(reInfo.restaurantInfo);
+                        if(reInfo.recode==ReCode.OK){
+                            return true;
+                        }
+                        else{
+                            render(text: reInfo.recode.label);
+                            return false;
+                        }
+                    }else{
+                        render(text: reInfo.recode.label);
+                        return false;
+                    }
+                }
+            }
+            after = { Map model ->
+
+            }
+            afterView = { Exception e ->
+
+            }
+        }
         //访问设备判断过滤
         requestCheck(controller: '*', action: '*') {
             before = {

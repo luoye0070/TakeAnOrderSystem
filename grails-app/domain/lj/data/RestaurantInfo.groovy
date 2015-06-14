@@ -37,6 +37,8 @@ class RestaurantInfo {
     //订单间隔时间，单位分钟
     int intervalTime=60;//默认为60分钟
 
+    long remoteId;//远端服务器上的编号
+
     static constraints = {
         name (nullable: false,blank:false,maxSize:256)
         image (nullable:true,blank:true,maxSize:128)
@@ -60,5 +62,6 @@ class RestaurantInfo {
         description (nullable:true,blank: true,maxSize:1024*128);
         baseUrl(nullable:true,blank: true,maxSize:512);
         intervalTime(nullable:true);
+        remoteId(nullable:true,min: 0l);
     }
 }

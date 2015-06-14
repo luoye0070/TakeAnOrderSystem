@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat
  */
 class ShopService {
     def webUtilService;
+    def remoteShopService;
 
     def g = new org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib();
     /***************
@@ -68,6 +69,11 @@ class ShopService {
         if(!staffPositionInfo.save(flush: true)){
             throw new RuntimeException(I18nError.getMessage(g,staffInfo.errors.allErrors,0));
         }
+        //到远端注册店铺
+        def reInfo=remoteShopService.updateShopInfo(restaurantInfo);
+        if(reInfo.recode!=ReCode.OK){
+            throw new RuntimeException(reInfo.recode.label);
+        }
         return [recode: ReCode.OK,staffInfo:staffInfo,restaurantInfo:restaurantInfo];
     }
 
@@ -108,8 +114,10 @@ class ShopService {
             //设置属性值
             restaurantInfo.setProperties(params);
             //保存数据
-            if (restaurantInfo.save(flush: true))
+            if (restaurantInfo.save(flush: true)){
+                remoteShopService.updateShopInfo(restaurantInfo);
                 return [recode: ReCode.OK, restaurantInfo: restaurantInfo];
+            }
             else
                 return [recode: ReCode.SAVE_FAILED, restaurantInfo: restaurantInfo, errors: I18nError.getMessage(g,restaurantInfo.errors.allErrors)];
         } else {//还没有注册饭店

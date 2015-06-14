@@ -89,6 +89,8 @@ public class ReCode {
     public final static def BEFORE_NOW=[code:-71,label:"到店时间不能在现在之前哦"];
     public final static def RESERVE_ORDER_CANNOT_CANCEL=[code:-72,label:"订单当前状态或有效性下不能取消订单"];
     public final static def RESERVE_ORDER_CANNOT_REACH=[code:-73,label:"取消订单不能做到店操作"];
+    public final static def NET_ERROR=[code:-74,label:"网络错误，请检查网络环境"];
+    public final static def LICENSE_DISABLE=[code:-75,label:"许可证无效"];
 //    public Integer code
 //    public String label
 //

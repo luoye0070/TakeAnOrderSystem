@@ -122,6 +122,48 @@ public class FileReadWrite {
         return input;
     }
 
+    /***********************************************
+     * 从文件读入全部字符串
+     **********************************************/
+    public String readFile(String dirName,String fileName)
+    {
+        StringBuilder sb=new StringBuilder("");
+        BufferedReader fileReader=null;
+        try{
+            File file=new File(SDCardRoot+dirName+fileName);
+            //file.setReadable(true);
+            InputStream input=new FileInputStream(file);
+            fileReader=new BufferedReader(new InputStreamReader(input));
+            String line=null;
+            while ((line=fileReader.readLine())!=null){
+                sb.append(line);
+            }
+        }
+        catch(IOException ex){
+            ex.printStackTrace();
+        }
+        finally{
+             if(fileReader!=null){
+                 try{
+                    fileReader.close();
+                 }catch (IOException ex){
+                      ex.printStackTrace();
+                 }
+             }
+        }
+        return sb.toString();
+    }
+
+    public int writeFile(String data,String fileName,String dirName,boolean override){
+        if(override){
+            if(isFileExist(dirName+fileName))
+            {
+                File file=new File(SDCardRoot+dirName+fileName);
+                file.delete();
+            }
+        }
+        return writeFile(data, fileName, dirName);
+    }
     /****************************************************
      *将一个字符串写入文件
      ****************************************************/
