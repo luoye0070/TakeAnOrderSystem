@@ -154,8 +154,8 @@ class RemoteShopService {
         Date now=new Date();
         Calendar calendar=Calendar.getInstance();
         calendar.setTime(licenseResult.getLastTime());
-        calendar.add(Calendar.DAY_OF_YEAR,licenseResult.getExpire());
-        if(calendar.before(now)){//未过期,返回结果
+        calendar.add(Calendar.DATE,licenseResult.getExpire());
+        if(calendar.before(now)){
             return false;
         }
         if(remoteId!=licenseResult.getRemoteId()){
