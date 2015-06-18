@@ -12,11 +12,13 @@ import lj.mina.server.OnLineListener
 
 class BootStrap {
     def orderAndReserveService;
+    def orderDailyReportService;
     def init = { servletContext ->
         JSON.registerObjectMarshaller(Date) {
             return it?.format("yyyy-MM-dd HH:mm:ss")
         }
         orderAndReserveService.markExpire();
+        orderDailyReportService.dailyReport();//日报
 
         MinaServer.start(5000, "UTF-8", "\n", "\n", new OnLineListener() {
             @Override

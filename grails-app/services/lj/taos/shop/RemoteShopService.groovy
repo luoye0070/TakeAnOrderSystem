@@ -151,11 +151,17 @@ class RemoteShopService {
         if(licenseResult.getLastTime()==null){
             return false;
         }
-        Date now=new Date();
         Calendar calendar=Calendar.getInstance();
         calendar.setTime(licenseResult.getLastTime());
         calendar.add(Calendar.DATE,licenseResult.getExpire());
-        if(calendar.before(now)){
+        Date now=new Date();
+        Calendar calendar1=Calendar.getInstance();
+        calendar1.setTime(now);
+        log.info("now-->"+now);
+        log.info("lastTime-->"+licenseResult.getLastTime());
+        log.info("calendar-->"+calendar.getTime());
+        log.info("calendar.before(now)->"+calendar.before(calendar1));
+        if(calendar.before(calendar1)){
             return false;
         }
         if(remoteId!=licenseResult.getRemoteId()){
