@@ -275,6 +275,28 @@
                     </div>
                 </div>
 
+            <div class="control-group">
+                <label class="control-label" for="printIp"><g:message code="restaurantInfo.printIp.label"
+                                                                      default="printIp"/><span
+                        class="required-indicator"></span></label>
+
+                <div class="controls">
+                    <input type="text" placeholder="打印机IP" id="printIp" name="printIp"
+                           value="${restaurantInfoInstance?.printIp}"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="printPort"><g:message code="restaurantInfo.printPort.label"
+                                                                      default="printPort"/><span
+                        class="required-indicator"></span></label>
+
+                <div class="controls">
+                    <input type="number" placeholder="打印机端口" id="printPort" name="printPort"
+                           value="${restaurantInfoInstance?.printPort}"/>
+                </div>
+            </div>
+
                 <div class="control-group">
                     <label class="control-label" style="font-size: 16px;font-weight: bolder;">
                         店主信息

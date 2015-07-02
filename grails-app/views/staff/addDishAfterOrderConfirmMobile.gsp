@@ -246,7 +246,7 @@
                 </div>
                 <div class="col-sm-6">
                     <label id="counts${foodInfoInstance?.id}">数量:</label>
-                    <input id="counts${foodInfoInstance?.id}" name="counts" type="text" style="width: 50px;" value="1"/>
+                    <input id="counts${foodInfoInstance?.id}" name="counts" type="number" style="width: 50px;" value="1"/>
 
                     <label id="remarks${foodInfoInstance?.id}">备注:</label>
                     <input id="remarks${foodInfoInstance?.id}" name="remarks" type="text" style="width: 80px;" value=""/>

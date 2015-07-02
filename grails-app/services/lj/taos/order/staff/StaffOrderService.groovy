@@ -1443,7 +1443,7 @@ class StaffOrderService {
             return [recode: ReCode.SAVE_FAILED, errors: I18nError.getMessage(g, dishesCollection.errors.allErrors)];
         }
         //打印加菜信息
-        orderService.printDishes(orderInfo,dishesCollection.dishesInfos);
+        orderService.printDishes(orderInfo,dishesCollection.dishesInfos,false);
 
         return [recode: ReCode.OK];
     }

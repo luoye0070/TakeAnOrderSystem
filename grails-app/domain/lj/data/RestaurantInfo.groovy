@@ -39,6 +39,9 @@ class RestaurantInfo {
 
     long remoteId;//远端服务器上的编号
 
+    String printIp;//厨房打印机IP地址
+    int printPort=9100;//厨房打印机端口,默认9100
+
     static constraints = {
         name (nullable: false,blank:false,maxSize:256)
         image (nullable:true,blank:true,maxSize:128)
@@ -63,5 +66,7 @@ class RestaurantInfo {
         baseUrl(nullable:true,blank: true,maxSize:512);
         intervalTime(nullable:true);
         remoteId(nullable:true,min: 0l);
+        printIp(nullable: true,blank: true,maxSize: 32);//厨房打印机IP地址
+        printPort(nullable:true,min: 0);//厨房打印机端口,默认9100
     }
 }
