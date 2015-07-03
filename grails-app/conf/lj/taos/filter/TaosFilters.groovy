@@ -44,6 +44,7 @@ class TaosFilters {
         requestCheck(controller: '*', action: '*') {
             before = {
                 println "requestCheckFilter:"+controllerName+";"+actionName+";"+params
+                //params.mobile=true;
                 visitDeviceService.requestFilter(request,params);
                 //顺带做一下过期标注
                 //orderAndReserveService.markExpire();

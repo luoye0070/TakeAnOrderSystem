@@ -33,7 +33,7 @@ class TableManageController {
         }
         //获取桌位信息
         if (!lj.Number.toInteger(params.max))
-            params.max = 3;
+            params.max = 4;
         def reInfo1 = tableManageService.tableList(params);
         reInfo = reInfo1 << [restaurantInfo: restaurantInfo];
         println("reInfo-->" + reInfo);

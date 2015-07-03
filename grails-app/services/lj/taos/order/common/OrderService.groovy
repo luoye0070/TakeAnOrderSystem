@@ -53,7 +53,7 @@ class OrderService {
         String nowStr=sdf.format(now);
         printData.append("打印时间："+nowStr+"\n");//订单信息
 
-        printData.append("\n------------\n\n\n");//空4行，留出边距
+        printData.append("\n\n------------------------\n\n\n");//空4行，留出边距
 
         def reInfo=shopService.getShopEnabled();
         if(reInfo.recode!=ReCode.OK){

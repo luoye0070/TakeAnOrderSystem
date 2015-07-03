@@ -31,7 +31,7 @@ ul, li {
 
 .main li {
     width: 1000px;
-    height: 410px;
+    height: 300px;
     margin: 9px 0px;
     border: 5px solid #CCCCFF;
     overflow: hidden;
@@ -40,7 +40,7 @@ ul, li {
 
 .ml_top {
     width: 1000px;
-    height: 110px;
+    height: 80px;
     overflow: hidden;
     /*background-color: #df8505;*/
 }
@@ -48,7 +48,7 @@ ul, li {
 .mlt_left {
     width: auto;
     max-width: 800px;
-    height: 110px;
+    height: 80px;
     overflow: hidden;
     /*background-color: #ccccff;*/
     float: left;
@@ -97,14 +97,14 @@ ul, li {
 
 .ml_bottom {
     width: 1000px;
-    height: 300px;
+    height: 260px;
     overflow: hidden;
     /*background-color: #a4c001;*/
 }
 
 .mlb_left {
     width: 500px;
-    height: 300px;
+    height: 260px;
     overflow: hidden;
     /*background-color: #b2d1ff;*/
     float: left;
@@ -112,7 +112,7 @@ ul, li {
 
 .mlbl_top {
     width: 460px;
-    height: 80px;
+    height: 30px;
     line-height: 26px;
     font-size: 20px;
     overflow: hidden;
@@ -128,9 +128,14 @@ ul, li {
 }
 
 .mlbl_bottom {
-    width: 500px;
-    height: 200px;
+    width: 460px;
+    height: 190px;
+    line-height: 26px;
+    font-size: 20px;
     overflow: hidden;
+    margin: 5px 20px;
+    word-wrap: break-word;
+    word-break: normal;
 }
 
 .mlblb_item {
@@ -160,7 +165,7 @@ ul, li {
 
 .mlb_right {
     width: 500px;
-    height: 300px;
+    height: 260px;
     overflow: hidden;
     /*background-color: #ccccff;*/
     float: left;
@@ -178,7 +183,7 @@ ul, li {
 
 .mlbr_bottom {
     width: 460px;
-    height: 250px;
+    height: 210px;
     margin: 5px 20px;
     overflow: hidden;
     float: left;
@@ -186,7 +191,7 @@ ul, li {
 
 .mlbrb_left {
     width: 160px;
-    height: 250px;
+    height: 210px;
     overflow: hidden;
     float: left;
     line-height: 30px;
@@ -195,14 +200,14 @@ ul, li {
 
 .mlbrb_right {
     width: 300px;
-    height: 250px;
+    height: 210px;
     overflow: hidden;
     float: left;
 }
 
 .mlbrb_right img {
-    width: 230px;
-    height: 230px;
+    width: 160px;
+    height: 160px;
     margin: 10px 35px;
     overflow: hidden;
     float: left;
@@ -242,55 +247,57 @@ ul, li {
                 <li>
                     <div class="ml_top">
                         <div class="mlt_left">
-                            <div class="mltl_top">${restaurantInfo?.name}</div>
+                            <div class="mltl_top">${restaurantInfo?.name}欢迎您</div>
 
                             <div class="mltl_bottom">
-                                ${createLink(controller: "infoShow", action: "shopShow", absolute: true, params: [id: restaurantInfo?.id])}
+                                您所在的桌位是：${tableInfoInstance?.name}
                             </div>
                         </div>
 
-                        <div class="mlt_right">
-                            <img src="${createLink(controller: "imageShow", action: "showQRCode",
-                                    params: [str: createLink(controller: "infoShow", action: "shopShow", absolute: true, params: [id: restaurantInfo?.id])])}"
-                                 alt=""/>
-                        </div>
+                        %{--<div class="mlt_right">--}%
+                            %{--<img src="${createLink(controller: "imageShow", action: "showQRCode",--}%
+                                    %{--params: [str: createLink(controller: "infoShow", action: "shopShow", absolute: true, params: [id: restaurantInfo?.id])])}"--}%
+                                 %{--alt=""/>--}%
+                        %{--</div>--}%
                     </div>
 
                     <div class="ml_bottom">
                         <div class="mlb_left">
                             <div class="mlbl_top">
-                                <label>还没有安装手机APP？赶快去下载一个吧</label>
-                                <label>安卓下载：http://www.canmeng.com/appdown</label>
-                                <label>苹果下载：http://www.canmeng.com/appdown</label>
+                                <label>在浏览器输入桌位地址来创建订单和点菜</label>
+                                %{--<label>安卓下载：http://www.canmeng.com/appdown</label>--}%
+                                %{--<label>苹果下载：http://www.canmeng.com/appdown</label>--}%
                             </div>
 
                             <div class="mlbl_bottom">
-                                <div class="mlblb_item">
-                                    <label>安卓下载</label>
-                                    <img src="${createLink(controller: "imageShow", action: "showQRCode", params: [width: 150, str: "www.canmeng.com/shopShow/4"])}"
-                                         alt=""/>
-                                </div>
+                                ${createLink(controller: "customer",action: "getOrCreateOrder",params: [code:tableInfoInstance?.code,mobile:"true"],absolute: true,base: baseUrl)}
+                                %{--<div class="mlblb_item">--}%
+                                    %{--<label>安卓下载</label>--}%
+                                    %{--<img src="${createLink(controller: "imageShow", action: "showQRCode", params: [width: 150, str: "www.canmeng.com/shopShow/4"])}"--}%
+                                         %{--alt=""/>--}%
+                                %{--</div>--}%
 
-                                <div class="mlblb_item">
-                                    <label>苹果下载</label>
-                                    <img src="${createLink(controller: "imageShow", action: "showQRCode", params: [width: 150, str: "www.canmeng.com/shopShow/4"])}"
-                                         alt=""/>
-                                </div>
+                                %{--<div class="mlblb_item">--}%
+                                    %{--<label>苹果下载</label>--}%
+                                    %{--<img src="${createLink(controller: "imageShow", action: "showQRCode", params: [width: 150, str: "www.canmeng.com/shopShow/4"])}"--}%
+                                         %{--alt=""/>--}%
+                                %{--</div>--}%
                             </div>
                         </div>
 
                         <div class="mlb_right">
-                            <div class="mlbr_top">输入或扫描饭店号和桌位号来创建订单</div>
+                            <div class="mlbr_top">扫描饭桌位地址二维码来创建订单和点菜</div>
 
                             <div class="mlbr_bottom">
-                                <div class="mlbrb_left">
-                                    桌位号：${tableInfoInstance?.id}
-                                </div>
+                                %{--<div class="mlbrb_left">--}%
+                                    %{--桌位地址：${createLink(controller: "customer",action: "getOrCreateOrder",params: [code:tableInfoInstance?.code,mobile:"true"],absolute: true,base: baseUrl)}--}%
+                                %{--</div>--}%
 
                                 <div class="mlbrb_right">
-                                    <img src="${createLink(controller: "imageShow", action: "showQRCode",
-                                            params: [width: 230, str: "|" + tableInfoInstance?.id])}"
-                                         alt=""/>
+                                    %{--<img src="${createLink(controller: "imageShow", action: "showQRCode",--}%
+                                            %{--params: [width: 230, str: "|" + tableInfoInstance?.id])}"--}%
+                                         %{--alt=""/>--}%
+                                    <taos:tableQRCode tableId="${tableInfoInstance.id}" />
                                 </div>
                             </div>
                         </div>
