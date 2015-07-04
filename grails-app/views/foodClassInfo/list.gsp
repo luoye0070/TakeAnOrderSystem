@@ -6,23 +6,32 @@
         <meta name="layout" content="main_template"/>
 		<g:set var="entityName" value="${message(code: 'foodClassInfo.label', default: 'foodClassInfo')}" />
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
+        <style type="text/css">
+        .mc_main {
+            width: 1000px;
+            height: auto;
+            margin: 0px 50px;
+            background-color: #FFFFFF;
+            float: left;
+        }
+        </style>
 	</head>
 	<body>
-
+    <div class="mc_main">
+        <div class="mcm_top">
     <g:render template="../layouts/shopMenu"/>
+        </div>
+        <div  class="span10" style="margin-left: 10px;margin-top: 10px;">
+            <g:render template="../layouts/msgs_and_errors"></g:render>
 
-		<div class="button-group" style="margin: 9px 0px 9px 40px;">
+		    <div class="button-group" style="margin: 9px 0px 9px 40px;">
 			<ul>
-				<li><g:link  class="button" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
+				<li><g:link   class="btn btn-primary" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
 			</ul>
 		</div>
 
-		<div id="list-foodClassInfo" class="content scaffold-list" role="main">
-            <g:render template="../layouts/msgs_and_errors"></g:render>
 
-            <div class="row">
-                <div class="offset1 span20 doc-content" style="width: 1000px;">
-			<table class="table table-bordered" cellspacing="0">
+			<table  class="table table-striped table-bordered table-condensed" cellspacing="0">
 				<thead>
 					<tr>
 					
@@ -54,8 +63,8 @@
                             <g:form method="post" action="update" >
                                 <g:hiddenField name="id" value="${foodClassInfoInstance?.id}" />
                                 <g:hiddenField name="version" value="${foodClassInfoInstance?.version}" />
-                                <g:actionSubmit class="button button-info" action="edit" value="${message(code: 'default.button.edit.label', default: 'edit')}" formnovalidate="" />
-                                <g:actionSubmit class="button button-danger" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" formnovalidate="" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+                                <g:actionSubmit  class="btn btn-link" action="edit" value="${message(code: 'default.button.edit.label', default: 'edit')}" formnovalidate="" />
+                                <g:actionSubmit  class="btn btn-link" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" formnovalidate="" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
                             </g:form>
                         </td>
 					</tr>
@@ -67,6 +76,5 @@
 				<taos:paginate total="${foodClassInfoInstanceTotal?:0}" />
 			</div>
             </div>
-		</div>
 	</body>
 </html>

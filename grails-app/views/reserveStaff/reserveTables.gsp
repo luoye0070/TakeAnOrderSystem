@@ -52,9 +52,9 @@
     <div class="span10" style="margin-left: 10px;margin-top: 0px;">
         <g:render template="../layouts/msgs_and_errors"></g:render>
     </div>
-
+    <div class="span10" style="margin-left: 10px;margin-top: 0px;">
     <a href="${createLink(controller: "reserveStaff", action: "reserveDinnerTimeInput", params: [dinnerTime: params.dinnerTime])}">返回时间选择</a>
-
+    </div>
     <div class="span11">
         <g:form class="form-horizontal" method="POST" id="create_form" action="createReserveOrder">
             <g:if test="${tableInfoList}">
@@ -69,7 +69,7 @@
                         <g:if test="${tableInfo.canUse}">
                             <div class="controls">
                                 <input type="radio" name="tableId" id="tableId${tableInfo.tableInfo?.id}"
-                                       value="${tableInfo.tableInfo?.id}" ${(lj.Number.toLong(params.tableId) == tableInfo.tableInfo?.id) ? "checked='checked'" : ""}/> ${tableInfo.tableInfo?.name}
+                                       value="${tableInfo.tableInfo?.id}" ${(lj.Number.toLong(params.tableId) == tableInfo.tableInfo?.id) ? "checked='checked'" : ""}/> ${tableInfo.tableInfo?.name} (${tableInfo.tableInfo?.minPeople}-${tableInfo.tableInfo?.maxPeople}人)
                             </div>
                         </g:if>
                     </g:each>
@@ -111,7 +111,7 @@
                 <div class="control-group">
                     <label class="control-label" for="remark">
                         备注<span
-                            class="required-indicator">*</span></label>
+                            class="required-indicator"></span></label>
 
                     <div class="controls">
                         <input type="text" style="width: 280px;" name="remark" id="remark"

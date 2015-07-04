@@ -131,7 +131,7 @@
         </div>
 
         <div class="mcmcdi_info" style="color: #FE4B1E;">
-            <g:fieldValue bean="${orderInfoInstance}" field="tableInfo"/>
+            ${orderInfoInstance?.tableInfo?.name}
         </div>
     </div>
 </g:if>
@@ -143,7 +143,7 @@
         </div>
 
         <div class="mcmcdi_info">
-            <g:fieldValue bean="${orderInfoInstance}" field="clientInfo"/>
+            ${orderInfoInstance?.clientInfo?.clientMark}
         </div>
     </div>
 </g:if>
@@ -167,7 +167,7 @@
         </div>
 
         <div class="mcmcdi_info">
-            ${FormatUtil.timeFormat(orderInfoInstance?.createTime)}
+            ${FormatUtil.dateTimeFormat(orderInfoInstance?.createTime)}
         </div>
     </div>
 </g:if>
@@ -216,7 +216,12 @@
         </div>
 
         <div class="mcmcdi_info">
-            <g:fieldValue bean="${orderInfoInstance}" field="waiter"/>
+            <g:if test="${orderInfoInstance?.waiter?.name}">
+                ${orderInfoInstance?.waiter?.name}
+            </g:if>
+            <g:else>
+                ${orderInfoInstance?.waiter?.loginName}
+            </g:else>
         </div>
     </div>
 </g:if>
@@ -328,13 +333,13 @@
             <thead>
             <tr>
 
-                <g:sortableColumn property="order"
-                                  title="${message(code: 'dishesInfo.order.label', default: 'Order Id')}"
-                                  params="${params}"/>
+                %{--<g:sortableColumn property="order"--}%
+                                  %{--title="${message(code: 'dishesInfo.order.label', default: 'Order Id')}"--}%
+                                  %{--params="${params}"/>--}%
 
-                <g:sortableColumn property="food"
-                                  title="${message(code: 'dishesInfo.food.label', default: 'Food Id')}"
-                                  params="${params}"/>
+                %{--<g:sortableColumn property="food"--}%
+                                  %{--title="${message(code: 'dishesInfo.food.label', default: 'Food Id')}"--}%
+                                  %{--params="${params}"/>--}%
 
                 <g:sortableColumn property="foodName"
                                   title="${message(code: 'dishesInfo.foodName.label', default: 'Food Name')}"
@@ -365,9 +370,9 @@
             <g:each in="${dishList}" status="i" var="dishesInfoInstance">
                 <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
-                    <td>${fieldValue(bean: dishesInfoInstance, field: "order")}</td>
+                    %{--<td>${fieldValue(bean: dishesInfoInstance, field: "order")}</td>--}%
 
-                    <td>${fieldValue(bean: dishesInfoInstance, field: "food")}</td>
+                    %{--<td>${fieldValue(bean: dishesInfoInstance, field: "food")}</td>--}%
 
                     <td>${fieldValue(bean: dishesInfoInstance, field: "foodName")}</td>
 

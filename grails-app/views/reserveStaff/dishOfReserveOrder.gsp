@@ -225,9 +225,30 @@
             <g:if test="${reserveOrderInfo?.waiter}">
                 <g:message code="reserveOrderInfo.waiter.label"
                            default="Waiter"/>:
-                ${reserveOrderInfo.waiter.name}
+                <g:if test="${reserveOrderInfo?.waiter?.name}">
+                    ${reserveOrderInfo?.waiter?.name}
+                </g:if>
+                <g:else>
+                    ${reserveOrderInfo?.waiter?.loginName}
+                </g:else>
             </g:if>
             &nbsp;&nbsp;
+            <g:if test="${reserveOrderInfo?.clientInfo}">
+                <div class="mcmcd_item">
+                    <div class="mcmcdi_label">
+                        <g:message code="reserveOrderInfo.clientInfo.label" default="Client Info"/>
+                    </div>
+
+                    <div class="mcmcdi_info" style="color: #FE4B1E;">
+                        <g:if test="${reserveOrderInfo?.clientInfo?.nickname}">
+                            ${reserveOrderInfo?.clientInfo?.nickname}
+                        </g:if>
+                        <g:else>
+                            ${reserveOrderInfo?.clientInfo?.clientMark}
+                        </g:else>
+                    </div>
+                </div>
+            </g:if>
         </g:if>
 
         %{--<a href="${params.backUrl ?: createLink(controller: "customer", action: "orderList")}"--}%
@@ -236,10 +257,10 @@
 </div>
 <!--菜品类别列表-->
 <div>
-    <ul class="breadcrumb">
-        <li class="active"><a href="${createLink(controller: "reserveStaff",action: "dishOfReserveOrder",params: params<<[foodClassId:0])}">全部</a></li>
+    <ul class="breadcrumb" style="padding: 10px;padding-bottom: 40px;">
+        <li class="active" style="float: left;"><a href="${createLink(controller: "reserveStaff",action: "dishOfReserveOrder",params: params<<[foodClassId:0])}">全部</a></li>
         <g:each in="${foodClassInfoInstanceList}" status="i" var="foodClassInfoInstance">
-            <li><a href="${createLink(controller: "reserveStaff",action: "dishOfReserveOrder",params: params<<[foodClassId:foodClassInfoInstance.id])}">${foodClassInfoInstance.name}</a></li>
+            <li style="float: left;">&nbsp;/&nbsp;<a href="${createLink(controller: "reserveStaff",action: "dishOfReserveOrder",params: params<<[foodClassId:foodClassInfoInstance.id])}">${foodClassInfoInstance.name}</a></li>
         </g:each>
     </ul>
 </div>

@@ -15,19 +15,19 @@ class ImageShowController {
     //显示图片
     def download() {
         //防盗链处理
-        String Referer = request.getHeader("Referer");
-        String baseUrl = null;
-        def reInfo = shopService.getShopInfo();
-        if (ReCode.OK == reInfo.recode) {
-            baseUrl = reInfo.restaurantInfo?.baseUrl;
-        }
-        if (baseUrl == null) {
-            baseUrl = grailsApplication.config.grails.baseurls.baseUrl;
-        }
-        if (baseUrl==null||(Referer != null && Referer.indexOf(baseUrl) < 0)) {//盗链
-            println("图片盗链");
-            return;
-        }
+//        String Referer = request.getHeader("Referer");
+//        String baseUrl = null;
+//        def reInfo = shopService.getShopInfo();
+//        if (ReCode.OK == reInfo.recode) {
+//            baseUrl = reInfo.restaurantInfo?.baseUrl;
+//        }
+//        if (baseUrl == null) {
+//            baseUrl = grailsApplication.config.grails.baseurls.baseUrl;
+//        }
+//        if (baseUrl==null||(Referer != null && Referer.indexOf(baseUrl) < 0)) {//盗链
+//            println("图片盗链");
+//            return;
+//        }
         //根据ID查询出图片url
         String url_str = params.imgUrl;
         response.setHeader("Pragma", "no-cache");
@@ -50,20 +50,20 @@ class ImageShowController {
     //显示缩略图
     def downloadThumbnail() {
         //防盗链处理
-        String Referer = request.getHeader("Referer");
-        String baseUrl = null;
-        def reInfo = shopService.getShopInfo();
-        if (ReCode.OK == reInfo.recode) {
-            baseUrl = reInfo.restaurantInfo?.baseUrl;
-        }
-        if (baseUrl == null) {
-            baseUrl = grailsApplication.config.grails.baseurls.baseUrl;
-        }
-        println("baseUrl-->"+baseUrl);
-        if (baseUrl==null||(Referer != null && Referer.indexOf(baseUrl) < 0)) {//盗链
-            println("图片盗链");
-            return;
-        }
+//        String Referer = request.getHeader("Referer");
+//        String baseUrl = null;
+//        def reInfo = shopService.getShopInfo();
+//        if (ReCode.OK == reInfo.recode) {
+//            baseUrl = reInfo.restaurantInfo?.baseUrl;
+//        }
+//        if (baseUrl == null) {
+//            baseUrl = grailsApplication.config.grails.baseurls.baseUrl;
+//        }
+//        println("baseUrl-->"+baseUrl);
+//        if (baseUrl==null||(Referer != null && Referer.indexOf(baseUrl) < 0)) {//盗链
+//            println("图片盗链");
+//            return;
+//        }
         //根据ID查询出图片url
         String url_str = params.imgUrl; ;
         int width = 100;
@@ -80,6 +80,7 @@ class ImageShowController {
             out.flush();
             out.close();
         } else {//显示一张默认图片
+            UploadFile.bootPath=getServletContext().getRealPath("/");
             response.contentType = "image/jpeg";
             def out = response.outputStream;
             UploadFile.downloadFromFileSystem("no_image.jpg", out);

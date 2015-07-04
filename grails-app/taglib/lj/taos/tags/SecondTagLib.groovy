@@ -30,6 +30,50 @@ class SecondTagLib {
         }
         out << htmlTag;
     }
+    def tableVisitAddress = { attr, body ->
+        String htmlTag = "";
+        try {
+            long tableId = attr.tableId as long;
+            TableInfo tableInfo=TableInfo.get(tableId);
+            String urlStr="";
+            String baseUrl = null;
+            def reInfo = shopService.getShopInfo();
+            if (ReCode.OK == reInfo.recode) {
+                baseUrl = reInfo.restaurantInfo?.baseUrl;
+            }
+            if (baseUrl == null) {
+                baseUrl = grailsApplication.config.grails.baseurls.baseUrl;
+            }
+            urlStr=createLink(controller: "customer",action: "getOrCreateOrder",params: [code:tableInfo?.code,mobile:"true"],absolute: true,base: baseUrl);
+
+            htmlTag +=urlStr;
+        }
+        catch (Exception ex) {
+            htmlTag += "<font color='RED'>" + ex.message + "</font>";
+        }
+        out << htmlTag;
+    }
+    def reserveAddress = { attr, body ->
+        String htmlTag = "";
+        try {
+            String urlStr="";
+            String baseUrl = null;
+            def reInfo = shopService.getShopInfo();
+            if (ReCode.OK == reInfo.recode) {
+                baseUrl = reInfo.restaurantInfo?.baseUrl;
+            }
+            if (baseUrl == null) {
+                baseUrl = grailsApplication.config.grails.baseurls.baseUrl;
+            }
+            urlStr=createLink(controller: "reserveCustomer",absolute: true,base: baseUrl);
+
+            htmlTag +=urlStr;
+        }
+        catch (Exception ex) {
+            htmlTag += "<font color='RED'>" + ex.message + "</font>";
+        }
+        out << htmlTag;
+    }
     //店铺总体评价星星
     def restaurantStars={ attr, body ->
         String htmlTag = "";

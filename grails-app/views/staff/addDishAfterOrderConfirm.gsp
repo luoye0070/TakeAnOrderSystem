@@ -196,7 +196,7 @@
 <body>
 <div class="mc_main">
 <div class="mcm_top">
-    <div class="mcm_top_name">订单${orderInfo?.numInRestaurant}-点菜</div>
+    <div class="mcm_top_name">订单${orderInfo?.numInRestaurant}-加菜</div>
 
     <div class="mcm_top_banner"></div>
 </div>
@@ -235,16 +235,16 @@
             &nbsp;&nbsp;
         </g:if>
 
-        %{--<a href="${params.backUrl ?: createLink(controller: "customer", action: "orderList")}"--}%
-        %{--class="btn btn-link">返回</a>--}%
+        <a href="${params.backUrl ?: createLink(controller: "staff", action: "orderList")}"
+        class="btn btn-link">返回</a>
     </form>
 </div>
 <!--菜品类别列表-->
 <div>
-    <ul class="breadcrumb">
-        <li class="active"><a href="${createLink(controller: "customer",action: "getOrCreateOrder",params:params<< [foodClassId:0])}">全部</a></li>
+    <ul class="breadcrumb" style="padding-bottom: 40px;padding-left: 10px;padding-right: 10px;">
+        <li class="active" style="float: left"><a href="${createLink(controller: "staff",action: "addDishAfterOrderConfirmView",params: params<<[foodClassId:0])}">全部</a></li>
         <g:each in="${foodClassInfoInstanceList}" status="i" var="foodClassInfoInstance">
-            <li><a href="${createLink(controller: "customer",action: "getOrCreateOrder",params: params<<[foodClassId:foodClassInfoInstance.id])}">${foodClassInfoInstance.name}</a></li>
+            <li style="float: left">&nbsp;/&nbsp;<a href="${createLink(controller: "staff",action: "addDishAfterOrderConfirmView",params: params<<[foodClassId:foodClassInfoInstance.id])}">${foodClassInfoInstance.name}</a></li>
         </g:each>
     </ul>
 </div>
@@ -288,7 +288,7 @@
                         <div class="ml_row_txt">
                             <label id="remarks${foodInfoInstance?.id}"
                                    style="float: left;font-size: 14px;">备注:</label>
-                            <input id="remarks${foodInfoInstance?.id}" name="remarks" type="text" class="msf_input" style="width: 16px;" value="1"/>
+                            <input id="remarks${foodInfoInstance?.id}" name="remarks" type="text" class="msf_input" style="width: 76px;" value="" placeholder="输入备注信息"/>
                         </div>
 
                         <div class="ml_row_txt">
@@ -334,13 +334,13 @@
             <thead>
             <tr>
 
-                <g:sortableColumn property="orderId"
-                                  title="${message(code: 'dishesInfo.orderId.label', default: 'Order Id')}"
-                                  params="${params}"/>
+                %{--<g:sortableColumn property="orderId"--}%
+                                  %{--title="${message(code: 'dishesInfo.orderId.label', default: 'Order Id')}"--}%
+                                  %{--params="${params}"/>--}%
 
-                <g:sortableColumn property="foodId"
-                                  title="${message(code: 'dishesInfo.foodId.label', default: 'Food Id')}"
-                                  params="${params}"/>
+                %{--<g:sortableColumn property="foodId"--}%
+                                  %{--title="${message(code: 'dishesInfo.foodId.label', default: 'Food Id')}"--}%
+                                  %{--params="${params}"/>--}%
 
                 <g:sortableColumn property="foodName"
                                   title="${message(code: 'dishesInfo.foodName.label', default: 'Food Name')}"
@@ -371,9 +371,9 @@
             <g:each in="${dishList}" status="i" var="dishesInfoInstance">
                 <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
-                    <td>${fieldValue(bean: dishesInfoInstance, field: "orderId")}</td>
+                    %{--<td>${fieldValue(bean: dishesInfoInstance, field: "orderId")}</td>--}%
 
-                    <td>${fieldValue(bean: dishesInfoInstance, field: "foodId")}</td>
+                    %{--<td>${fieldValue(bean: dishesInfoInstance, field: "foodId")}</td>--}%
 
                     <td>${fieldValue(bean: dishesInfoInstance, field: "foodName")}</td>
 

@@ -57,12 +57,17 @@
             </div>
         </g:if>
 
-        <g:if test="${orderInfo?.clientInfo?.nickname}">
+        <g:if test="${orderInfo?.clientInfo}">
             <div class="col-sm-3">
 
                 <g:message code="orderInfo.clientInfo.label" default="Client Info"/>
                 :
-                ${orderInfo?.clientInfo?.nickname}
+                <g:if test="${orderInfo?.clientInfo?.nickname}">
+                    ${orderInfo?.clientInfo?.nickname}
+                </g:if>
+                <g:else>
+                    ${orderInfo?.clientInfo?.clientMark}
+                </g:else>
             </div>
         </g:if>
     %{--<g:elseif test="${orderInfo?.clientInfo?.clientMark}">--}%
@@ -213,9 +218,9 @@
             %{--title="${message(code: 'dishesInfo.cancelReason.label', default: 'Cancel Reason')}"--}%
             %{--params="${params}"/>--}%
 
-            <g:sortableColumn property="remark"
-                              title="${message(code: 'dishesInfo.remark.label', default: 'Remark')}"
-                              params="${params}"/>
+            %{--<g:sortableColumn property="remark"--}%
+                              %{--title="${message(code: 'dishesInfo.remark.label', default: 'Remark')}"--}%
+                              %{--params="${params}"/>--}%
 
             <th>操作</th>
         </tr>
@@ -225,7 +230,7 @@
             <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
                 <td>${fieldValue(bean: dishesInfoInstance, field: "foodName")}</td>
 
-                <td>${fieldValue(bean: dishesInfoInstance, field: "foodPrice")}</td>
+                <td>${dishesInfoInstance.foodPrice}</td>
 
                 <td>${fieldValue(bean: dishesInfoInstance, field: "num")}</td>
 
@@ -235,10 +240,9 @@
 
                 %{--<td>${fieldValue(bean: dishesInfoInstance, field: "cancelReason")}</td>--}%
 
-                <td>${fieldValue(bean: dishesInfoInstance, field: "remark")}</td>
+                %{--<td>${fieldValue(bean: dishesInfoInstance, field: "remark")}</td>--}%
 
-                <td><taos:staffDishesOperation
-                        dishesId="${dishesInfoInstance?.id}"></taos:staffDishesOperation></td>
+                <td>${dishesInfoInstance.food?.price*dishesInfoInstance.num}</td>
             </tr>
         </g:each>
         </tbody>

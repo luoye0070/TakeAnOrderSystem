@@ -34,7 +34,7 @@ class CustomerReserveOrderService {
         try { dinnerTime = sdfDateTime.parse(dinnerTimeStr); } catch (Exception ex) {}
 
         //查询出所有桌位
-        List<TableInfo> tableInfoListTemp=TableInfo.findAllByEnabled(true);
+        List<TableInfo> tableInfoListTemp=TableInfo.findAllByEnabledAndCanReserve(true,true);
         if(tableInfoListTemp==null||tableInfoListTemp.size()==0){
             return [recode:ReCode.NO_RESULT];
         }

@@ -117,9 +117,23 @@
                 <g:if test="${reserveOrderInfo?.waiter}">
                     <g:message code="reserveOrderInfo.waiter.label"
                                default="Waiter"/>:
-                    ${reserveOrderInfo.waiter.name}
+                    <g:if test="${reserveOrderInfo?.waiter?.name}">
+                        ${reserveOrderInfo?.waiter?.name}
+                    </g:if>
+                    <g:else>
+                        ${reserveOrderInfo?.waiter?.loginName}
+                    </g:else>
                 </g:if>
                 &nbsp;&nbsp;
+                <g:if test="${reserveOrderInfo?.clientInfo}">
+                    <g:message code="reserveOrderInfo.clientInfo.label" default="Client Info"/>:
+                    <g:if test="${reserveOrderInfo?.clientInfo?.nickname}">
+                    ${reserveOrderInfo?.clientInfo?.nickname}
+                </g:if>
+                <g:else>
+                    ${reserveOrderInfo?.clientInfo?.clientMark}
+                </g:else>
+                </g:if>
             </g:if>
 
         </div>

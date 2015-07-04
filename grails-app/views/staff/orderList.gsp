@@ -216,7 +216,7 @@
                            class="btn btn-primary"/>
 
 
-                    <g:actionSubmit value="导出Excel" action="exportOrderList" class="btn btn-primary"/>
+                    %{--<g:actionSubmit value="导出Excel" action="exportOrderList" class="btn btn-primary"/>--}%
 
                 </div>
 
@@ -241,7 +241,7 @@
 
 
                     <g:sortableColumn property="ctreateTime"
-                                      title="${message(code: 'orderInfo.ctreateTime.label', default: 'Time')}" params="${params}"/>
+                                      title="${message(code: 'orderInfo.createTime.label', default: 'Time')}" params="${params}"/>
 
                     <g:sortableColumn property="valid" title="${message(code: 'orderInfo.valid.label', default: 'Valid')}" params="${params}"/>
 
@@ -262,8 +262,8 @@
                             ${fieldValue(bean: orderInfoInstance, field: "userName")}
                         </g:if>
                         <g:else>
-                            <g:if test="${orderInfoInstance.clientInfo?.nickname}">
-                                用户&nbsp;${orderInfoInstance.clientInfo?.nickname}
+                            <g:if test="${orderInfoInstance.clientInfo}">
+                                用户&nbsp;${orderInfoInstance.clientInfo?.clientMark}
                             </g:if>
                             <g:else>
                                 服务员
@@ -276,13 +276,13 @@
                                 ${fieldValue(bean: orderInfoInstance, field: "tableName")}
                             </g:if>
                             <g:else>
-                                桌位&nbsp;${orderInfoInstance.tableInfo.id}
+                                ${orderInfoInstance.tableInfo?.name}
                             </g:else>
                         </td>
 
 
 
-                        <td>${FormatUtil.timeFormat(orderInfoInstance.createTime)}</td>
+                        <td>${FormatUtil.dateTimeFormat(orderInfoInstance.createTime)}</td>
 
                         <td>${OrderValid.getLable(orderInfoInstance.valid)}</td>
 

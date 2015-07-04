@@ -21,7 +21,7 @@ class OrderDailyReportService {
             return;
         }
 
-        long rId=reInfo.restaurantInfo.id;
+        long rId=reInfo.restaurantInfo.remoteId;
 
         Date now=new Date();
         Calendar calendar=Calendar.getInstance();

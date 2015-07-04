@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<%@ page import="lj.enumCustom.OrderValid; lj.enumCustom.OrderStatus; lj.enumCustom.ReserveType; lj.FormatUtil" contentType="text/html;charset=UTF-8" %>
+<%@ page import="lj.enumCustom.DishesValid; lj.enumCustom.DishesStatus; lj.enumCustom.OrderValid; lj.enumCustom.OrderStatus; lj.enumCustom.ReserveType; lj.FormatUtil" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="main_template"/>
@@ -132,14 +132,14 @@
     </div>
 </g:if>
 
-<g:if test="${orderInfo?.tableInfo}">
+<g:if test="${orderInfo?.numInRestaurant}">
     <div class="mcmcd_item">
         <div class="mcmcdi_label">
-            <g:message code="orderInfo.tableInfo.label" default="Table Id"/>
+            <g:message code="orderInfo.numInRestaurant.label" default="Num In Restaurant"/>
         </div>
 
-        <div class="mcmcdi_info" style="color: #FE4B1E;">
-            <g:fieldValue bean="${orderInfo}" field="tableInfo"/>
+        <div class="mcmcdi_info">
+            <g:fieldValue bean="${orderInfo}" field="numInRestaurant"/>
         </div>
     </div>
 </g:if>
@@ -156,26 +156,15 @@
     </div>
 </g:if>
 
-<g:if test="${orderInfo?.restaurantName}">
+<g:if test="${orderInfo?.tableInfo?.name}">
+
     <div class="mcmcd_item">
         <div class="mcmcdi_label">
-            <g:message code="orderInfo.restaurantName.label" default="restaurantName"/>
+            <g:message code="orderInfo.tableInfo.label" default="Table Info"/>
         </div>
 
-        <div class="mcmcdi_info">
-            <g:fieldValue bean="${orderInfo}" field="restaurantName"/>
-        </div>
-    </div>
-</g:if>
-
-<g:if test="${orderInfo?.tableName}">
-    <div class="mcmcd_item">
-        <div class="mcmcdi_label">
-            <g:message code="orderInfo.tableName.label" default="tableName"/>
-        </div>
-
-        <div class="mcmcdi_info">
-            <g:fieldValue bean="${orderInfo}" field="tableName"/>
+        <div class="mcmcdi_info" style="color: #FE4B1E;">
+            ${orderInfo?.tableInfo?.name}
         </div>
     </div>
 </g:if>
@@ -183,11 +172,16 @@
 <g:if test="${orderInfo?.clientInfo}">
     <div class="mcmcd_item">
         <div class="mcmcdi_label">
-            <g:message code="orderInfo.clientInfo.label" default="Client Id"/>
+            <g:message code="orderInfo.clientInfo.label" default="Client Info"/>
         </div>
 
-        <div class="mcmcdi_info">
-            <g:fieldValue bean="${orderInfo}" field="clientInfo"/>
+        <div class="mcmcdi_info" style="color: #FE4B1E;">
+            <g:if test="${orderInfo?.clientInfo?.nickname}">
+                ${orderInfo?.clientInfo?.nickname}
+            </g:if>
+            <g:else>
+                ${orderInfo?.clientInfo?.clientMark}
+            </g:else>
         </div>
     </div>
 </g:if>
@@ -259,7 +253,12 @@
         </div>
 
         <div class="mcmcdi_info">
-            <g:fieldValue bean="${orderInfo}" field="waiter"/>
+            <g:if test="${orderInfo?.waiter?.name}">
+                ${orderInfo?.waiter?.name}
+            </g:if>
+            <g:else>
+                ${orderInfo?.waiter?.loginName}
+            </g:else>
         </div>
     </div>
 </g:if>
@@ -296,18 +295,6 @@
 
         <div class="mcmcdi_info">
             <g:fieldValue bean="${orderInfo}" field="remark"/>
-        </div>
-    </div>
-</g:if>
-
-<g:if test="${orderInfo?.numInRestaurant}">
-    <div class="mcmcd_item">
-        <div class="mcmcdi_label">
-            <g:message code="orderInfo.numInRestaurant.label" default="Num In Restaurant"/>
-        </div>
-
-        <div class="mcmcdi_info">
-            <g:fieldValue bean="${orderInfo}" field="numInRestaurant"/>
         </div>
     </div>
 </g:if>
@@ -355,6 +342,90 @@
 
 </div>
 
+<div class="mcmc_detail">
+    <!--订单对应的点菜信息-->
+    <div class="mcmcd_title">
+        <div class="mcmcdt_ico"></div>
+
+        <div class="mcmcdt_info">点菜信息</div>
+    </div>
+    <g:if test="${dishList}">
+    %{--<div>--}%
+        <table class="table table-striped table-bordered table-condensed">
+            <thead>
+            <tr>
+
+                %{--<g:sortableColumn property="order"--}%
+                %{--title="${message(code: 'dishesInfo.order.label', default: 'Order Id')}"--}%
+                %{--params="${params}"/>--}%
+
+                %{--<g:sortableColumn property="food"--}%
+                %{--title="${message(code: 'dishesInfo.food.label', default: 'Food Id')}"--}%
+                %{--params="${params}"/>--}%
+
+                <g:sortableColumn property="foodName"
+                                  title="${message(code: 'dishesInfo.foodName.label', default: 'Food Name')}"
+                                  params="${params}"/>
+                 <th>单价</th>
+                <g:sortableColumn property="num" title="${message(code: 'dishesInfo.num.label', default: 'num')}"
+                                  params="${params}"/>
+
+                <g:sortableColumn property="status"
+                                  title="${message(code: 'dishesInfo.status.label', default: 'Status')}"
+                                  params="${params}"/>
+
+                <g:sortableColumn property="valid" title="${message(code: 'dishesInfo.valid.label', default: 'Valid')}"
+                                  params="${params}"/>
+
+                %{--<g:sortableColumn property="cancelReason"--}%
+                %{--title="${message(code: 'dishesInfo.cancelReason.label', default: 'Cancel Reason')}"--}%
+                %{--params="${params}"/>--}%
+
+                %{--<g:sortableColumn property="remark"--}%
+                                  %{--title="${message(code: 'dishesInfo.remark.label', default: 'Remark')}"--}%
+                                  %{--params="${params}"/>--}%
+
+                <th>小计</th>
+            </tr>
+            </thead>
+            <tbody>
+            <g:each in="${dishList}" status="i" var="dishesInfoInstance">
+                <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+
+                    %{--<td>${fieldValue(bean: dishesInfoInstance, field: "order")}</td>--}%
+
+                    %{--<td>${fieldValue(bean: dishesInfoInstance, field: "food")}</td>--}%
+
+                    <td>${fieldValue(bean: dishesInfoInstance, field: "foodName")}</td>
+
+                    <td>${dishesInfoInstance.food?.price}</td>
+
+                    <td>${fieldValue(bean: dishesInfoInstance, field: "num")}</td>
+
+                    <td>${DishesStatus.getLable(dishesInfoInstance?.status)}</td>
+
+                    <td>${DishesValid.getLable(dishesInfoInstance?.valid)}</td>
+
+                    %{--<td>${fieldValue(bean: dishesInfoInstance, field: "cancelReason")}</td>--}%
+
+                    %{--<td>${fieldValue(bean: dishesInfoInstance, field: "remark")}</td>--}%
+
+                    <td>${dishesInfoInstance.food?.price*dishesInfoInstance.num}</td>
+                </tr>
+            </g:each>
+            </tbody>
+        </table>
+
+        <taos:paginate action="orderShow" total="${totalCount ?: 0}" prev="&larr;" next="&rarr;" params="${params}"/>
+
+    %{--</div>--}%
+    </g:if>
+    <g:else>
+        <div class="mcmcd_item" style="width: 900px;">
+            还没有点菜，赶快去点菜吧
+        </div>
+    </g:else>
+</div>
 
 <div class="mcmc_detail">
     <!--订单对应的点菜信息-->
@@ -385,7 +456,7 @@
             </label>
 
             <div class="controls">
-                <input type="submit" class="btn btn-primary" value="${message(code: "default.button.submit.label", default: "submit")}"/>
+                <input type="submit" class="btn btn-primary" value="${message(code: "default.button.submit.label", default: "结账")}"/>
             </div>
         </div>
     </form>

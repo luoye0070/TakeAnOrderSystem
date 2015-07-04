@@ -31,7 +31,8 @@ ul, li {
 
 .main li {
     width: 1000px;
-    height: 300px;
+    /*height: 300px;*/
+    height: auto;
     margin: 9px 0px;
     border: 5px solid #CCCCFF;
     overflow: hidden;
@@ -40,7 +41,7 @@ ul, li {
 
 .ml_top {
     width: 1000px;
-    height: 80px;
+    height: auto;
     overflow: hidden;
     /*background-color: #df8505;*/
 }
@@ -48,7 +49,7 @@ ul, li {
 .mlt_left {
     width: auto;
     max-width: 800px;
-    height: 80px;
+    height: auto;
     overflow: hidden;
     /*background-color: #ccccff;*/
     float: left;
@@ -56,7 +57,7 @@ ul, li {
 
 .mltl_top {
     width: auto;
-    max-width: 760px;
+    /*max-width: 300px;*/
     height: auto;
     max-height: 54px;
     margin: 10px 20px;
@@ -70,7 +71,7 @@ ul, li {
 
 .mltl_bottom {
     width: auto;
-    max-width: 760px;
+    /*max-width: 300px;*/
     height: auto;
     max-height: 26px;
     margin: 5px 20px;
@@ -82,11 +83,17 @@ ul, li {
 }
 
 .mlt_right {
-    width: 200px;
-    height: 120px;
+    width: auto;
+    /*max-width: 400px;*/
+    height: auto;
+    margin: 10px 20px;
+    margin-top: 20px;
     overflow: hidden;
+    font-size: 18px;
     /*background-color: #e0362e;*/
     float: left;
+    word-wrap: break-word;
+    word-break: normal;
 }
 
 .mlt_right img {
@@ -254,11 +261,10 @@ ul, li {
                             </div>
                         </div>
 
-                        %{--<div class="mlt_right">--}%
-                            %{--<img src="${createLink(controller: "imageShow", action: "showQRCode",--}%
-                                    %{--params: [str: createLink(controller: "infoShow", action: "shopShow", absolute: true, params: [id: restaurantInfo?.id])])}"--}%
-                                 %{--alt=""/>--}%
-                        %{--</div>--}%
+                        <div class="mlt_right">
+                            请访问以下地址来预定桌位：<br/>
+                            <taos:reserveAddress/>
+                        </div>
                     </div>
 
                     <div class="ml_bottom">
@@ -270,7 +276,8 @@ ul, li {
                             </div>
 
                             <div class="mlbl_bottom">
-                                ${createLink(controller: "customer",action: "getOrCreateOrder",params: [code:tableInfoInstance?.code,mobile:"true"],absolute: true,base: baseUrl)}
+                                %{--${createLink(controller: "customer",action: "getOrCreateOrder",params: [code:tableInfoInstance?.code,mobile:"true"],absolute: true,base: baseUrl)}--}%
+                                <taos:tableVisitAddress tableId="${tableInfoInstance.id}" />
                                 %{--<div class="mlblb_item">--}%
                                     %{--<label>安卓下载</label>--}%
                                     %{--<img src="${createLink(controller: "imageShow", action: "showQRCode", params: [width: 150, str: "www.canmeng.com/shopShow/4"])}"--}%
@@ -286,7 +293,7 @@ ul, li {
                         </div>
 
                         <div class="mlb_right">
-                            <div class="mlbr_top">扫描饭桌位地址二维码来创建订单和点菜</div>
+                            <div class="mlbr_top">扫描桌位地址二维码来创建订单和点菜</div>
 
                             <div class="mlbr_bottom">
                                 %{--<div class="mlbrb_left">--}%

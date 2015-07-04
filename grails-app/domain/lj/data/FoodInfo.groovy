@@ -15,7 +15,7 @@ class FoodInfo {
     //描述
     String description
     //状态（有效性）true有效false无效
-    Boolean enabled=true;
+    boolean enabled=true;
     //每天限量0表示不限量
     Integer countLimit=0
     //当天销量

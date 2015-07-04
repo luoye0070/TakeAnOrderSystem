@@ -67,7 +67,38 @@
         margin: 0px auto;
         overflow: hidden;
     }
+    .mcmc_ssl {
+        width: 960px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
 
+    .mcmcs_field {
+        width: 180px;
+        float: left;
+    }
+
+    .mcmcsf_input {
+        width: 120px;
+    }
+
+    .mcmcs_field_middle {
+        width: 130px;
+        float: left;
+    }
+
+    .mcmcsf_input_middle {
+        width: 70px;
+    }
+
+    .mcmcs_field_small {
+        width: 80px;
+        float: left;
+    }
+
+    .mcmcsf_input_small {
+        width: 40px;
+    }
     .mcmc_detail {
         width: 900px;
         height: auto;
@@ -214,11 +245,11 @@
     <div class="mcmc_ssl">
         <form class="well form-inline" action="${createLink(controller: "reserveStaff", action: "reserveOrderList")}">
 
-            <div class="mcmcs_field_middle">
+            <div class="mcmcs_field">
                 <label>
                     电话：
                 </label>
-                <input type="text" name="phone" value="${params.phone}"/>
+                <input style="width: 100px;" type="text" name="phone" value="${params.phone}"/>
             </div>
 
             <div class="mcmcs_field" style="width: 420px;">
@@ -299,22 +330,23 @@
                 %{--<g:sortableColumn property="restaurantId"--}%
                 %{--title="${message(code: 'reserveOrderInfo.restaurantId.label', default: 'Restaurant Id')}"/>--}%
 
-                <g:sortableColumn property="clientInfo.id" title="${message(code: 'reserveOrderInfo.userName.label', default: 'User Name')}"  params="${params}"/>
-
+                %{--<g:sortableColumn property="clientInfo.id" title="${message(code: 'reserveOrderInfo.userName.label', default: 'User Name')}"  params="${params}"/>--}%
+                %{--<th>${message(code: 'reserveOrderInfo.userName.label', default: 'User Name')}</th>--}%
+                <g:sortableColumn property="phone" title="${message(code: 'reserveOrderInfo.phone.label', default: 'Phone')}" params="${params}"/>
+                <g:sortableColumn property="customerName" title="${message(code: 'reserveOrderInfo.customerName.label', default: 'customerName')}" params="${params}"/>
                 <g:sortableColumn property="tableInfo.id"
                                   title="${message(code: 'reserveOrderInfo.tableName.label', default: 'Table Name')}" params="${params}"/>
 
 
 
-                <g:sortableColumn property="createTime"
-                                  title="${message(code: 'reserveOrderInfo.createTime.label', default: 'Time')}" params="${params}"/>
+                <g:sortableColumn property="dinnerTime"
+                                  title="${message(code: 'reserveOrderInfo.dinnerTime.label', default: 'Time')}" params="${params}"/>
 
                 <g:sortableColumn property="valid" title="${message(code: 'reserveOrderInfo.valid.label', default: 'Valid')}" params="${params}"/>
 
                 <g:sortableColumn property="status" title="${message(code: 'reserveOrderInfo.status.label', default: 'Status')}" params="${params}"/>
 
-                <g:sortableColumn property="status" title="${message(code: 'reserveOrderInfo.phone.label', default: 'Phone')}" params="${params}"/>
-                 <th>操作</th>
+                <th>操作</th>
             </tr>
             </thead>
             <tbody>
@@ -324,19 +356,22 @@
                     %{--<td><g:link action="show"--}%
                     %{--id="${reserveOrderInfoInstance.id}">${fieldValue(bean: reserveOrderInfoInstance, field: "restaurantId")}</g:link></td>--}%
 
-                    <td>
-                        <g:if test="${reserveOrderInfoInstance.clientInfo}">
-                            <g:if test="${reserveOrderInfoInstance.clientInfo?.nickname}">
-                                用户&nbsp;${reserveOrderInfoInstance.clientInfo?.nickname}
-                            </g:if>
-                            <g:else>
-                                用户&nbsp;${reserveOrderInfoInstance.clientInfo?.clientMark}
-                            </g:else>
-                        </g:if>
-                        <g:else>
-                                服务员
-                        </g:else>
-                    </td>
+                    %{--<td>--}%
+                        %{--<g:if test="${reserveOrderInfoInstance.clientInfo}">--}%
+                            %{--<g:if test="${reserveOrderInfoInstance.clientInfo?.nickname}">--}%
+                                %{--用户&nbsp;${reserveOrderInfoInstance.clientInfo?.nickname}--}%
+                            %{--</g:if>--}%
+                            %{--<g:else>--}%
+                                %{--用户&nbsp;${reserveOrderInfoInstance.clientInfo?.clientMark}--}%
+                            %{--</g:else>--}%
+                        %{--</g:if>--}%
+                        %{--<g:else>--}%
+                                %{--服务员--}%
+                        %{--</g:else>--}%
+                    %{--</td>--}%
+                    <td>${reserveOrderInfoInstance.phone}</td>
+
+                    <td>${reserveOrderInfoInstance.customerName}</td>
 
                     <td style="max-width: 100px">
                         <g:if test="${reserveOrderInfoInstance.tableName}">
@@ -349,13 +384,12 @@
 
 
 
-                    <td>${FormatUtil.dateTimeFormat(reserveOrderInfoInstance.createTime)}</td>
+                    <td>${FormatUtil.dateTimeFormat(reserveOrderInfoInstance.dinnerTime)}</td>
 
                     <td>${OrderValid.getLable(reserveOrderInfoInstance.valid)}</td>
 
                     <td>${ReserveOrderStatus.getLable(reserveOrderInfoInstance.status)}</td>
 
-                    <td>${reserveOrderInfoInstance.phone}</td>
 
                     %{--<td>${ReserveType.getLabel(reserveOrderInfoInstance.reserveType)}</td>--}%
                     <td><a href="${createLink(controller: "reserveStaff", action: "reserveOrderDetail", params: [reserveOrderId: reserveOrderInfoInstance.id])}">订单详情</a>

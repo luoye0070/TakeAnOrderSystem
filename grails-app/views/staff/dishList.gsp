@@ -97,9 +97,9 @@
                 <thead>
                 <tr>
 
-                    <g:sortableColumn property="order.id"
-                                      title="${message(code: 'dishesInfo.order.label', default: 'Order Id')}"
-                                      params="${params}"/>
+                    %{--<g:sortableColumn property="order.id"--}%
+                                      %{--title="${message(code: 'dishesInfo.order.label', default: 'Order Id')}"--}%
+                                      %{--params="${params}"/>--}%
 
                     <g:sortableColumn property="foodId"
                                       title="${message(code: 'dishesInfo.foodName.label', default: 'Food Name')}"
@@ -116,9 +116,9 @@
                                       title="${message(code: 'dishesInfo.valid.label', default: 'Valid')}"
                                       params="${params}"/>
 
-                    <g:sortableColumn property="cancelReason"
-                                      title="${message(code: 'dishesInfo.cancelReason.label', default: 'Cancel Reason')}"
-                                      params="${params}"/>
+                    %{--<g:sortableColumn property="cancelReason"--}%
+                                      %{--title="${message(code: 'dishesInfo.cancelReason.label', default: 'Cancel Reason')}"--}%
+                                      %{--params="${params}"/>--}%
 
                     <g:sortableColumn property="remark"
                                       title="${message(code: 'dishesInfo.remark.label', default: 'Remark')}"
@@ -131,7 +131,7 @@
                 <g:each in="${dishList}" status="i" var="dishesInfoInstance">
                     <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
-                        <td>${fieldValue(bean: dishesInfoInstance, field: "order")}</td>
+                        %{--<td>${fieldValue(bean: dishesInfoInstance, field: "order")}</td>--}%
 
                         <td>
                             <g:if test="${dishesInfoInstance?.foodName}">
@@ -148,7 +148,7 @@
 
                         <td>${DishesValid.getLable(dishesInfoInstance?.valid)}</td>
 
-                        <td>${fieldValue(bean: dishesInfoInstance, field: "cancelReason")}</td>
+                        %{--<td>${fieldValue(bean: dishesInfoInstance, field: "cancelReason")}</td>--}%
 
                         <td>${fieldValue(bean: dishesInfoInstance, field: "remark")}</td>
 

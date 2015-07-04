@@ -1,5 +1,6 @@
 package lj.taos.shop
 
+import lj.data.FoodInfo
 import lj.enumCustom.ReCode
 
 //菜单管理
@@ -23,7 +24,7 @@ class FoodManageController {
     def editFoodInfo(){
         def errors=null;
         def msgs=null;
-        def foodInfoInstance=null;
+        def foodInfoInstance=new FoodInfo();
         def foodClassList=null;
 
         def reInfo=foodClassManageService.list(params);

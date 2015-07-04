@@ -115,7 +115,7 @@ class MessageService {
             } else {
                 userType = 1; //顾客方
             }
-            //println("messageInfo.receiveId->"+messageInfo.receiveId);
+            log.info("messageInfo.receiveId->"+messageInfo.receiveId);
             //发送不成功则保存消息
             if (messageInfo.status!=MessageStatus.READED_STATUS.code){
                 if (messageInfo.save(flush: true))

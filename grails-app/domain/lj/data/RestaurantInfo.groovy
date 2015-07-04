@@ -11,9 +11,9 @@ class RestaurantInfo {
     //地址
     String address;
     //经度
-    Double longitude=0.0
+    double longitude=0.0
     //维度
-    Double latitude=0.0
+    double latitude=0.0
     //电话
     String phone
     //营业时间起
@@ -21,7 +21,7 @@ class RestaurantInfo {
     //营业时间止
     Date shopHoursEndTime
     //开启关闭状态true开启，false关闭
-    Boolean enabled=true
+    boolean enabled=true
     //菜系
     String cuisineName
     //图片空间大小，初始大小为1G，单位字节
@@ -29,7 +29,7 @@ class RestaurantInfo {
     //图片空间已用大小，初始大小为0，单位字节
     long imageSpaceUsedSize=0l;
     //人均消费水平，单位元
-    Double averageConsume;
+    double averageConsume;
     //简单描述
     String description;
     //店铺基础url地址

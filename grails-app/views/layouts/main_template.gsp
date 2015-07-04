@@ -182,11 +182,12 @@
                 %{--url=url.substring(url.lastIndexOf("/")+1);--}%
                 %{--%>--}%
                 %{--<li ${url==""?'class="current"':""}><g:link url="/canmeng"> 餐萌首页</g:link></li>--}%
-                <li  ${controllerName=="reserveCustomer"?'class="current"':""}><g:link controller="reserveCustomer" action="reserveDinnerTimeInput">桌位预定</g:link></li>
-                <li  ${controllerName=="customer"?'class="current"':""}><g:link controller="customer" action="getOrCreateOrder">用餐点菜</g:link></li>
-                <li ${(controllerName=="staff"||(controllerName=="staffManage"&&actionName=="staffLogin"))?"class='current'":""}><g:link controller="staff" action="index">后台管理</g:link></li>
+                %{--<li  ${controllerName=="reserveCustomer"?'class="current"':""}><g:link controller="reserveCustomer" action="reserveDinnerTimeInput">桌位预定</g:link></li>--}%
+                %{--<li  ${controllerName=="customer"?'class="current"':""}><g:link controller="customer" action="getOrCreateOrder">用餐点菜</g:link></li>--}%
+                <li ${(controllerName=="reserveStaff"||controllerName=="staff")?"class='current'":""}><g:link controller="staff" action="index">后台管理</g:link></li>
                 <li ${(controllerName=="shop"||controllerName=="customerRelations"||controllerName=="foodClassInfo"||controllerName=="foodManage"||controllerName=="imageSpace"
-                        ||controllerName=="staffManage"||controllerName=="tableManage")?"class='current'":""}><g:link controller="shop" action="index">饭店管理</g:link></li>
+                        ||(controllerName=="staffManage"&&actionName!="staffLogin")||controllerName=="tableManage")?"class='current'":""}><g:link controller="shop" action="index">饭店管理</g:link></li>
+                <li><g:link controller="staffManage" action="staffLogout">退出餐萌</g:link></li>
                 %{--<g:if test="${session && (session.clientId||session.staffInfo)}">--}%
                     %{--<li><g:link controller="user" action="logout">退出餐萌</g:link></li>--}%
                 %{--</g:if>--}%

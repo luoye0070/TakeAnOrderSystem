@@ -129,7 +129,7 @@
     </style>
     <script type="text/javascript">
         function delDish(dishId,orderId){
-            var delDishUrl="${createLink(controller: "reserveCustomer",action: "delDishAjax")}";
+            var delDishUrl="${createLink(controller: "reserveStaff",action: "delDishAjax")}";
             $.ajax({
                 context:this,
                 url:delDishUrl,
@@ -186,17 +186,47 @@
                            default="Table Name"/>:
                 ${reserveOrderInfo.tableInfo.name}
             </g:if>
+
+            <g:if test="${reserveOrderInfo?.phone}">
+                &nbsp;&nbsp;
+                    <g:message code="reserveOrderInfo.phone.label"
+                               default="phone"/>:
+                    ${reserveOrderInfo.phone}
+            </g:if>
+            <g:if test="${reserveOrderInfo?.customerName}">
+                &nbsp;&nbsp;
+                    <g:message code="reserveOrderInfo.customerName.label"
+                               default="customerName"/>:
+                    ${reserveOrderInfo.customerName}
+            </g:if>
+
             &nbsp;&nbsp;
             <g:if test="${reserveOrderInfo?.waiter}">
                 <g:message code="reserveOrderInfo.waiter.label"
                            default="Waiter"/>:
-                ${reserveOrderInfo.waiter.name}
+                <g:if test="${reserveOrderInfo?.waiter?.name}">
+                    ${reserveOrderInfo?.waiter?.name}
+                </g:if>
+                <g:else>
+                    ${reserveOrderInfo?.waiter?.loginName}
+                </g:else>
             </g:if>
             &nbsp;&nbsp;
-            <g:if test="${reserveOrderInfo?.tableInfo}">
-                <g:message code="reserveOrderInfo.tableInfo.label"
-                           default="tableInfo"/>:
-                ${reserveOrderInfo.tableInfo.code}
+            <g:if test="${reserveOrderInfo?.clientInfo}">
+                <div class="mcmcd_item">
+                    <div class="mcmcdi_label">
+                        <g:message code="reserveOrderInfo.clientInfo.label" default="Client Info"/>
+                    </div>
+
+                    <div class="mcmcdi_info" style="color: #FE4B1E;">
+                        <g:if test="${reserveOrderInfo?.clientInfo?.nickname}">
+                            ${reserveOrderInfo?.clientInfo?.nickname}
+                        </g:if>
+                        <g:else>
+                            ${reserveOrderInfo?.clientInfo?.clientMark}
+                        </g:else>
+                    </div>
+                </div>
             </g:if>
             &nbsp;&nbsp;
         </g:if>
@@ -221,9 +251,9 @@
             <thead>
             <tr>
 
-                <g:sortableColumn property="foodId"
-                                  title="${message(code: 'dishesInfo.foodId.label', default: 'Food Id')}"
-                                  params="${params}"/>
+                %{--<g:sortableColumn property="foodId"--}%
+                                  %{--title="${message(code: 'dishesInfo.foodId.label', default: 'Food Id')}"--}%
+                                  %{--params="${params}"/>--}%
 
                 <g:sortableColumn property="foodName"
                                   title="${message(code: 'dishesInfo.foodName.label', default: 'Food Name')}"
@@ -247,7 +277,7 @@
             <g:each in="${reserveOrderInfo?.dishes}" status="i" var="reserveDishesInfo">
                 <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
-                    <td>${fieldValue(bean: reserveDishesInfo, field: "foodId")}</td>
+                    %{--<td>${fieldValue(bean: reserveDishesInfo, field: "foodId")}</td>--}%
 
                     <td>${fieldValue(bean: reserveDishesInfo, field: "foodName")}</td>
 

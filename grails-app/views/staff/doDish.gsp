@@ -37,33 +37,6 @@
         font-size: 14px;
     }
 
-    .mcmcs_field {
-        width: 320px;
-        float: left;
-    }
-
-    .mcmcsf_input {
-        width: 120px;
-    }
-
-    .mcmcs_field_middle {
-        width: 160px;
-        float: left;
-    }
-
-    .mcmcsf_input_middle {
-        width: 80px;
-    }
-
-    .mcmcs_field_small {
-        width: 80px;
-        float: left;
-    }
-
-    .mcmcsf_input_small {
-        width: 40px;
-    }
-
     .m_list {
         width: 960px;
         height: auto;
@@ -180,16 +153,18 @@
                     &nbsp;&nbsp;
                     <g:if test="${orderInfoInstance?.tableInfo}">
                         <g:message code="orderInfo.tableInfo.label"
-                                   default="Table Id"/>:<g:fieldValue
-                            bean="${orderInfoInstance}"
-                            field="tableInfo"/>
+                                   default="Table Id"/>:${orderInfoInstance?.tableInfo?.name}
                     </g:if>
                     &nbsp;&nbsp;
                     <g:if test="${orderInfoInstance?.waiter}">
                         <g:message code="orderInfo.waiter.label"
-                                   default="Waiter Id"/>:<g:fieldValue
-                            bean="${orderInfoInstance}"
-                            field="waiter"/>
+                                   default="Waiter Id"/>:
+                        <g:if test="${orderInfoInstance?.waiter?.name}">
+                        ${orderInfoInstance?.waiter?.name}
+                    </g:if>
+                        <g:else>
+                            ${orderInfoInstance?.waiter?.loginName}
+                        </g:else>
                     </g:if>
                     &nbsp;&nbsp;
                     <g:if test="${orderInfoInstance?.partakeCode}">
@@ -198,6 +173,17 @@
                             bean="${orderInfoInstance}" field="partakeCode"/>
                     </g:if>
                     &nbsp;&nbsp;
+                    <g:if test="${orderInfoInstance?.clientInfo}">
+                        <div class="mcmcd_item">
+                            <div class="mcmcdi_label">
+                                <g:message code="orderInfo.clientInfo.label" default="Client Info"/>
+                            </div>
+
+                            <div class="mcmcdi_info">
+                                ${orderInfoInstance?.clientInfo?.clientMark}
+                            </div>
+                        </div>
+                    </g:if>
                 </g:if>
 
                 <a href="${params.backUrl ?: createLink(controller: "staff", action: "orderList")}"
@@ -208,10 +194,10 @@
 
     <!--菜品类别列表-->
     <div>
-        <ul class="breadcrumb">
-            <li class="active"><a href="${createLink(controller: "customer",action: "getOrCreateOrder",params: params<<[foodClassId:0])}">全部</a></li>
+        <ul class="breadcrumb" style="padding-bottom: 40px;padding-left: 10px;padding-right: 10px;">
+            <li class="active" style="float: left"><a href="${createLink(controller: "staff",action: "doDish",params: params<<[foodClassId:0])}">全部</a></li>
             <g:each in="${foodClassInfoInstanceList}" status="i" var="foodClassInfoInstance">
-                <li><a href="${createLink(controller: "customer",action: "getOrCreateOrder",params: params<<[foodClassId:foodClassInfoInstance.id])}">${foodClassInfoInstance.name}</a></li>
+                <li style="float: left">&nbsp;/&nbsp;<a href="${createLink(controller: "staff",action: "doDish",params: params<<[foodClassId:foodClassInfoInstance.id])}">${foodClassInfoInstance.name}</a></li>
             </g:each>
         </ul>
     </div>
@@ -255,7 +241,7 @@
                             <div class="ml_row_txt">
                                 <label id="remarks${foodInfoInstance?.id}"
                                        style="float: left;font-size: 14px;">备注:</label>
-                                <input id="remarks${foodInfoInstance?.id}" name="remarks" type="text" class="msf_input" style="width: 16px;" value="1"/>
+                                <input id="remarks${foodInfoInstance?.id}" name="remarks" type="text" class="msf_input" style="width: 76px;" value="" placeholder="输入备注信息"/>
                             </div>
 
                             <div class="ml_row_txt">
@@ -301,13 +287,13 @@
                 <thead>
                 <tr>
 
-                    <g:sortableColumn property="orderId"
-                                      title="${message(code: 'dishesInfo.orderId.label', default: 'Order Id')}"
-                                      params="${params}"/>
+                    %{--<g:sortableColumn property="orderId"--}%
+                                      %{--title="${message(code: 'dishesInfo.orderId.label', default: 'Order Id')}"--}%
+                                      %{--params="${params}"/>--}%
 
-                    <g:sortableColumn property="foodId"
-                                      title="${message(code: 'dishesInfo.foodId.label', default: 'Food Id')}"
-                                      params="${params}"/>
+                    %{--<g:sortableColumn property="foodId"--}%
+                                      %{--title="${message(code: 'dishesInfo.foodId.label', default: 'Food Id')}"--}%
+                                      %{--params="${params}"/>--}%
 
                     <g:sortableColumn property="foodName"
                                       title="${message(code: 'dishesInfo.foodName.label', default: 'Food Name')}"
@@ -338,9 +324,9 @@
                 <g:each in="${dishes?.dishList}" status="i" var="dishesInfoInstance">
                     <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
-                        <td>${fieldValue(bean: dishesInfoInstance, field: "orderId")}</td>
+                        %{--<td>${fieldValue(bean: dishesInfoInstance, field: "orderId")}</td>--}%
 
-                        <td>${fieldValue(bean: dishesInfoInstance, field: "foodId")}</td>
+                        %{--<td>${fieldValue(bean: dishesInfoInstance, field: "foodId")}</td>--}%
 
                         <td>${fieldValue(bean: dishesInfoInstance, field: "foodName")}</td>
 
