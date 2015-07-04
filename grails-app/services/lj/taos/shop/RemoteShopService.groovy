@@ -136,7 +136,7 @@ class RemoteShopService {
         String encryptedLicenseData=DesUtilGy.encryptDES(licenseData,"license");
 
         FileReadWrite fileReadWrite=new FileReadWrite();
-        fileReadWrite.writeFile(encryptedLicenseData,"license","",true);
+        fileReadWrite.writeFile(encryptedLicenseData,"taos.license","",true);
 
         return [recode: ReCode.OK];
     }
@@ -176,7 +176,7 @@ class RemoteShopService {
             return [recode: ReCode.OK];
         }else{//从文件中读取
             FileReadWrite fileReadWrite=new FileReadWrite();
-            String encryptedLicenseData=fileReadWrite.readFile("","license");
+            String encryptedLicenseData=fileReadWrite.readFile("","taos.license");
             log.info("encryptedLicenseData-->"+encryptedLicenseData);
             if(encryptedLicenseData!=null&&!"".equals(encryptedLicenseData)){ //从文件中获取到
                 String licenseData=DesUtilGy.decryptDES(encryptedLicenseData,"license");
@@ -226,7 +226,7 @@ class RemoteShopService {
                     String encryptedLicenseData=DesUtilGy.encryptDES(licenseData,"license");
 
                     FileReadWrite fileReadWrite=new FileReadWrite();
-                    fileReadWrite.writeFile(encryptedLicenseData,"license","",true);
+                    fileReadWrite.writeFile(encryptedLicenseData,"taos.license","",true);
 
                     //将License写入内存中
                     Properties licenseProperties=new Properties();

@@ -133,7 +133,7 @@ public class FileReadWrite {
             File file=new File(SDCardRoot+dirName+fileName);
             //file.setReadable(true);
             InputStream input=new FileInputStream(file);
-            fileReader=new BufferedReader(new InputStreamReader(input));
+            fileReader=new BufferedReader(new InputStreamReader(input,"utf-8"));
             String line=null;
             while ((line=fileReader.readLine())!=null){
                 sb.append(line);
@@ -190,7 +190,7 @@ public class FileReadWrite {
         {
             try {
                 output=new FileOutputStream(file,true);
-                bw=new BufferedWriter(new OutputStreamWriter(output));
+                bw=new BufferedWriter(new OutputStreamWriter(output,"utf-8"));
                 bw.write(data+"\r\n");
                 bw.flush();
 
