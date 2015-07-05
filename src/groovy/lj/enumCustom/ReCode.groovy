@@ -91,6 +91,7 @@ public class ReCode {
     public final static def RESERVE_ORDER_CANNOT_REACH=[code:-73,label:"取消订单不能做到店操作"];
     public final static def NET_ERROR=[code:-74,label:"网络错误，请检查网络环境"];
     public final static def LICENSE_DISABLE=[code:-75,label:"许可证无效"];
+    public final static def ORDER_CANNOT_ADD_DISH=[code:-76,label:"订单当前状态或有效性下不能做加菜操作"];
 //    public Integer code
 //    public String label
 //

@@ -110,11 +110,11 @@
                 <g:if test="${orderInfo?.waiter}">
                     <g:message code="orderInfo.waiter.label"
                                default="Waiter"/>:
-                    <g:if test="${orderInfo.waiter.name}">
-                        ${orderInfo.waiter.name}
+                    <g:if test="${orderInfo?.waiter.name}">
+                        ${orderInfo?.waiter.name}
                     </g:if>
                     <g:else>
-                        ${orderInfo.waiter.loginName}
+                        ${orderInfo?.waiter.loginName}
                     </g:else>
                 </g:if>
                 &nbsp;&nbsp;
@@ -128,7 +128,7 @@
     %{--<div class="col-sm-12" style="margin-top: 10px;">--}%
         %{--<g:if test="${isOwner}">--}%
             <div class="col-xs-4">
-                <a class="btn btn-default" href="${createLink(controller: "customer",action: "getOrCreateOrder",params: [orderId:orderInfo.id])}">返回</a>
+                <a class="btn btn-default" href="${createLink(controller: "customer",action: "getOrCreateOrder",params: [orderId:orderInfo?.id])}">返回</a>
             </div>
             <div class="col-xs-4">
                 <form class="form-horizontal" method="POST" id="confirm_add_dish_form" action="${createLink(controller: "customer",action: "orderConfirmAfterOrderConfirm")}" confirm="确定加菜完成了吗？">

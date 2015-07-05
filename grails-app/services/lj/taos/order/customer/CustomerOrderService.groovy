@@ -175,7 +175,7 @@ class CustomerOrderService {
             OrderInfo orderInfo = OrderInfo.get(orderId);
             if (orderInfo) {
                 //检查定当前状态是否能点菜
-                if (orderInfo.status == OrderStatus.SERVED_STATUS.code) {//上菜完成不能再点菜了
+                if (orderInfo.status >= OrderStatus.SERVED_STATUS.code) {//上菜完成不能再点菜了
                     return [recode: ReCode.CANNOT_DISH];//不能点菜
                 }
                 if (orderInfo.valid <= OrderValid.EFFECTIVE_VALID.code) { //初始态或者有效态
@@ -1082,6 +1082,9 @@ class CustomerOrderService {
                 webUtilService.setTableCode(orderInfo.tableInfo.code);
             }
         }
+        if (orderInfo.valid > OrderValid.EFFECTIVE_VALID.code || orderInfo.status >= OrderStatus.SERVED_STATUS.code) {//订单不能加菜
+            return [recode: ReCode.ORDER_CANNOT_ADD_DISH,orderInfo: orderInfo];
+        }
         if (tableInfo == null) {
             return [recode: ReCode.TABLE_NOT_EXIST];
         }
@@ -1244,6 +1247,9 @@ class CustomerOrderService {
                 webUtilService.setTableCode(orderInfo.tableInfo.code);
             }
         }
+        if (orderInfo.valid > OrderValid.EFFECTIVE_VALID.code || orderInfo.status >= OrderStatus.SERVED_STATUS.code) {//订单不能加菜
+            return [recode: ReCode.ORDER_CANNOT_ADD_DISH, orderInfo: orderInfo];
+        }
         if (tableInfo == null) {
             return [recode: ReCode.TABLE_NOT_EXIST];
         }
@@ -1293,6 +1299,9 @@ class CustomerOrderService {
                 tableInfo = orderInfo.tableInfo;
                 webUtilService.setTableCode(orderInfo.tableInfo.code);
             }
+        }
+        if (orderInfo.valid > OrderValid.EFFECTIVE_VALID.code || orderInfo.status >= OrderStatus.SERVED_STATUS.code) {//订单不能加菜
+            return [recode: ReCode.ORDER_CANNOT_ADD_DISH, orderInfo: orderInfo];
         }
         if (tableInfo == null) {
             return [recode: ReCode.TABLE_NOT_EXIST];
