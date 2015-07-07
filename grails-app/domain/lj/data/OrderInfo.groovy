@@ -54,6 +54,8 @@ class OrderInfo {
     String userName;
     //桌位
     String tableName;
+    //最后操作时间
+    Date updateTime=new Date();
 
     //static hasMany = [dishes:DishesInfo];
     static constraints = {
@@ -79,6 +81,7 @@ class OrderInfo {
         restaurantName(nullable:true,blank: true,maxSize:256);
         userName(nullable:true,blank: true,maxSize: 32);
         tableName(nullable:true,blank: true,maxSize: 64);
+        updateTime(nullable: true);
     }
 
     @Override
@@ -108,7 +111,11 @@ class OrderInfo {
                 ", restaurantName='" + restaurantName + '\'' +
                 ", userName='" + userName + '\'' +
                 ", tableName='" + tableName + '\'' +
+                ", updateTime=" + updateTime +
                 ", version=" + version +
                 '}';
+    }
+    def beforeUpdate() {
+        this.updateTime=new Date();
     }
 }

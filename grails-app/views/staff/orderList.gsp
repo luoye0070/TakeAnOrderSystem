@@ -235,12 +235,12 @@
 
                     <g:sortableColumn property="clientInfo.id" title="${message(code: 'orderInfo.userName.label', default: 'User Name')}"  params="${params}"/>
 
-                    <g:sortableColumn property="tableId"
+                    <g:sortableColumn property="tableInfo.id"
                                       title="${message(code: 'orderInfo.tableName.label', default: 'Table Name')}" params="${params}"/>
 
 
 
-                    <g:sortableColumn property="ctreateTime"
+                    <g:sortableColumn property="createTime"
                                       title="${message(code: 'orderInfo.createTime.label', default: 'Time')}" params="${params}"/>
 
                     <g:sortableColumn property="valid" title="${message(code: 'orderInfo.valid.label', default: 'Valid')}" params="${params}"/>
